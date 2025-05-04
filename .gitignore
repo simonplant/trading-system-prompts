@@ -1,0 +1,25 @@
+# macOS system files
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# Log files and generated content
+logs/**/*.md
+!logs/template.md
+!logs/2025/.gitkeep  # optional empty file to preserve folder in git
+
+# Python artifacts (if you ever use notebooks or scripts)
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints
+
+# OS/Editor artifacts
+*.swp
+*.swo
+Thumbs.db
+
+# Zip/backups
+*.zip
+*.bak
+*.tmp

@@ -1,99 +1,116 @@
 ---
+title: Trading System Prompts
+description: Structured GPT-based prompt library to support disciplined options trading alongside Inner Circle and Mancini
+author: Simon Plant
+version: 1.0
+last_updated: 2025-05-03
+category: system
+usage: Upload this repo as a ZIP and use `prompts/main-controller.md` as the command router
+---
 
-## HOW TO USE THIS ZIP + MAIN CONTROLLER
+# Trading System Prompts — Usage Guide
 
-### 1. Upload the ZIP
+## 1. How to Use This ZIP + Main Controller
 
-Start a new ChatGPT session, drag and drop the zipped folder containing your prompts and system files, and say:
+Start a fresh ChatGPT session and upload the zipped folder containing this repo. Then run:
 
-Use the `prompts/main-controller.md` file as the central router. I want to engage with the trading system.
+> Use `prompts/main-controller.md` as the routing layer. I want to interact with my trading system.
+
+This engages the structured routing logic across all phases: premarket, intraday, postmarket, and system reference.
 
 ---
 
-### 2. PURPOSE OF `main-controller.md`
+## 2. Purpose of `main-controller.md`
 
-This file is your command center. It:
+The main controller serves as the system’s command router. It:
 
-- Routes your requests to the correct phase: premarket, intraday, postmarket, or system
-- Accepts input like transcripts, levels, or postmortem notes
-- Combines prompts into multi-step workflows
-- Honors all trading charter rules, blindspot filters, and system structure
-
----
-
-### 3. MAIN USE CASES
-
-#### Premarket Prep
-
-Prompt:
-Run premarket prep. Here’s the DP call transcript. Also use today’s ES and QQQ levels.
-
-Workflow:
-- Parse DP transcript via `dp-trade-analysis.md`
-- Parse Mancini via `mancini-trade-analysis.md`
-- Combine into a Unified Trade Plan using `unified-trade-plan-generator.md`
-
-Output:
-A full plan with Market Bias, Focus, Trade Setups, SPX Decision Tree, Execution Checklist.
+- Directs inputs to the appropriate prompts by phase
+- Runs multi-step workflows across DP, Mancini, and execution prompts
+- Enforces trading charter rules, blindspot filters, and SOP structure
+- Centralizes interaction with the system through a single entry point
 
 ---
 
-#### Intraday Updates & Trade Validation
+## 3. Primary Use Cases
 
-Prompt:
-Validate this intraday trade idea: TSLA long above 180 reclaim, cashflow. SPX reclaiming 5606. Not in plan.
+### ➤ Premarket Prep
 
-Workflow:
-- Uses `validate-intraday-trade-idea.md`
-- Confirms technical structure, checks against trade charter, identifies blindspots
+**Prompt:**  
+`Run premarket prep. Here’s the DP transcript. Also use today’s ES/QQQ/SPY levels.`
 
-Output:
-GO / WAIT / NO GO verdict with supporting logic
+**Workflow:**  
+- `dp-trade-analysis.md` → parses and tags DP trades
+- `mancini-trade-analysis.md` → extracts ES blueprint and converts to SPX
+- `unified-trade-plan-generator.md` → generates full daily trade plan
+
+**Output:**  
+Unified Trade Plan including: Market Bias, 5-Min Focus, Trade Stack, SPX Decision Tree, Execution Checklist.
 
 ---
 
-#### Postmarket Debrief & Behavioral Logging
+### ➤ Intraday Trade Validation
 
-Prompt:
-I want to log today’s trades and update the behavior KB. Here’s my P&L and postmortem.
+**Prompt:**  
+`Validate this intraday trade idea: TSLA long above 180 reclaim, cashflow. SPX reclaiming 5606.`
 
-Workflow:
-- Run `daily-performance-debrief.md` to summarize execution
-- Run `update-trading-behaviors-kb.md` to refine blindspot definitions
+**Workflow:**  
+- `validate-intraday-trade-idea.md` → tests against technicals, plan, and behavioral risks
 
-Output:
-Two updated files:
-- `/logs/YYYY/YYYY-MM-DD.md`
+**Output:**  
+GO / WAIT / NO GO assessment, with rationale, blindspots, and plan compliance check.
+
+---
+
+### ➤ Postmarket Review & Behavior Logging
+
+**Prompt:**  
+`Here’s my trade log and notes. Help me debrief and update my trading behavior KB.`
+
+**Workflow:**  
+- `daily-performance-debrief.md` → processes execution, notes, trade outcomes  
+- `update-trading-behaviors-kb.md` → updates blindspot patterns, discipline rules
+
+**Output:**  
+- Daily postmortem log saved to `/logs/YYYY/YYYY-MM-DD.md`  
+- Updated `system/trading-behaviors-kb.md`
+
+---
+
+### ➤ System Reference
+
+**Prompt:**  
+`Show me my Trading Charter and Behavior KB.`
+
+**Workflow:**  
+Displays the latest versions of:
+
+- `system/trading-charter.md`
 - `system/trading-behaviors-kb.md`
+- `system/trading-system-sop.md` (if needed)
 
 ---
 
-#### System & SOP Review
+## 4. Folder Structure
 
-Prompt:
-Show me the latest version of my Trading Charter and Trading Behaviors KB.
-
-Workflow:
-- Loads and displays:
-  - `system/trading-charter.md`
-  - `system/trading-behaviors-kb.md`
-
----
-
-### 4. FOLDER STRUCTURE OVERVIEW
-
-| Folder         | Purpose                                             |
-|----------------|-----------------------------------------------------|
-| `prompts/`     | Executable prompts by trading phase                 |
-| `logs/`        | Daily trading logs and postmortem summaries         |
-| `system/`      | SOPs, charter, behavior knowledge base              |
-| `README.md`    | Maintains usage notes, author credit, TODO list     |
+| Folder           | Purpose                                                 |
+|------------------|----------------------------------------------------------|
+| `prompts/`       | Phase-specific prompts (premarket, intraday, postmarket) |
+| `logs/`          | Structured daily trade logs and reviews                  |
+| `system/`        | Charter, SOP, behavioral KB                              |
+| `README.md`      | Usage guide and reference instructions                   |
 
 ---
 
-### 5. OPTIONAL TODOs
+## 5. Optional TODOs
 
-- Add `Friday Lotto Rules` checklist prompt
-- Create `mirror-log-template.md` for IC vs self tracking
-- Add `main-controller-guide.md` with full usage reference
-- Optional: script to auto-generate `/logs/YYYY-MM-DD.md` daily file
+- Add `friday-lotto-rules.md` checklist
+- Create `mirror-log-template.md` to compare IC trades vs own
+- Add `main-controller-guide.md` with prompt examples for all workflows
+- Optional: automation to create `/logs/YYYY-MM-DD.md` daily template
+
+---
+
+## Author
+
+Simon Plant  
+[GitHub: simonplant](https://github.com/simonplant)

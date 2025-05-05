@@ -21,6 +21,8 @@ status: active
 - `log-structure-upgrade.md` added — documents log split system
 - `main-controller.md` updated — routing logic synced to all phases and log modules
 
+---
+
 # TODO: CORE FILES TO COMPLETE
 
 - `daily-performance-debrief.md`  
@@ -28,44 +30,55 @@ status: active
   - Prior day’s trade log  
   - Behavior flags  
   - Execution quality  
-  - Missed opportunities  
-  - Score summary: Setup / Execution / Emotion
+  **Tags:** `postmarket`, `behavior`, `function`  
+  **Priority:** P0  
 
-- `update-trading-behaviors-kb.md`  
-  Lightweight template to capture new behavioral patterns or blindspots.  
-  Used post-trade or after reset. Should append/update `trading-behaviors-kb.md`.
+---
 
-- `capital-exposure-tracker.md`  
-  Runtime prompt or logic to track live exposure against:  
-  - `max_exposure_dollars`  
-  - Open tier slots  
-  - Risk alerts  
-  Integrated with `copilot.md` and pre-trade validation.
+# TODO: SYSTEM-WIDE ALIGNMENTS (PRIORITIZED)
 
-- `unified-trade-plan-generator.md`  
-  Prompt to combine DP and Mancini morning calls into one plan.  
-  Outputs planned bias, levels, conviction setups, and trade filters.  
-  Must align with capital constraints and system tiers.
+## P0 – Critical to Working System
 
-- `template-trade-log.md`  
-  JSON structure for all trades, journal, and KB logs.  
-  Reference in all export prompts and copilot.
+- Align `trading-system-sop.md` with prompt filenames  
+  Add explicit filename references (e.g., `copilot.md`, `dp-trade-analysis.md`) to clarify dependency chain.  
+  **Tags:** `structure`, `docs`  
 
-# OPTIONAL / LATER
+- Add behavioral linkage to `copilot.md` and `midday-reset.md`  
+  Cross-reference specific failure types or archetypes from `trading-behaviors-kb.md` to reset prompts.  
+  **Tags:** `behavior`, `function`, `structure`  
 
-- `system-map.md`  
-  Visual/structured markdown of all prompt dependencies and process flow.  
-  Useful for onboarding, refactoring, and future automation.
+---
 
-- `system/index.md`  
-  Canonical file registry with description, file path, and routing category.
+## P1 – High Leverage & Consistency
 
-# MAINTENANCE / WATCHLIST
+- Normalize `tags:` taxonomy  
+  Define and apply consistent tagging structure (e.g., `[phase, function, behavior]`) across all prompts.  
+  **Tags:** `consistency`, `infra`  
 
-- Ensure no future prompts hardcode dollar values — all must reference `trading-capital-profile.md`  
-- All behavioral logic must update or reference `trading-behaviors-kb.md`  
-- Loss triggers must always reference `daily_loss_soft_dollars` or `daily_loss_hard_dollars`  
-- Validate each prompt has clean front matter and `ai_enabled` set correctly  
-- Confirm `validate-intraday-trade-idea.md` has been deleted and fully removed from routing references  
-- Determine whether to archive or merge `copilot-reset.md` into `copilot.md`  
-- Confirm new log files are saved to `/logs/YYYY/{trades,journal,kb-updates}/YYYY-MM-DD.md`
+- Sharpen `usage:` fields  
+  Remove redundancy with `description:` and clarify *when* the prompt should run and *what it produces*.  
+  **Tags:** `consistency`, `docs`  
+
+- Clean up versioning and `last_updated` inflation  
+  Only bump versions if structure or function changes. Treat metadata separately from logic.  
+  **Tags:** `consistency`, `docs`  
+
+---
+
+## P2 – Quality & Infra Enhancements
+
+- Add optional `model:` field  
+  Useful for distinguishing prompt tuning for GPT-4 vs Claude or future LLMs.  
+  **Tags:** `infra`, `docs`  
+
+- Review all `description:` fields  
+  Improve for clarity, tone, and structural alignment with function and outcome.  
+  **Tags:** `docs`  
+
+---
+
+## P3 – Future UX
+
+- Add optional prompt badges or metadata visuals  
+  Consider adding visible badges like `[GPT-4] [Intraday]` to prompt headers or rendered documentation.  
+  **Tags:** `infra`, `ux`, `docs`  

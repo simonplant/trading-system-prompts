@@ -20,6 +20,7 @@ status: active
 - `generate-kb-update.md` created — to log behavioral patterns and blindspots
 - `log-structure-upgrade.md` added — documents log split system
 - `main-controller.md` updated — routing logic synced to all phases and log modules
+- `copilot.md`, `midday-reset.md`, `trading-system-sop.md` updated — now cross-reference behavior KB and filename structure
 
 ---
 
@@ -37,48 +38,32 @@ status: active
 
 # TODO: SYSTEM-WIDE ALIGNMENTS (PRIORITIZED)
 
-## P0 – Critical to Working System
-
-- Align `trading-system-sop.md` with prompt filenames  
-  Add explicit filename references (e.g., `copilot.md`, `dp-trade-analysis.md`) to clarify dependency chain.  
-  **Tags:** `structure`, `docs`  
-
-- Add behavioral linkage to `copilot.md` and `midday-reset.md`  
-  Cross-reference specific failure types or archetypes from `trading-behaviors-kb.md` to reset prompts.  
-  **Tags:** `behavior`, `function`, `structure`  
-
----
-
 ## P1 – High Leverage & Consistency
 
 - Normalize `tags:` taxonomy  
   Define and apply consistent tagging structure (e.g., `[phase, function, behavior]`) across all prompts.  
-  **Tags:** `consistency`, `infra`  
+  **Tags:** `consistency`, `infra`
 
 - Sharpen `usage:` fields  
   Remove redundancy with `description:` and clarify *when* the prompt should run and *what it produces*.  
-  **Tags:** `consistency`, `docs`  
+  **Tags:** `consistency`, `docs`
 
 - Clean up versioning and `last_updated` inflation  
   Only bump versions if structure or function changes. Treat metadata separately from logic.  
-  **Tags:** `consistency`, `docs`  
-
----
+  **Tags:** `consistency`, `docs`
 
 ## P2 – Quality & Infra Enhancements
 
 - Add optional `model:` field  
   Useful for distinguishing prompt tuning for GPT-4 vs Claude or future LLMs.  
-  **Tags:** `infra`, `docs`  
+  **Tags:** `infra`, `docs`
 
 - Review all `description:` fields  
   Improve for clarity, tone, and structural alignment with function and outcome.  
-  **Tags:** `docs`  
-
----
+  **Tags:** `docs`
 
 ## P3 – Future UX
 
 - Add optional prompt badges or metadata visuals  
   Consider adding visible badges like `[GPT-4] [Intraday]` to prompt headers or rendered documentation.  
-  **Tags:** `infra`, `ux`, `docs`  
+  **Tags:** `infra`, `ux`, `docs`

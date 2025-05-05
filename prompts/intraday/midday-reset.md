@@ -4,7 +4,7 @@ description: Intraday reflection and decision support tool to recalibrate when o
 tags: [intraday, behavior, regime, exposure, overwhelm]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.0  
+version: 1.1  
 category: intraday  
 usage: Run during market hours when focus slips, drawdowns occur, or impulse risk rises  
 status: stable  
@@ -37,7 +37,7 @@ Interrupt negative momentum and emotional drift with structured reflection, beha
 
 1. **Reground**  
    - What’s happening emotionally right now?  
-   - Is this a familiar behavioral pattern?  
+   - Is this a familiar behavioral pattern (e.g., revenge trading, size creep, urgency)?  
    - Is my body tight, breath shallow, or pacing fast?
 
 2. **Reset**  
@@ -65,7 +65,7 @@ Capital: [$ risk / max], [net P&L], [streak]
 Emotional State: [frustrated, greedy, avoidant, reactive, clear]  
 Behavioral Flags: [impulse, plan deviation, size creep, none]  
 Open Trades: [summary]  
-Regime: [trend, chop, squeeze, news]  
+Regime: [trend, chop, squeeze, news]
 
 Insight: [1-line reflection or new intention]  
 Next Action: [exit, reduce size, pause, refocus, journal]

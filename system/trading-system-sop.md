@@ -4,7 +4,7 @@ description: Daily operational playbook for Simon Plant’s structured trading w
 tags: [system]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.2  
+version: 1.3  
 category: system  
 usage: Use this SOP as a live reference to manage premarket, intraday, and postmarket phases  
 status: stable  
@@ -33,24 +33,24 @@ All capital, risk, and behavioral references are defined in `trading-capital-pro
 
 - Focus on highest-conviction swing ideas and fast-moving cashflow trades  
 - Do not trade until Setup + Trigger + Risk Plan are confirmed  
-- Start with Tier 1 or Tier 2 sizing only if buffer and conditions allow
+- Start with Tier 1 or Tier 2 sizing only if buffer and conditions allow  
+- Use [`copilot.md`](../prompts/intraday/copilot.md) in `scout` or `confirm` mode for each potential entry  
 
 **Sizing Rules (from `trading-capital-profile.md`)**
 - Tier 1 (Big Idea): `default_trade_size_dollars`  
 - Tier 2 (Structured/Cashflow): use `scalp_trade_risk_budget_dollars` as stop-based risk  
 - Tier 3 (Lotto): max `max_options_trade_dollars` allocation only  
-- Do not exceed `max_single_trade_size_dollars` without full conviction and proper buffer
+- Do not exceed `max_single_trade_size_dollars` without full conviction and proper buffer  
 
 ---
 
 ## III. TRADE FILTERS AND ENTRY CHECKS
 
-- Use `copilot.md` in `scout` or `confirm` mode for each potential entry  
 - Confirm:
   - Aligned with Unified Trade Plan or DP/Mancini level  
   - Inside allowed sizing rules  
   - No capital or behavioral rule violations  
-- Confirm capital status using `capital-exposure-tracker.md`
+- Confirm capital status using `capital-exposure-tracker.md`  
 
 ---
 
@@ -60,8 +60,8 @@ All capital, risk, and behavioral references are defined in `trading-capital-pro
   - Structure validation  
   - Exposure alignment  
   - Trim or tighten stop if profit seen  
-- If drawdown exceeds `daily_loss_soft_dollars`, trigger `midday-reset.md`  
-- Do not open new trades after 11:30 AM PT unless part of a big idea swing or macro-driven
+- If drawdown exceeds `daily_loss_soft_dollars`, trigger [`midday-reset.md`](../prompts/intraday/midday-reset.md)  
+- Do not open new trades after 11:30 AM PT unless part of a big idea swing or macro-driven  
 
 ---
 
@@ -71,18 +71,18 @@ All capital, risk, and behavioral references are defined in `trading-capital-pro
 - Maintain buffer: `min_buffer_required_dollars`  
 - Lockout: triggered if drawdown hits `daily_loss_hard_dollars` or `max_daily_r_loss`  
 - Midday reset required if soft loss (`daily_loss_soft_dollars`) breached  
-- Behavior flags (see `trading-behaviors-kb.md`) override trade logic
+- Behavior flags (see [`trading-behaviors-kb.md`](../system/trading-behaviors-kb.md)) override trade logic  
 
 ---
 
 ## VI. POSTMARKET REVIEW
 
-- Run `generate-daily-trade-log.md` and save to `/logs/YYYY/MM-DD.md`  
+- Run [`generate-daily-trade-log.md`](../prompts/postmarket/generate-daily-trade-log.md) and save to `/logs/YYYY/MM-DD.md`  
 - Score each trade:  
   - Setup quality: A/B/C  
   - Execution: A/B/C  
-- If behavior issues occurred:
-  - Log update to `trading-behaviors-kb.md`  
+- If behavior issues occurred:  
+  - Log update to [`trading-behaviors-kb.md`](../system/trading-behaviors-kb.md)  
   - Review in performance debrief  
 
 ---
@@ -101,6 +101,6 @@ All capital, risk, and behavioral references are defined in `trading-capital-pro
 - If any capital or behavior rule is breached:
   - Pause all trading  
   - Journal the event  
-  - Resume only after review
+  - Resume only after review  
 
 ---

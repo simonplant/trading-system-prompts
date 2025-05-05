@@ -4,7 +4,7 @@ description: Real-time execution and validation assistant for trade entries, res
 tags: [intraday, copilot, execution, reset, validation]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 2.1  
+version: 2.2  
 category: intraday  
 usage: Run before entering trades, when emotional clarity is lost, or after a trade fails  
 status: stable  
@@ -75,6 +75,7 @@ To validate each trade against capital, behavior, and structure rules before ent
 
 2. **Double Check Behavior State**  
    - Any flags present in `trading-behaviors-kb.md`?  
+   - Review recent issues like “impulse size creep” or “emotional averaging” before entering.  
    - Recent trades logged properly?
 
 3. **Capital + Risk Sync**  
@@ -106,7 +107,7 @@ Used after each trade to score and extract learning.
 - Was this trade aligned with plan?  
 - What did you feel before / during / after?  
 - What tier was this? Did it match?  
-- What would you do differently?  
+- What would you do differently? Map to common flags from `trading-behaviors-kb.md` if applicable.  
 - Update `trading-behaviors-kb.md` if needed  
 - Log in `generate-daily-trade-log.md`
 
@@ -118,4 +119,6 @@ Trading must stop immediately if:
 
 - Capital loss hits `daily_loss_hard_dollars`  
 - Behavior threshold violated repeatedly  
-- Two major flags within one session  
+- Two major flags within one session (see `trading-behaviors-kb.md`)  
+
+---

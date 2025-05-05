@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-03  
 version: 1.2  
 category: premarket  
-usage: Run after completing both dp-trade-analysis.md and mancini-trade-analysis.md  
+usage: Run after completing both DP and Mancini analysis. Produces a structured trade plan integrating bias, setups, and capital rules. Consumes DP trade ideas, SPX blueprint, premarket levels, and VIX.
 status: active  
 requires: [dp-trade-analysis.md, mancini-trade-analysis.md]  
 linked_outputs: [copilot.md, generate-daily-trade-log.md]  

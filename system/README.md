@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.3  
 category: system  
-usage: Upload the repo as a ZIP or repo link and use `prompts/main-controller.md` to engage the command router and copilot.  
+usage: Reference for navigating all system-level configuration, templates, and prompt dependencies. Produces understanding of architecture and folder roles. Consumes new repo users or system editors.
 status: stable  
 requires: []  
 linked_outputs: []  

@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.1  
 category: system  
-usage: Called internally by Copilot or SOP to direct execution phase logic  
+usage: Run to route execution flow based on prompt phase and trigger. Produces targeted prompt selection across premarket, intraday, and postmarket. Consumes mode, inputs, and prompt context.
 status: stable  
 requires: [copilot.md, trading-system-sop.md]  
 linked_outputs: [midday-reset.md, generate-daily-trade-log.md]  

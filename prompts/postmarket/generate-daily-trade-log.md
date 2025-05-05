@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.1  
 category: postmarket  
-usage: Run after each session to structure your daily execution log  
+usage: Run at session end to document trades and behavior flags. Produces a markdown log of trades, outcomes, scores, and lessons. Consumes entry/exit data and Copilot context.
 status: stable  
 requires: [trading-charter.md, trading-behaviors-kb.md]  
 linked_outputs: [daily-performance-debrief.md, generate-kb-update.md]  

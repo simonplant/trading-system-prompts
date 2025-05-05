@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.1  
 category: premarket  
-usage: Run every morning after the Inner Circle call to extract all trade ideas  
+usage: Run after the Inner Circle morning call. Produces a stack-ranked list of trade ideas with DP sentiment and conviction. Consumes call transcript or live notes.
 status: stable  
 requires: []  
 linked_outputs: [unified-trade-plan-generator.md]  

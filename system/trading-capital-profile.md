@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 2.2  
 category: system  
-usage: Referenced by prompts that evaluate risk, exposure, or trade sizing against capital constraints  
+usage: Referenced by prompts that validate risk, exposure, or trade sizing. Produces sizing tiers and loss guardrails. Consumes account base and risk profile.
 status: stable  
 requires: []  
 linked_outputs: [capital-exposure-tracker, copilot, generate-daily-trade-log]  

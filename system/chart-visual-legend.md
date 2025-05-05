@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: system  
-usage: Reference when interpreting chart screenshots with colored MAs or levels  
+usage: Reference when interpreting chart screenshots with MA overlays or custom color codings. Produces clarity for AI or human reading of screenshots. Consumes visual color legend.
 status: stable  
 requires: []  
 linked_outputs: []  

@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: system  
-usage: Reference only when editing `main-controller.md` or debugging phase routing  
+usage: Reference while editing `main-controller.md` or building new prompt flows. Produces architecture documentation. Consumes system-level routing intent and logic branches.
 status: stable  
 requires: []  
 linked_outputs: []  

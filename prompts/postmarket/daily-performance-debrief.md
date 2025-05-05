@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.1  
 category: postmarket  
-usage: Run after market close, once trade log is complete and behavior flags are known  
+usage: Run after trade log and Copilot debrief are complete. Produces a self-assessed scorecard and lesson summary. Consumes trade outcomes, execution quality, and behavior history.
 status: active  
 requires: [generate-daily-trade-log.md, trading-behaviors-kb.md]  
 linked_outputs: [generate-kb-update.md, generate-daily-journal.md]  

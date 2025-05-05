@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: intraday  
-usage: Run immediately if trade lockout or reset triggered in Copilot  
+usage: Run immediately when lockout conditions are triggered by Copilot. Produces a behavioral reset path or stop decision. Consumes trade history, loss status, and emotional flags.
 status: active  
 requires: [copilot.md, trading-behaviors-kb.md]  
 linked_outputs: [midday-reset.md, update-trading-behaviors-kb.md]  

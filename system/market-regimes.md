@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: system  
-usage: Reference before trading to align entries with prevailing regime: trend, chop, squeeze, gamma, news  
+usage: Reference before market open to align trade setups with macro context. Produces regime clarity (trend, chop, squeeze, gamma, event). Consumes daily news, price action, and volatility.
 status: stable  
 requires: []  
 linked_outputs: []  

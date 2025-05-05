@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.3  
 category: system  
-usage: Use this SOP as a live reference to manage premarket, intraday, and postmarket phases  
+usage: Run every trading day before market open to align mindset, review exposure, and guide structured execution. Produces setup awareness and operating frame. Consumes trade plan, behaviors, and system capital profile.
 status: stable  
 requires: [trading-charter.md, trading-capital-profile.md]  
 linked_outputs: [copilot, generate-daily-trade-log, update-trading-behaviors-kb]  

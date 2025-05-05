@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 2.2  
 category: system  
-usage: Referenced by prompts that evaluate risk, exposure, or trade sizing against capital constraints  
+usage: Upload repo or browse locally to run prompt-driven trading system. Produces structured trade planning and execution flow. Consumes prompt inputs, journal context, and daily routines.
 status: stable  
 requires: []  
 linked_outputs: [capital-exposure-tracker, copilot, generate-daily-trade-log]  

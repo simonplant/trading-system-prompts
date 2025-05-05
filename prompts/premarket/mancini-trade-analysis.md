@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.2  
 category: premarket  
-usage: Run daily before open to analyze top SPX setups from Mancini and translate to SPX/QQQ trades  
+usage: Run before market open after Mancini newsletter is available. Produces 2–3 top SPX setups converted to options terms. Consumes ES/SPX levels and Mancini's blueprint notes.
 status: stable  
 requires: []  
 linked_outputs: [unified-trade-plan-generator.md]  

@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Run after market close or before bed for narrative-level mindset tracking  
+usage: Run after market close or before bed. Produces narrative reflection on mindset, emotion, and execution. Consumes memory of session, trade context, and emotional experience.
 status: stable  
 requires: []  
 linked_outputs: [generate-kb-update.md, export-journal-entry.md]  

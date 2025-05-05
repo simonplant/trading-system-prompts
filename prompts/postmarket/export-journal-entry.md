@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Run after writing `generate-daily-journal.md` to prepare archive-ready markdown  
+usage: Run after completing journal entry. Produces a saved markdown version for logbook/archive. Consumes daily journal notes and optionally merges with template formatting.
 status: stable  
 requires: [generate-daily-journal.md]  
 linked_outputs: []  

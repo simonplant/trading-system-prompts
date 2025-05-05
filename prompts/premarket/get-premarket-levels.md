@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: premarket  
-usage: Run at 6:00–6:20 AM PT before preparing Unified Trade Plan  
+usage: Run premarket between 6:00–6:20 AM PT. Produces SPY, QQQ, ES, and VIX levels to frame the session. Consumes futures data and macro headlines.
 status: active  
 requires: []  
 linked_outputs: [unified-trade-plan-generator.md]  

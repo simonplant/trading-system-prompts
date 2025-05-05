@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Run after debrief if any new behavior patterns, blindspots, or missteps are identified  
+usage: Run after reviewing trade log and behavioral flags. Produces appended updates to the behavior KB with pattern recognition and mitigation notes. Consumes Copilot logs, trade log flags, and self-assessment insights.
 status: stable  
 requires: [daily-performance-debrief.md]  
 linked_outputs: [trading-behaviors-kb.md]  

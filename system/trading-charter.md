@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.5  
 category: system  
-usage: Reference charter before updating SOP, risk limits, or behavioral thresholds  
+usage: Reference before market open and during prompt design. Produces grounding in structural capital, sizing, and discipline. Consumes behavior framework and capital profile.
 status: stable  
 requires: [trading-capital-profile.md]  
 linked_outputs: [trading-system-sop.md]  

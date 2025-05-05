@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Run after each daily debrief or trade log with new patterns to capture  
+usage: Run after daily trade log or journal review. Produces structured updates to the behavior knowledge base. Consumes patterns, triggers, and mitigation notes from the session.
 status: stable  
 requires: [daily-performance-debrief.md, trading-behaviors-kb.md]  
 linked_outputs: [trading-behaviors-kb.md]  

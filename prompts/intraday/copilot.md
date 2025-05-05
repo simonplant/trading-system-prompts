@@ -6,8 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 2.2  
 category: intraday  
-usage: Run before entering trades, when emotional clarity is lost, or after a trade fails  
-status: stable  
+usage: Run before entering trades, after a trade fails, or when emotional clarity is lost. Produces decision support for entry, reset, or debrief. Consumes idea, structure, emotional state, and capital context.status: stable  
 requires: [trading-charter.md, trading-capital-profile.md, trading-behaviors-kb.md]  
 linked_outputs: [midday-reset.md, generate-daily-trade-log.md]  
 input_format: markdown  

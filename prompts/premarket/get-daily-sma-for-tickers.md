@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.0  
 category: premarket  
-usage: Run before market open to identify relevant support/resistance MAs for next 2 days  
+usage: Run before market open to extract and filter key SMAs on the daily chart. Produces a list of actionable moving averages likely to act as support or resistance. Consumes ticker list and timeframe context.
 status: active  
 requires: []  
 linked_outputs: []  

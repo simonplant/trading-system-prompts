@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.1  
 category: intraday  
-usage: Run during market hours when focus slips, drawdowns occur, or impulse risk rises  
+usage: Run during the trading session if clarity breaks down or after two consecutive red trades. Produces reflection, reset intention, or stop decision. Consumes active emotional state and recent trades.
 status: stable  
 requires: [trading-charter, trading-behaviors-kb, market-regimes]  
 linked_outputs: [copilot, update-trading-behaviors-kb, export-journal-entry]  

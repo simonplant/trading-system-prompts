@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.2  
 category: system  
-usage: Edit during prompt development; used to prioritize and track system architecture work  
+usage: Edit during system development or prompt refactor planning. Produces prioritized backlog of tasks. Consumes audit output, architecture changes, and roadmap items.
 status: active  
 requires: []  
 linked_outputs: []  

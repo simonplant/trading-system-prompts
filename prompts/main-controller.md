@@ -4,11 +4,11 @@ description: Central routing logic for all prompt flows by phase, outcome, or re
 tags: [system, control, routing]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.1  
+version: 1.2  
 category: system  
-usage: Run to route execution flow based on prompt phase and trigger. Produces targeted prompt selection across premarket, intraday, and postmarket. Consumes mode, inputs, and prompt context.
+usage: Run to route execution flow based on prompt phase and trigger. Produces targeted prompt selection across premarket, intraday, and postmarket. Consumes mode, inputs, and prompt context.  
 status: stable  
-requires: [copilot.md, trading-system-sop.md]  
+requires: [copilot-scout.md, copilot-confirm.md, copilot-recenter.md, copilot-debrief.md, trading-system-sop.md]  
 linked_outputs: [midday-reset.md, generate-daily-trade-log.md]  
 input_format: prompt  
 output_format: markdown  
@@ -45,7 +45,10 @@ Once the category is clear, dispatch the task to the appropriate markdown prompt
 - `dp-trade-analysis.md`
 - `mancini-trade-analysis.md`
 - `unified-trade-plan-generator.md`
-- `copilot.md` (mode = scout | confirm | debrief | recenter)
+- `copilot-scout.md`
+- `copilot-confirm.md`
+- `copilot-recenter.md`
+- `copilot-debrief.md`
 - `daily-performance-debrief.md`
 - `generate-daily-trade-log.md`
 - `generate-daily-journal.md`
@@ -84,11 +87,11 @@ Refer to `system/chart-visual-legend.md` for full breakdown of chart color schem
 
 **User Input:**  
 “Validate this SPX 5670C long entry from 10:15AM PT”  
-→ Route: `copilot.md` with `mode: confirm`
+→ Route: `copilot-confirm.md`
 
 **User Input:**  
 “I need to know what I did wrong with that AMZN lotto”  
-→ Route: `copilot.md` with `mode: debrief` + `generate-kb-update.md`
+→ Route: `copilot-debrief.md` + `generate-kb-update.md`
 
 **User Input:**  
 “Generate my trade log for today”  

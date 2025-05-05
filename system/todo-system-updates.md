@@ -1,43 +1,63 @@
 ---
-title: Trading System TODO Tracker  
-description: Central checklist of tasks, cleanups, and integrations to bring the trading system into sync across all modules.  
-tags: [system, todo, cleanup, refactor]  
+title: System TODO — Core Architecture  
+description: Master list of missing, incomplete, or outdated prompt components in the trading-system-prompts repo  
+tags: [system, backlog, architecture, refactor]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.0  
 category: system  
-usage: Track implementation of all major system changes, prompt updates, and cleanup actions  
+status: active  
 ---
 
-## SYSTEM TODO TRACKER
+# ✅ COMPLETED (2025-05)
 
-### ✅ Copilot Refactor
-- [x] Replace `copilot.md` with unified v2 structure
-- [x] Merge `validate-intraday-trade-idea.md` into Copilot v2
-- [x] Update `main-controller.md` to support `mode` routing
-- [ ] Review Copilot reset sequence integration — inline vs. modular
+- `trading-capital-profile.md` created — fully externalized all capital, sizing, and loss thresholds
+- `trading-charter.md` rewritten — now variable-driven and structurally synced
+- `trading-system-sop.md` refactored — daily flow aligned with tiers, resets, behaviors
+- `copilot.md` rebuilt — unified gatekeeper for all trade execution and resets
+- `midday-reset.md` created — structured pause/reflect/reframe protocol
+- `generate-daily-trade-log.md` rewritten — standardized output for trades, flags, and metrics
 
-### 📁 File Cleanup
-- [x] Delete `prompts/intraday/validate-intraday-trade-idea.md`
-- [x] Remove all decorative characters from prompts and markdown
-- [ ] Confirm all references to old Copilot logic are removed
+---
 
-### 📄 Template Integration
-- [ ] Add `logs/template-trade-log.md` with JSON schema block
-- [ ] Reference template in `copilot.md`, `export-journal-entry.md`, and controller
-- [ ] Create `log-schema-reference.md` (optional: schema definitions)
+# 🟡 TODO: CORE FILES TO COMPLETE
 
-### 🧠 Prompt Enhancements
-- [ ] Add carryover lesson injection to Copilot debrief
-- [ ] Add export toggle to Copilot to save directly into JSON format
-- [ ] Link `market-regimes.md` directly in trade validation logic
+- **`daily-performance-debrief.md`**  
+  Postmarket review + self-assessment prompt. Should pull in:  
+  - Prior day’s trade log  
+  - Behavior flags  
+  - Execution quality  
+  - Missed opportunities  
+  - Score summary: Setup / Execution / Emotion  
 
-### 🗂 File Index + Docs
-- [ ] Update `README.md` to reflect template log structure
-- [ ] Add summary of `copilot-reset.md` to `/system/README.md`
-- [ ] Consider glossary or `system/index.md` of all modules
+- **`update-trading-behaviors-kb.md`**  
+  Lightweight template to capture new behavioral patterns or blindspots.  
+  Used post-trade or after reset. Should append/update `trading-behaviors-kb.md`.
 
-### ✨ Future Ideas
-- [ ] Add Alfred/Apple Shortcut for morning launch (loads trade plan + opens Copilot)
-- [ ] Add journaling automation for Obsidian using daily log template
-- [ ] Create standalone `setup-validator.md` prompt for reviewing KB alignment
+- **`capital-exposure-tracker.md`**  
+  Runtime prompt or logic to track live exposure against:  
+  - `max_exposure_dollars`  
+  - Open tier slots  
+  - Risk alerts  
+  Integrated with `copilot.md` and pre-trade validation.
+
+- **`unified-trade-plan-generator.md`**  
+  Prompt to combine DP and Mancini morning calls into one plan.  
+  Outputs planned bias, levels, conviction setups, and trade filters.  
+  Must align with capital constraints and system tiers.
+
+---
+
+# 🔲 OPTIONAL / LATER
+
+- **`system-map.md`**  
+  Visual/structured markdown of all prompt dependencies and process flow  
+  Useful for onboarding, refactoring, and future automation
+
+---
+
+# 🛠 MAINTENANCE / WATCHLIST
+
+- Ensure no future prompts hardcode dollar values — all must reference `trading-capital-profile.md`  
+- All behavioral logic must update or reference `trading-behaviors-kb.md`  
+- Loss triggers must always reference `daily_loss_soft_dollars` or `daily_loss_hard_dollars`  
+- Validate each prompt has clean front matter and `ai_enabled` set correctly  

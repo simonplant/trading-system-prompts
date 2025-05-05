@@ -4,7 +4,7 @@ description: Master list of missing, incomplete, or outdated prompt components i
 tags: [system, backlog, architecture, refactor]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.4  
+version: 1.5  
 category: system  
 usage: Edit during system development or prompt refactor planning. Produces prioritized backlog of tasks. Consumes audit output, architecture changes, and roadmap items.  
 status: active  
@@ -30,7 +30,7 @@ ai_enabled: false
 - `copilot.md`, `midday-reset.md`, `trading-system-sop.md` updated — now cross-reference behavior KB and filename structure  
 - `tags:` standardized across all prompts using `[phase, function, behavior]` taxonomy  
 - Front matter normalized for all system and prompt files  
-- **All `usage:` fields rewritten and standardized**  
+- All `usage:` fields rewritten and standardized  
 - Fixed front matter and usage for `README.md`, `system/README.md`, `market-regimes.md`, and `main-controller.md`  
 - `trading-behaviors-schema.md` created — defines canonical flag structure, reset mapping, and KB entry format  
 
@@ -52,14 +52,31 @@ ai_enabled: false
 
 ## P0 – Highest Leverage Next
 
+- Split `copilot.md` into modular prompts  
+  - `copilot-scout.md`, `copilot-confirm.md`, `copilot-recenter.md`, `copilot-debrief.md`  
+  Enables fast validation, emotional resets, and execution gating per phase  
+  **Tags:** `execution`, `structure`, `modularity`
+
 - Add front matter to log files  
   - `/logs/journal/2025-05-05-trading-journal.md`  
   - `/logs/trades/2025-05-05-daily-performance-debrief.md`  
   - `/logs/kb-updates/2025-05-05-kb-update-recommendations.md`  
-  Minimal block needed for parsing + archival.  
+  Minimal block needed for parsing + archival  
   **Tags:** `infra`, `logs`, `ai_enabled`
 
-## P1 – Structural Improvements
+## P1 – Tactical Execution Enhancements
+
+- Create `trade-intent-validator.md`  
+  Pre-trade sanity check to prevent off-plan or emotionally driven entries  
+  **Tags:** `execution`, `risk filter`, `discipline`
+
+- Add precise capital enforcement logic to `copilot-confirm.md`  
+  Enforce tier-based checks using `trading-capital-profile.md` values  
+  **Tags:** `risk control`, `position sizing`, `capital discipline`
+
+- Add `intent_vs_outcome:` scoring to trade log and debrief  
+  Separates quality of decision from result for clearer learning  
+  **Tags:** `review`, `psychology`, `resilience`
 
 - Add `writes_to:` field in front matter  
   Clarifies which prompts write to logs or journals  

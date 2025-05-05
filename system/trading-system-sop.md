@@ -4,12 +4,12 @@ description: Daily operational playbook for Simon Plant’s structured trading w
 tags: [system]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.0  
+version: 1.2  
 category: system  
 usage: Use this SOP as a live reference to manage premarket, intraday, and postmarket phases  
 status: stable  
-requires: [trading-charter.md]  
-linked_outputs: []  
+requires: [trading-charter.md, trading-capital-profile.md]  
+linked_outputs: [copilot, generate-daily-trade-log, update-trading-behaviors-kb]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  
@@ -19,94 +19,88 @@ ai_enabled: true
 
 ## I. DAILY WORKFLOW OVERVIEW
 
-### 1. PREMARKET ROUTINE (5:00–6:30 AM PT)
-- Parse DP morning call → extract trade ideas
-- Parse Mancini’s ES Blueprint → convert top 2 setups to SPX
-- Update ThinkOrSwim alerts for key SPX/QQQ levels
-- Tag all trade ideas by: Confidence, Sentiment, Duration
-- Generate Unified Trade Plan for the day
+This SOP governs the trading day across four phases:
+1. **Premarket Setup**  
+2. **Morning Execution**  
+3. **Midday Reset / Trade Management**  
+4. **Postmarket Debrief**
 
-### 2. MORNING EXECUTION (6:30–9:00 AM PT)
-- Focus on BIG IDEAS and CASHFLOW setups
-- Execute only trades that match: Setup + Trigger + Level
-- Use preset sizing rules:
-  - Lotto: Max $500
-  - Cashflow: $1–2.5K
-  - Big Idea: $5–10K
-
-### 3. MIDDAY REVIEW (11:00 AM + 12:30 PM PT)
-- Reassess all open trades:
-  - Trim or exit if reversal patterns form
-  - Cut losers below structure or VWAP
-- No new trades unless:
-  - Fresh reclaim/back-test setup appears
-  - Macro catalyst hits
-
-### 4. AFTERNOON RULES (After 1:00 PM PT)
-- No new positions
-- Manage open trades only
-- Avoid lotto trades into close unless pre-confirmed plan
+All capital, risk, and behavioral references are defined in `trading-capital-profile.md`.
 
 ---
 
-## II. SYSTEM COMPONENTS
+## II. MORNING EXECUTION (6:30–9:00 AM PT)
 
-### TRADE PLAN STRUCTURE
-- Big Ideas: Highest conviction, double position allowed
-- Cashflow: Intraday trades with clean levels + tape confirmation
-- Lotto Watch: 0DTE only, well-structured entries near defined risk
+- Focus on highest-conviction swing ideas and fast-moving cashflow trades  
+- Do not trade until Setup + Trigger + Risk Plan are confirmed  
+- Start with Tier 1 or Tier 2 sizing only if buffer and conditions allow
 
-### POSITION SIZING FRAMEWORK
-- Tier 1 (Big Idea): $5–10K
-- Tier 2 (Cashflow): $1–2.5K
-- Tier 3 (Lotto): Max $500
-- Max exposure: $20K intraday
-
-### TECHNICAL CHECKLIST
-- Structure: Reclaim, fail, or back-test entry
-- Trigger: Confirmation on 2m / 15m chart
-- Level: Alignment with planned SPX/QQQ zone
-- Volume: Surge at inflection adds confidence
+**Sizing Rules (from `trading-capital-profile.md`)**
+- Tier 1 (Big Idea): `default_trade_size_dollars`  
+- Tier 2 (Structured/Cashflow): use `scalp_trade_risk_budget_dollars` as stop-based risk  
+- Tier 3 (Lotto): max `max_options_trade_dollars` allocation only  
+- Do not exceed `max_single_trade_size_dollars` without full conviction and proper buffer
 
 ---
 
-## III. DAILY ACCOUNTABILITY
+## III. TRADE FILTERS AND ENTRY CHECKS
 
-### END-OF-DAY REVIEW
-- Log all trades with:
-  - Setup name
-  - Entry/exit levels
-  - SPX context
-  - Execution score (A/B/C)
-  - Emotion tag (Calm / Chase / Revenge / Fear)
-
-### WEEKLY REFLECTION
-- Top 3 wins and why they worked
-- Top 3 losses and root cause
-- Setup quality score: A/B/C
-- Execution quality score: A/B/C
-- Adjust blindspots list if new patterns appear
+- Use `copilot.md` in `scout` or `confirm` mode for each potential entry  
+- Confirm:
+  - Aligned with Unified Trade Plan or DP/Mancini level  
+  - Inside allowed sizing rules  
+  - No capital or behavioral rule violations  
+- Confirm capital status using `capital-exposure-tracker.md`
 
 ---
 
-## IV. RISK AND BEHAVIORAL GUARDRAILS
+## IV. MIDDAY MANAGEMENT (9:00–11:30 AM PT)
 
-- Stop trading for the day if:
-  - Max loss = $2,500
-  - 2 red days in a row
-- Never trade without a level + trigger + stop
-- No new trades after 1:00 PM
-- Cap daily trades at 10 total
-- No more than 1 SPX position open at once
-- Use 0DTE for intraday SPX; next-week for swings
+- Review active trades for:
+  - Structure validation  
+  - Exposure alignment  
+  - Trim or tighten stop if profit seen  
+- If drawdown exceeds `daily_loss_soft_dollars`, trigger `midday-reset.md`  
+- Do not open new trades after 11:30 AM PT unless part of a big idea swing or macro-driven
 
 ---
 
-## V. MINDSET + EXECUTION PRINCIPLES
+## V. RISK AND BEHAVIORAL GUARDRAILS
 
-- Follow structure, not feelings
-- Discipline > Prediction
-- Adapt bias to the tape — don't fight momentum
-- Don’t trade if plan not loaded
-- Focus on 2–3 high-quality setups, not dozens of low-probability ones
-- Trade like a professional allocator, not a gambler
+- Max exposure: `max_exposure_dollars`  
+- Maintain buffer: `min_buffer_required_dollars`  
+- Lockout: triggered if drawdown hits `daily_loss_hard_dollars` or `max_daily_r_loss`  
+- Midday reset required if soft loss (`daily_loss_soft_dollars`) breached  
+- Behavior flags (see `trading-behaviors-kb.md`) override trade logic
+
+---
+
+## VI. POSTMARKET REVIEW
+
+- Run `generate-daily-trade-log.md` and save to `/logs/YYYY/MM-DD.md`  
+- Score each trade:  
+  - Setup quality: A/B/C  
+  - Execution: A/B/C  
+- If behavior issues occurred:
+  - Log update to `trading-behaviors-kb.md`  
+  - Review in performance debrief  
+
+---
+
+## VII. WEEKLY CYCLE
+
+- Sunday PM: Weekly reset and level prep  
+- Wednesday PM: Journal midweek reflection  
+- Friday PM: Full week review + behavior scorecard  
+
+---
+
+## VIII. NO EXCEPTIONS
+
+- SOP overrides emotion  
+- If any capital or behavior rule is breached:
+  - Pause all trading  
+  - Journal the event  
+  - Resume only after review
+
+---

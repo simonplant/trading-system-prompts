@@ -1,134 +1,99 @@
 ---
 title: Trading System Charter  
-description: Defines Simon’s daily operating framework for disciplined, structured trading execution  
-tags: [system]  
+description: Defines Simon Plant’s discretionary trading framework for capital allocation, risk limits, sizing tiers, and behavioral guardrails  
+tags: [system, charter, rules, risk, psychology]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.1  
+version: 1.5  
 category: system  
-usage: Reference each morning before market open and review during trade decision moments  
+usage: Review each morning; referenced by all execution prompts and journaling tools  
 status: stable  
-requires: []  
-linked_outputs: []  
+requires: [trading-capital-profile.md, trading-system-sop.md, trading-behaviors-kb.md]  
+linked_outputs: [copilot, midday-reset.md, generate-daily-trade-log.md]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  
 ---
 
-# TRADING SYSTEM CHARTER
+# TRADING SYSTEM CHARTER — SIMON PLANT
 
-## OBJECTIVE
-Develop a sustainable, disciplined, and replicable trading system to profitably trade alongside Inner Circle moderators (David Prince, Adam Mancini), with real-time adaptability and capital preservation as core priorities.
+## I. PURPOSE
 
----
-
-## I. DAILY PREP ROUTINE
-
-### 1. Morning Call Breakdown (5:15–6:00am PT)
-- Extract all trade ideas from DP’s morning call
-- Categorize by Confidence (High / Medium / Low), Sentiment (Bullish / Bearish / Neutral), Duration (Scalp / Day Trade / Swing)
-- Cross-check Mancini’s SPX blueprint:
-  - Extract top 2 actionable setups (Failed Breakdowns, Support Tests, Back-Tests)
-  - Convert ES levels to SPX equivalents for options trading
-
-### 2. Daily Focus List (Max 5 tickers)
-- 1–2 Big Ideas from DP or Adam
-- 2 cashflow or lotto candidates
-- 1 fallback/setup name if others fail
-
-### 3. Position Sizing Plan
-- Lotto: Max $500 per idea
-- Cashflow: Max $2.5K per setup
-- Big Idea Swing: $5K–$10K for highest conviction
-- Max total exposure: $20K intraday unless scaling from strength on green trades
-
-### 4. Blindspot Risk Check (Required)
-- No trades after 3+ strong candles unless reclaiming/backtesting
-- Avoid chasing into range edges or post-move strength
-- Pause if trade feels emotionally obvious
+To execute a repeatable, structured discretionary trading process that preserves capital, captures asymmetric risk:reward, and grows edge over time through continuous behavioral feedback.
 
 ---
 
-## II. TRADE EXECUTION RULESET
+## II. CAPITAL + RISK FRAMEWORK
 
-### A. Entry Filters
-- Trade must match: Pattern + Level + Volume
-- Confirm chart structure across 2-min / 15-min
-- Only act on DP/Adam setups or your own pre-planned levels
+All values referenced below are defined in `trading-capital-profile.md`.
 
-### B. Inner Circle Style Execution
+- `base_capital`  
+- `default_trade_size_dollars` (1/3 account)  
+- `max_single_trade_size_dollars` (2/3 account max cap)  
+- `max_exposure_dollars` (total capital in play)  
+- `daily_loss_soft_dollars` (reset trigger)  
+- `daily_loss_hard_dollars` (full stop)  
+- `max_options_trade_dollars` (SPX and lotto cap)  
+- `swing_trade_risk_budget_dollars` and `scalp_trade_risk_budget_dollars`  
 
-**Buy Ugly + Tier In**
-- Use when DP/mods are scaling in
-- Start with 1/4 size, tier by structure, max 3 tiers
-- Stop: Below structure or reclaim failure
-
-**Size Up & Trade Core**
-- Use only for high-conviction ideas
-- 2/3 position max
-- Trim 1/3 at +15–20%, trail remainder
-- Add only if price reclaims level with volume
-
-### C. Mancini Execution Translation
-- Focus on top 2 setups only:
-  - Failed Breakdown → Reclaim → Buy calls
-  - Back-Test → Rejection/Hold → Trade directionally
-- ES→SPX translation via -30 offset
-- Trade SPX 0DTE options only unless swing level is called
-- Avoid ES futures until proven MES consistency
-
-### D. Position Management
-- Reassess all trades at 11:00 AM and 12:30 PM
-- Do not scale into losers unless reclaim or structure confirms
-
-### E. SPX Risk Guardrails
-- Max 1 SPX position at a time
-- No lotto or breakout trades near macro range edges
-- No SPX trades unless level-based + DP conviction
+Position construction should follow `position_building_rule` — tier into size unless scalping or trading for immediate trims.
 
 ---
 
-## III. POST-TRADE PROCESS
+## III. POSITION SIZING TIERS
 
-### 1. End-of-Day Journal
-- Log outcome, rationale, screenshots
-- Confirm alignment to trade plan or note deviation
+- **Tier 1: High Conviction Swing**  
+  Build toward `default_trade_size_dollars` or up to `max_single_trade_size_dollars` for best ideas with conviction, structure, and moderator alignment
 
-### 2. Daily Scorecard (1–5)
-- Focus
-- Discipline
-- Sizing
-- Setup quality
-- System adherence
+- **Tier 2: Cashflow / Structured Intraday**  
+  Use `scalp_trade_risk_budget_dollars` or partial sizing depending on stop distance and expected speed
 
-### 3. Weekly Review
-- Review wins/losses by trade type
-- Identify repeated blindspots
-- Tag FOMO, oversize, plan violation, or revenge trades
+- **Tier 3: Lotto / Speculative**  
+  Cap at `max_options_trade_dollars`; requires catalyst or binary trigger. No averaging.
 
 ---
 
-## IV. RISK & CAPITAL RULES
-- Max daily loss: $2,500 → stop trading
-- Step away after 2 red days
-- Friday = discipline day, not alpha chase
-- Size increases only after two green weeks
+## IV. BEHAVIORAL GUARDRAILS
+
+- If drawdown > `daily_loss_soft_dollars`, trigger `midday-reset.md`  
+- If drawdown > `daily_loss_hard_dollars` or 3R loss, exit all trades and lock out  
+- Check `trading-behaviors-kb.md` each morning  
+- Score each trade (setup, execution, emotion) in `generate-daily-trade-log.md`
+
+Behavioral flags override all technical setups.
 
 ---
 
-## V. MINDSET & PRINCIPLES
-- Capital is oxygen. Preserve it.
-- Structure > Emotion. Edge > Ego.
-- Wait for clean reclaims/fails, not predictions
-- Mirror IC trade structure, not just direction
-- Trade fewer, better: 1–2 A+ setups > 10 mediocre
-- Be the most disciplined trader in the room
+## V. PROCESS ENFORCEMENT
+
+- All entries must pass `copilot.md` filters  
+- No trading outside of Unified Trade Plan or Inner Circle structure  
+- Use `capital-exposure-tracker.md` to verify exposure is within limits  
+- If reset triggered, follow journaling protocol before next trade
 
 ---
 
-## VI. PRE-MARKET EXECUTION CHECKLIST
-- DP call parsed, confidence tiers assigned
-- Mancini ES setups extracted, SPX levels charted
-- SPX levels loaded with TOS alerts
-- Trade plan validated vs. bias and blindspots
-- Focus list locked — NO trades outside the plan
+## VI. ALIGNMENT WITH INNER CIRCLE
+
+- Mirror moderator structure, not just sentiment  
+- Wait for price/level alignment + conviction  
+- Require at least two signals or confirmation from DP/Mancini before big tier sizing
+
+---
+
+## VII. REVIEW CYCLE
+
+- Daily: Run `generate-daily-trade-log.md` at EOD  
+- Weekly: Reset plan each Sunday with fresh level mapping  
+- Midweek: Reflect after Wednesday’s close using `midday-reset.md` if needed  
+- Monthly: Audit behavioral KPIs and trade stats
+
+---
+
+## VIII. NON-NEGOTIABLES
+
+- If this Charter is violated, all trading is paused  
+- Refactor the system before returning to risk  
+- Do not chase. Do not force. Follow the structure.
+
+---

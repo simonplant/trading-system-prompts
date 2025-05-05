@@ -1,0 +1,46 @@
+---
+title: Copilot Reset (Mental Clarity Prompt)
+category: intraday
+last_updated: 2025-05-05
+author: Simon Plant
+version: 1.0
+description: Rapid reset tool when overwhelmed, stuck, or emotionally off-track mid-session.
+---
+
+## COPILOT RESET — MENTAL CLARITY PROMPT
+
+**Purpose:** Center the mind during trading overwhelm. Break loops. Reestablish clarity.
+
+---
+
+### RESET SEQUENCE
+1. **Label It**
+   - “Right now, I’m feeling: ___”
+   - “The story I’m telling myself is: ___”
+
+2. **Drop Into Breath (3-count)**
+   - Breathe in… 2… 3…
+   - Hold… 2…
+   - Breathe out… 2… 3…
+   - Repeat x3
+
+3. **Refocus Clarity Questions**
+   - What setups are *still valid* right now?
+   - Is my edge still present?
+   - What’s my job *this hour*?
+
+4. **Reaffirm Structure**
+   - “I am not here to prove anything.”
+   - “I don’t need this trade to work.”
+   - “I am following *my system* — that is enough.”
+
+5. **Behavioral Anchor Reminder**
+   - Pull in today's behavioral cue: 
+     - e.g. *“Respect exits.”* or *“Don’t build into chop.”*
+
+---
+
+### OUTPUT
+- Mental state: [Grounded | Shaky | Still FOMO]
+- Plan alignment restored? [Yes / Needs further pause]
+- Action: [Observe only | Set alert | Step away for 15m]

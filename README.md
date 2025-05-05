@@ -21,22 +21,22 @@ This is a modular AI-assisted trading framework designed by Simon Plant to suppo
 
 ---
 
-## 🧭 System Overview — Visual Flow
+## System Overview — Visual Flow
 
 The following flow represents the full lifecycle of daily execution:
 
 **Premarket → Intraday → Postmarket**  
 Each phase connects via the Copilot, which serves as the execution and validation interface across all modules.
 
-📌 **Premarket**  
+**Premarket**  
 - Extract trade ideas (DP, Mancini)
 - Map levels, structure plan
 
-📌 **Intraday**  
+**Intraday**  
 - Validate trade ideas via Copilot
 - Align with setup library, regime, and behavior
 
-📌 **Postmarket**  
+**Postmarket**  
 - Log trades
 - Debrief and update behavioral KB
 - Export journal
@@ -62,7 +62,7 @@ Start a new assistant session and upload this ZIP. Then run:
 
 ## 3. Supported Workflows
 
-### ➤ 🧠 Premarket Planning
+### ➤ Premarket Planning
 
 Prompt:  
 `Run premarket prep. Here’s the DP transcript and macro context.`
@@ -77,7 +77,7 @@ Output:
 
 ---
 
-### ➤ 📈 Intraday Trade Validation
+### ➤ Intraday Trade Validation
 
 Prompt:  
 `Validate this trade: AAPL reclaiming 170, scalp long, same-day expiration.`
@@ -91,7 +91,7 @@ Output:
 
 ---
 
-### ➤ 🧾 Postmarket Debrief + Behavior Update
+### ➤ Postmarket Debrief + Behavior Update
 
 Prompt:  
 `Here’s my trade log and reflection. Help me review and learn.`
@@ -106,7 +106,7 @@ Output:
 
 ---
 
-### ➤ 📚 Reference + System Utilities
+### ➤ Reference + System Utilities
 
 Prompt:  
 `Show me my Charter, SOP, or chart legend.`

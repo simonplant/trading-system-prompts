@@ -3,8 +3,8 @@ title: Trading System Main Controller
 description: Master routing prompt for executing structured trading tasks across premarket, intraday, postmarket, and system workflows
 category: core
 author: Simon Plant
-version: 1.0
-last_updated: 2025-05-03
+version: 1.01
+last_updated: 2025-05-05
 usage: Run first to orchestrate any task using the zipped prompt framework; provides intelligent dispatching across all modules
 ---
 
@@ -64,6 +64,10 @@ Depending on user preference, support:
 - Bullet-form summaries
 - Pre-filled trade log entries or checklists
 
+### 5. Interpreting Chart Screenshots
+Refer to `system/chart-visual-legend.md` for a full breakdown of chart color schema — including moving averages, VWAP, pivots, AVWAP, and trendlines. Use this to accurately interpret annotated screenshots shared during intraday or postmarket review.
+
+
 ---
 
 ## EXAMPLES
@@ -97,5 +101,5 @@ If the user seems overwhelmed, unfocused, or misaligned — offer a structured c
 - “Would it help to re-center using the morning prep flow?”
 - “Do you want to stop and reflect using your behavior log?”
 
-Always prioritize structure over speed.  
+Always prioritize structure and accuracy over speed.  
 Always protect capital before alpha.

@@ -4,7 +4,7 @@ description: Master list of missing, incomplete, or outdated prompt components i
 tags: [system, backlog, architecture, refactor]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.2  
+version: 1.3  
 category: system  
 usage: Edit during system development or prompt refactor planning. Produces prioritized backlog of tasks. Consumes audit output, architecture changes, and roadmap items.
 status: active  
@@ -29,7 +29,9 @@ ai_enabled: false
 - `main-controller.md` updated — routing logic synced to all phases and log modules  
 - `copilot.md`, `midday-reset.md`, `trading-system-sop.md` updated — now cross-reference behavior KB and filename structure  
 - `tags:` standardized across all prompts using `[phase, function, behavior]` taxonomy  
-- Front matter normalized for all system and prompt files (`version`, `last_updated`, `status`, etc.)
+- Front matter normalized for all system and prompt files  
+- **All `usage:` fields rewritten and standardized**  
+- Fixed front matter and usage for `README.md`, `system/README.md`, `market-regimes.md`, and `main-controller.md`
 
 ---
 
@@ -45,74 +47,57 @@ ai_enabled: false
 
 ---
 
-# TODO: SYSTEM-WIDE ALIGNMENTS (PRIORITIZED)
+# TODO: SYSTEM-WIDE ALIGNMENTS (REPRIORITIZED)
 
-## P0 – Must Fix Immediately
+## P0 – Highest Leverage Next
 
-- ⛔  Add front matter to log files  
+- Create `trading-behaviors-schema.md`  
+  Documents:  
+  - Valid behavior flags  
+  - Triggers and examples  
+  - Reset rules  
+  - KB entry format  
+  Enables structured updates from Copilot, Reset, and Debrief.  
+  **Tags:** `behavior`, `structure`, `docs`
+
+- Add front matter to log files  
   - `/logs/journal/2025-05-05-trading-journal.md`  
   - `/logs/trades/2025-05-05-daily-performance-debrief.md`  
   - `/logs/kb-updates/2025-05-05-kb-update-recommendations.md`  
-  These cannot be AI-processed or indexed without `title`, `category`, and `ai_enabled`.  
-  **Tags:** `infra`, `parsing`, `logs`
+  Minimal block needed for parsing + archival.  
+  **Tags:** `infra`, `logs`, `ai_enabled`
 
-- 🧠 Create `trading-behaviors-schema.md`  
-  Document canonical behavior flags, formats, triggers, and resolution patterns.  
-  Enables consistent updates from Copilot, Reset, Debrief.  
-  **Tags:** `behavior`, `structure`, `docs`
+## P1 – Structural Improvements
 
-- 🧼 Lint and validate `linked_outputs:` and `requires:` across all prompt files  
-  Prevents missing or broken prompt references during prompt execution.  
-  **Tags:** `infra`, `accuracy`
-
-## P1 – High Leverage Consistency
-
-- 🔍 Standardize all `usage:` fields  
-  Adopt structured format:  
-  `Run [when]. Produces [output]. Consumes [inputs or context].`  
-  15+ files affected.  
-  **Tags:** `consistency`, `docs`
-
-- 📤 Add `writes_to:` field in front matter  
-  Clarifies prompt output targets (e.g. logs, journals, exports)  
-  Example:  
-  ```yaml
-  writes_to: logs/trades/YYYY-MM-DD-daily-trade-log.md
-  ```  
+- Add `writes_to:` field in front matter  
+  Clarifies which prompts write to logs or journals  
   **Tags:** `infra`, `clarity`, `structure`
 
-- 🧪 Add test fixtures for prompts  
-  Add `/tests/prompts/copilot-confirm.md` with input/output examples  
-  Use markdown format for validation cases.  
-  **Tags:** `infra`, `quality`
+- Add test fixtures  
+  Example: `/tests/prompts/copilot-confirm.md`  
+  Use markdown format with sample input/output  
+  **Tags:** `infra`, `validation`
 
-## P2 – Structure + UX Clarity
+- Lint `linked_outputs:` and `requires:`  
+  Ensure all declared dependencies are actually invoked  
+  **Tags:** `infra`, `accuracy`
 
-- 🧩 (Optional) Modularize `copilot.md` into atomic prompt files  
-  Split `scout`, `confirm`, `debrief`, `recenter`, `lockout` into modular prompts  
-  Update router logic inside `copilot.md`.  
-  **Tags:** `reuse`, `routing`, `clarity`
+## P2 – System Navigation + Templates
 
-- 📈 Create `prompt-routing-overview.md`  
-  Mermaid diagram showing flow across Unified Plan → Copilot → Reset → Debrief → KB  
-  Adds architectural transparency.  
-  **Tags:** `docs`, `structure`, `clarity`
+- Create `prompt-routing-overview.md`  
+  Visualize prompt flow across phases (Mermaid/markdown)  
+  **Tags:** `docs`, `routing`, `clarity`
 
-- 📎 Add output templates to `/templates/`  
-  - `trade-log.md`, `kb-entry.md`, `journal-entry.md`  
-  Improves output consistency and reference for generation prompts  
-  **Tags:** `consistency`, `UX`, `docs`
+- Add output templates  
+  `/templates/trade-log.md`, `/templates/kb-entry.md`, `/templates/journal-entry.md`  
+  **Tags:** `structure`, `reference`, `UX`
 
-## P3 – Documentation Polish + Futureproofing
+## P3 – Documentation Polish + Metadata Extensions
 
-- 🎯 Rewrite weak `description:` fields  
-  Ensure every prompt has a crisp, useful, informative purpose line  
+- Refine `description:` fields across all prompts  
+  Improve clarity and specificity  
   **Tags:** `docs`, `clarity`
 
-- 🧠 Add `model:` (optional field) to prompts  
-  Specify LLM compatibility or prompt tuning if needed (`gpt-4`, `claude`, etc.)  
-  **Tags:** `infra`, `futureproof`
-
-- 🧠 Add `behavior_mode:` field for future experiments  
-  Values: `strict`, `reflective`, `coaching` — to change tone or role of LLM assistant  
-  **Tags:** `AI meta`, `behavior`, `customization`
+- Add optional `model:` and `behavior_mode:` fields  
+  For future AI tuning and prompt tone/role  
+  **Tags:** `infra`, `meta`, `behavior`

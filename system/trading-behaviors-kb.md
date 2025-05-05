@@ -59,6 +59,16 @@ usage: Review daily; update after each postmarket debrief or behavioral breakdow
   - Trim logic
   - Build daily IC “mirror log”
 
+### 10. Inner Circle Signal Alignment
+- Successfully entered META following DP's conviction and clear technical structure
+- Avoided NFLX with mixed signals (Kira shorting vs. DP/Rickman trimming)
+- **Fix:** Require at least 2 IC members aligned on direction before entry
+
+### 11. Option Pricing & Structure Assessment
+- Used appropriate OCO brackets on META with defined risk/reward
+- Correctly identified unfavorable option pricing on NFLX (wide spreads, excessive premiums)
+- **Fix:** Pre-check option chain structure and spreads before considering entry
+
 ---
 
 ## II. OPERATING RULES

@@ -8,7 +8,7 @@ category: system
 status: active  
 ---
 
-# ✅ COMPLETED (2025-05)
+# COMPLETED (2025-05)
 
 - `trading-capital-profile.md` created — fully externalized all capital, sizing, and loss thresholds
 - `trading-charter.md` rewritten — now variable-driven and structurally synced
@@ -19,7 +19,7 @@ status: active
 
 ---
 
-# 🟡 TODO: CORE FILES TO COMPLETE
+# TODO: CORE FILES TO COMPLETE
 
 - **`daily-performance-debrief.md`**  
   Postmarket review + self-assessment prompt. Should pull in:  
@@ -47,7 +47,7 @@ status: active
 
 ---
 
-# 🔲 OPTIONAL / LATER
+# OPTIONAL / LATER
 
 - **`system-map.md`**  
   Visual/structured markdown of all prompt dependencies and process flow  
@@ -55,7 +55,7 @@ status: active
 
 ---
 
-# 🛠 MAINTENANCE / WATCHLIST
+# MAINTENANCE / WATCHLIST
 
 - Ensure no future prompts hardcode dollar values — all must reference `trading-capital-profile.md`  
 - All behavioral logic must update or reference `trading-behaviors-kb.md`  

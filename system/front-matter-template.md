@@ -1,4 +1,19 @@
 ---
+title: Front Matter Template  
+description: Canonical template for all prompt and config markdown metadata blocks  
+tags: [system, docs]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: system  
+usage: Copy/paste this into any new prompt file for consistent metadata structure  
+status: reference  
+requires: []  
+linked_outputs: []  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: false  
+---
 title: [Descriptive Title of the File]  
 description: [1–2 line summary of what the file does or contains]  
 tags: [premarket, intraday, setup, behavioral, macro, regime, export]  

@@ -1,7 +1,7 @@
 ---
 title: Trading Capital Profile  
 description: Central source of truth for trading capital, daily loss thresholds, position sizing rules, and exposure limits  
-tags: [system, capital, config, risk, limits]  
+tags: [system, control, capital]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 2.2  

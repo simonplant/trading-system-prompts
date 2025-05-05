@@ -1,10 +1,18 @@
 ---
-title: Copilot Reset (Mental Clarity Prompt)
-category: intraday
-last_updated: 2025-05-05
-author: Simon Plant
-version: 1.0
-description: Rapid reset tool when overwhelmed, stuck, or emotionally off-track mid-session.
+title: Copilot Reset  
+description: Triggered by Copilot when capital or behavior flags require a reset before continuing  
+tags: [intraday, reset, behavior]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: intraday  
+usage: Run immediately if trade lockout or reset triggered in Copilot  
+status: active  
+requires: [copilot.md, trading-behaviors-kb.md]  
+linked_outputs: [midday-reset.md, update-trading-behaviors-kb.md]  
+input_format: prompt  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## COPILOT RESET — MENTAL CLARITY PROMPT

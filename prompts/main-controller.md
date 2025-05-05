@@ -1,17 +1,17 @@
 ---
-title: Trading System Main Controller  
-description: Master routing prompt for executing structured trading workflows across phases  
-tags: [system]  
+title: Main Controller  
+description: Central routing logic for all prompt flows by phase, outcome, or reset path  
+tags: [system, control, routing]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.1  
 category: system  
-usage: Run first to orchestrate any task using the zipped prompt repo  
+usage: Called internally by Copilot or SOP to direct execution phase logic  
 status: stable  
-requires: [unified-trade-plan-generator.md, copilot.md, export-journal-entry.md]  
-linked_outputs: [generate-daily-trade-log.md, generate-daily-journal.md, generate-kb-update.md]  
-input_format: markdown  
-output_format: GPT-ready prompt  
+requires: [copilot.md, trading-system-sop.md]  
+linked_outputs: [midday-reset.md, generate-daily-trade-log.md]  
+input_format: prompt  
+output_format: markdown  
 ai_enabled: true  
 ---
 

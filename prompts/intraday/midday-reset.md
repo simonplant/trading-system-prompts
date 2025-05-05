@@ -1,7 +1,7 @@
 ---
 title: Midday Reset Prompt  
 description: Intraday reflection and decision support tool to recalibrate when off-balance, overexposed, or deviating from plan  
-tags: [intraday, behavior, regime, exposure, overwhelm]  
+tags: [intraday, reset, behavior, drawdown, overwhelm]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.1  

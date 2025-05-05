@@ -1,12 +1,18 @@
 ---
-title: Generate KB Update Log  
-description: Capture lessons, pattern matches, and behavioral issues from the day's trading to update the knowledge base  
-tags: [postmarket, behavior, kb, log]  
+title: Generate KB Update  
+description: Creates a structured knowledge base update from trade flags, journal entries, or debrief insights  
+tags: [postmarket, behavior, log]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Use after trade debriefs to log recurring issues, wins, or emerging blindspots in `logs/YYYY/kb-updates/YYYY-MM-DD.md`  
+usage: Run after each daily debrief or trade log with new patterns to capture  
+status: stable  
+requires: [daily-performance-debrief.md, trading-behaviors-kb.md]  
+linked_outputs: [trading-behaviors-kb.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## KNOWLEDGE BASE UPDATE — PROMPT

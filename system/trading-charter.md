@@ -1,15 +1,15 @@
 ---
 title: Trading System Charter  
 description: Defines Simon Plant’s discretionary trading framework for capital allocation, risk limits, sizing tiers, and behavioral guardrails  
-tags: [system, charter, rules, risk, psychology]  
+tags: [system, control, behavior]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.5  
 category: system  
-usage: Review each morning; referenced by all execution prompts and journaling tools  
+usage: Reference charter before updating SOP, risk limits, or behavioral thresholds  
 status: stable  
-requires: [trading-capital-profile.md, trading-system-sop.md, trading-behaviors-kb.md]  
-linked_outputs: [copilot, midday-reset.md, generate-daily-trade-log.md]  
+requires: [trading-capital-profile.md]  
+linked_outputs: [trading-system-sop.md]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  

@@ -1,14 +1,14 @@
 ---
 title: Main Controller Guide  
-description: Documentation and usage guide for the trading system’s main controller routing prompt  
-tags: [system, guide]  
+description: Documentation reference for how prompt flows are routed by context  
+tags: [system, docs]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: system  
-usage: Use this to understand and update how the `main-controller.md` routes workflow prompts  
+usage: Reference only when editing `main-controller.md` or debugging phase routing  
 status: stable  
-requires: [main-controller.md]  
+requires: []  
 linked_outputs: []  
 input_format: markdown  
 output_format: markdown  

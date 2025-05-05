@@ -1,19 +1,20 @@
 ---
 title: Export Journal Entry  
-description: Generate structured markdown summary for each trading day, suitable for long-term review and journaling  
-tags: [postmarket, log, export]  
+description: Markdown export utility to structure one day’s reflections, trades, and flags for logbook use  
+tags: [postmarket, reflection, log]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Run after daily performance debrief to create a clean daily log output  
+usage: Run after writing `generate-daily-journal.md` to prepare archive-ready markdown  
 status: stable  
-requires: [daily-performance-debrief.md]  
-linked_outputs: [trading-behaviors-kb.md]  
+requires: [generate-daily-journal.md]  
+linked_outputs: []  
 input_format: markdown  
-output_format: Obsidian  
+output_format: markdown  
 ai_enabled: true  
 ---
+
 ## DAILY JOURNAL EXPORT — TEMPLATE
 
 **Date:** {{insert_date_here}}  

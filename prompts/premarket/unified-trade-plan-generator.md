@@ -1,15 +1,15 @@
 ---
 title: Unified Trade Plan Generator  
 description: Generate a structured daily trade plan combining DP’s trade ideas and Mancini’s SPX blueprint  
-tags: [premarket, trade-plan, dp, mancini, unified]  
+tags: [premarket, plan, execution]  
 author: Simon Plant  
-last_updated: 2025-05-05  
+last_updated: 2025-05-03  
 version: 1.2  
 category: premarket  
 usage: Run after completing both dp-trade-analysis.md and mancini-trade-analysis.md  
-status: stable  
+status: active  
 requires: [dp-trade-analysis.md, mancini-trade-analysis.md]  
-linked_outputs: [validate-intraday-trade-idea.md, copilot.md]  
+linked_outputs: [copilot.md, generate-daily-trade-log.md]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  

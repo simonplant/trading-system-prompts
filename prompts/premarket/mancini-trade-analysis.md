@@ -1,12 +1,12 @@
 ---
 title: Mancini Trade Analysis  
-description: Translate Adam Mancini’s ES Futures blueprint into SPX-level options trade zones  
-tags: [premarket, macro]  
+description: Extract actionable setups from Adam Mancini’s SPX futures blueprint and translate into SPX terms  
+tags: [premarket, analysis, macro]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.1  
+version: 1.2  
 category: premarket  
-usage: Run after receiving Mancini’s newsletter to convert ES levels to SPX format  
+usage: Run daily before open to analyze top SPX setups from Mancini and translate to SPX/QQQ trades  
 status: stable  
 requires: []  
 linked_outputs: [unified-trade-plan-generator.md]  

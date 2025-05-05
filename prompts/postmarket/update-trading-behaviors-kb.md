@@ -1,12 +1,12 @@
 ---
 title: Update Trading Behaviors KB  
-description: Review and update the behavioral knowledge base based on the day’s performance and patterns  
-tags: [postmarket, behavioral]  
+description: Insert new behavior flags and mitigation steps into knowledge base after review  
+tags: [postmarket, behavior, update]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Run to capture new patterns, blindspots, and behavioral improvements into the KB  
+usage: Run after debrief if any new behavior patterns, blindspots, or missteps are identified  
 status: stable  
 requires: [daily-performance-debrief.md]  
 linked_outputs: [trading-behaviors-kb.md]  

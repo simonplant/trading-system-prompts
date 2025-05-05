@@ -1,15 +1,15 @@
 ---
 title: Daily Performance Debrief  
-description: Postmarket prompt to evaluate trade execution quality, behavior, and decision outcomes against plan  
-tags: [postmarket, debrief, behavior, performance]  
+description: End-of-day prompt to review trades, behavior, discipline, and outcomes  
+tags: [postmarket, debrief, review, behavior]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.1  
 category: postmarket  
-usage: Run after completing your daily log to summarize trade quality, behavior, and coaching insights  
-status: stable  
-requires: [trade-log-template.md, generate-daily-trade-log.md]  
-linked_outputs: [update-trading-behaviors-kb.md]  
+usage: Run after market close, once trade log is complete and behavior flags are known  
+status: active  
+requires: [generate-daily-trade-log.md, trading-behaviors-kb.md]  
+linked_outputs: [generate-kb-update.md, generate-daily-journal.md]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  

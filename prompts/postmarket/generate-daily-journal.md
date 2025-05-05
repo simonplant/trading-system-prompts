@@ -1,12 +1,18 @@
 ---
-title: Generate Daily Journal Log  
-description: Create the narrative journal entry for a given trading day, focused on regime, mindset, and qualitative reflection  
-tags: [postmarket, journal, log, system]  
+title: Generate Daily Journal  
+description: Narrative journal prompt to reflect on mindset, clarity, emotion, and decisions after each session  
+tags: [postmarket, reflection, review]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Use this after market close to generate a qualitative journal entry to be saved in `logs/YYYY/journal/YYYY-MM-DD.md`  
+usage: Run after market close or before bed for narrative-level mindset tracking  
+status: stable  
+requires: []  
+linked_outputs: [generate-kb-update.md, export-journal-entry.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## JOURNAL ENTRY GENERATOR — PROMPT

@@ -1,18 +1,18 @@
 ---
 title: Chart Visual Legend  
-description: Visual color coding and indicator legend used to interpret chart screenshots  
-tags: [system]  
+description: Defines visual color coding for MA overlays in Simon’s chart screenshots  
+tags: [system, docs]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: system  
-usage: Reference this when interpreting chart screenshots in trade reviews  
+usage: Reference when interpreting chart screenshots with colored MAs or levels  
 status: stable  
 requires: []  
 linked_outputs: []  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: false  
 ---
 
 # CHART VISUAL LEGEND

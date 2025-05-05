@@ -1,12 +1,12 @@
 ---
-title: System Files Overview  
-description: Overview of system files supporting Simon Plant’s structured trading framework  
-tags: [system]  
+title: Trading System Prompts  
+description: Structured GPT-based prompt library to support disciplined options trading alongside Inner Circle and Mancini  
+tags: [system, docs, control]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.1  
+version: 1.3  
 category: system  
-usage: Reference structure for charter, SOPs, knowledge bases, and setup guides  
+usage: Upload the repo as a ZIP or repo link and use `prompts/main-controller.md` to engage the command router and copilot.  
 status: stable  
 requires: []  
 linked_outputs: []  

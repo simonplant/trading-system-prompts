@@ -1,7 +1,7 @@
 ---
 title: Trading Copilot  
 description: Real-time execution and validation assistant for trade entries, resets, and behavioral postmortems  
-tags: [intraday, copilot, execution, reset, validation]  
+tags: [intraday, execution, reset, validation, behavior]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 2.2  

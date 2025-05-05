@@ -1,17 +1,17 @@
 ---
 title: Get Premarket Levels  
-description: Fetch and summarize premarket levels for SPY, QQQ, VIX, and ES to inform bias and setup zones  
-tags: [premarket, macro]  
+description: Extract premarket QQQ, SPY, VIX, and ES levels for trade prep and sentiment  
+tags: [premarket, plan, macro]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: premarket  
-usage: Run as part of premarket planning to align on market context and likely structure  
-status: stable  
+usage: Run at 6:00–6:20 AM PT before preparing Unified Trade Plan  
+status: active  
 requires: []  
 linked_outputs: [unified-trade-plan-generator.md]  
 input_format: prompt  
-output_format: markdown  
+output_format: table  
 ai_enabled: true  
 ---
 

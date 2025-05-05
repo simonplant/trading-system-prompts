@@ -1,15 +1,15 @@
 ---
 title: Trading Behaviors Knowledge Base  
 description: Curated list of trading behaviors, blindspots, and improvement heuristics based on real-world performance reviews  
-tags: [system]  
+tags: [system, behavior, discipline]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.1  
 category: system  
-usage: Review daily; update after each postmarket debrief or behavioral breakdown  
+usage: Run when logging behavior issues, reviewing patterns, or updating reset protocol  
 status: stable  
-requires: [trading-capital-profile.md]  
-linked_outputs: []  
+requires: []  
+linked_outputs: [midday-reset.md, copilot.md, update-trading-behaviors-kb.md]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  

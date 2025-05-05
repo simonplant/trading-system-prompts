@@ -1,7 +1,7 @@
 ---
 title: Trading System SOP  
 description: Daily operational playbook for Simon Plant’s structured trading workflow  
-tags: [system]  
+tags: [system, control, execution]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.3  

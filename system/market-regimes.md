@@ -1,18 +1,18 @@
 ---
-title: Market Regimes Guide  
-description: Classify and interpret current market regimes to adjust trade setup usage, conviction, and risk exposure dynamically.  
-tags: [system]  
+title: Market Regimes Reference  
+description: Classifies major market behavior patterns used for daily framing and execution alignment  
+tags: [system, macro, behavior]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: system  
-usage: No usage notes provided.  
+usage: Reference before trading to align entries with prevailing regime: trend, chop, squeeze, gamma, news  
 status: stable  
 requires: []  
 linked_outputs: []  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: false  
 ---
 
 ## MARKET REGIMES GUIDE

@@ -1,12 +1,18 @@
 ---
 title: Generate Daily Trade Log  
-description: Output only structured trade execution data for the day, to be saved under /logs/YYYY/trades/YYYY-MM-DD.md  
-tags: [postmarket, trade-log, export, json-aligned]  
+description: Creates structured markdown output of trades, flags, and setups for daily journaling and scorekeeping  
+tags: [postmarket, log, reflection, review]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 2.0  
+version: 1.1  
 category: postmarket  
-usage: Use after each session to structure all trade entries, exits, and metadata into a JSON-compatible Markdown log.  
+usage: Run after each session to structure your daily execution log  
+status: stable  
+requires: [trading-charter.md, trading-behaviors-kb.md]  
+linked_outputs: [daily-performance-debrief.md, generate-kb-update.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## TRADE LOG EXPORTER — PROMPT

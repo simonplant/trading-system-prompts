@@ -1,18 +1,18 @@
 ---
 title: Trade Log Template  
-description: Daily markdown template used to record structured trading logs for journaling and postmarket review  
-tags: [log, postmarket, journal]  
+description: Structure for daily trade log file format used across markdown logging  
+tags: [log, template, review]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.1  
-category: log  
-usage: Use at EOD to populate `/logs/YYYY/YYYY-MM-DD.md` with structured trading data and observations  
+version: 1.0  
+category: system  
+usage: Reference format to ensure consistency across trade log generation and review  
 status: stable  
-requires: [generate-daily-trade-log.md]  
-linked_outputs: [daily-performance-debrief.md, update-trading-behaviors-kb.md]  
+requires: []  
+linked_outputs: []  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: false  
 ---
 
 # [YYYY-MM-DD] — Daily Trade Log

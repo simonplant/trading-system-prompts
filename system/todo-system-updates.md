@@ -4,8 +4,15 @@ description: Master list of missing, incomplete, or outdated prompt components i
 tags: [system, backlog, architecture, refactor]  
 author: Simon Plant  
 last_updated: 2025-05-05  
+version: 1.1  
 category: system  
+usage: Edit during prompt development; used to prioritize and track system architecture work  
 status: active  
+requires: []  
+linked_outputs: []  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: false  
 ---
 
 # COMPLETED (2025-05)

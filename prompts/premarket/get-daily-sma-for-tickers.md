@@ -1,17 +1,17 @@
 ---
 title: Get Daily SMA for Tickers  
-description: Extract and return key daily moving averages (8d, 21d, 34d, 50d, 100d, 200d) for specified tickers  
-tags: [premarket, macro, setup]  
+description: Extract and filter key moving averages (8d–200d) on the daily chart for selected tickers  
+tags: [premarket, analysis, macro]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.0  
 category: premarket  
-usage: Run during morning prep to identify relevant support/resistance MAs for trade planning  
-status: stable  
+usage: Run before market open to identify relevant support/resistance MAs for next 2 days  
+status: active  
 requires: []  
-linked_outputs: [unified-trade-plan-generator.md]  
-input_format: prompt  
-output_format: markdown  
+linked_outputs: []  
+input_format: markdown  
+output_format: table  
 ai_enabled: true  
 ---
 # Get Daily SMA for Tickers

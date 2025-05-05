@@ -1,18 +1,18 @@
 ---
-title: Trading System Prompts  
-description: Structured GPT-based prompt library to support disciplined options trading alongside Inner Circle and Mancini  
-tags: [system]  
+title: Trading Capital Profile  
+description: Central source of truth for trading capital, daily loss thresholds, position sizing rules, and exposure limits  
+tags: [system, control, capital]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.3  
+version: 2.2  
 category: system  
-usage: Upload the repo as a ZIP or repo link and use `prompts/main-controller.md` to engage the command router and copilot.  
+usage: Referenced by prompts that evaluate risk, exposure, or trade sizing against capital constraints  
 status: stable  
 requires: []  
-linked_outputs: []  
+linked_outputs: [capital-exposure-tracker, copilot, generate-daily-trade-log]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: false  
 ---
 
 # Trading System Prompts — Unified Execution Framework

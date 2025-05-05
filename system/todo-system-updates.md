@@ -4,9 +4,9 @@ description: Master list of missing, incomplete, or outdated prompt components i
 tags: [system, backlog, architecture, refactor]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.3  
+version: 1.4  
 category: system  
-usage: Edit during system development or prompt refactor planning. Produces prioritized backlog of tasks. Consumes audit output, architecture changes, and roadmap items.
+usage: Edit during system development or prompt refactor planning. Produces prioritized backlog of tasks. Consumes audit output, architecture changes, and roadmap items.  
 status: active  
 requires: []  
 linked_outputs: []  
@@ -31,7 +31,8 @@ ai_enabled: false
 - `tags:` standardized across all prompts using `[phase, function, behavior]` taxonomy  
 - Front matter normalized for all system and prompt files  
 - **All `usage:` fields rewritten and standardized**  
-- Fixed front matter and usage for `README.md`, `system/README.md`, `market-regimes.md`, and `main-controller.md`
+- Fixed front matter and usage for `README.md`, `system/README.md`, `market-regimes.md`, and `main-controller.md`  
+- `trading-behaviors-schema.md` created — defines canonical flag structure, reset mapping, and KB entry format  
 
 ---
 
@@ -50,15 +51,6 @@ ai_enabled: false
 # TODO: SYSTEM-WIDE ALIGNMENTS (REPRIORITIZED)
 
 ## P0 – Highest Leverage Next
-
-- Create `trading-behaviors-schema.md`  
-  Documents:  
-  - Valid behavior flags  
-  - Triggers and examples  
-  - Reset rules  
-  - KB entry format  
-  Enables structured updates from Copilot, Reset, and Debrief.  
-  **Tags:** `behavior`, `structure`, `docs`
 
 - Add front matter to log files  
   - `/logs/journal/2025-05-05-trading-journal.md`  
@@ -81,6 +73,14 @@ ai_enabled: false
 - Lint `linked_outputs:` and `requires:`  
   Ensure all declared dependencies are actually invoked  
   **Tags:** `infra`, `accuracy`
+
+- Update `requires:` fields in prompts that use behavior flags  
+  Add `trading-behaviors-schema.md` to:  
+  - `copilot.md`  
+  - `midday-reset.md`  
+  - `generate-daily-trade-log.md`  
+  - `generate-kb-update.md`  
+  **Tags:** `infra`, `structure`, `consistency`
 
 ## P2 – System Navigation + Templates
 

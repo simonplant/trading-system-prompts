@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-03
 version: 1.0
 category: intraday
-usage: Use to evaluate any active trade idea before entry. Run interactively in ChatGPT or equivalent assistant.
+usage: Use to evaluate any active trade idea before entry. Run interactively in AI assistant.
 ---
 
 ## TRADE IDEA VALIDATOR — PROMPT

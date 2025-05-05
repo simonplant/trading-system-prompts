@@ -12,7 +12,7 @@ usage: Upload this repo as a ZIP and use `prompts/main-controller.md` as the com
 
 ## 1. How to Use This ZIP + Main Controller
 
-Start a fresh ChatGPT session and upload the zipped folder containing this repo. Then run:
+Start a fresh AI assistant session and upload the zipped folder containing this repo. Then run:
 
 > Use `prompts/main-controller.md` as the routing layer. I want to interact with my trading system.
 

@@ -1,6 +1,6 @@
 ---
 title: Main Controller Guide
-description: How to engage and operate the full trading prompt system in ChatGPT using the main-controller prompt
+description: How to engage and operate the full trading prompt system in AI assistant using the main-controller prompt
 category: system
 author: Simon Plant
 version: 1.0
@@ -10,7 +10,7 @@ usage: Read before using this system; describes how to run prompts in sequence w
 
 # MAIN CONTROLLER GUIDE — TRADING SYSTEM
 
-This file explains how to use the `main-controller.md` prompt and interact with the zipped trading prompt system in ChatGPT.
+This file explains how to use the `main-controller.md` prompt and interact with the zipped trading prompt system in AI assistant.
 
 ## OVERVIEW
 
@@ -22,12 +22,12 @@ Your prompt system is structured by trading phase:
 - `system/` — Your Charter, SOP, Behavioral KB, and metadata
 - `logs/YYYY/YYYY-MM-DD.md` — Daily trading journal entries
 
-## STARTING A SESSION IN CHATGPT
+## STARTING A SESSION IN AI assistant
 
-1. Start a new ChatGPT session  
+1. Start a new chat session  
 2. Upload the full `.zip` file of your repo  
 3. Say: “Let’s run the main controller.”  
-   - ChatGPT will load the `main-controller.md` prompt  
+   - AI assistant will load the `main-controller.md` prompt  
    - You’ll be presented with a structured menu
 
 ## MAIN USE CASES (Run from main-controller)

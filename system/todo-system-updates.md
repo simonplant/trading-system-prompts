@@ -4,7 +4,7 @@ description: Master list of missing, incomplete, or outdated prompt components i
 tags: [system, backlog, architecture, refactor]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.5  
+version: 1.6  
 category: system  
 usage: Edit during system development or prompt refactor planning. Produces prioritized backlog of tasks. Consumes audit output, architecture changes, and roadmap items.  
 status: active  
@@ -33,6 +33,8 @@ ai_enabled: false
 - All `usage:` fields rewritten and standardized  
 - Fixed front matter and usage for `README.md`, `system/README.md`, `market-regimes.md`, and `main-controller.md`  
 - `trading-behaviors-schema.md` created — defines canonical flag structure, reset mapping, and KB entry format  
+- Modularized `copilot.md` into 4 prompts: scout, confirm, recenter, debrief  
+  Enables faster routing and clearer intraday execution across emotional states and structure tiers
 
 ---
 
@@ -51,11 +53,6 @@ ai_enabled: false
 # TODO: SYSTEM-WIDE ALIGNMENTS (REPRIORITIZED)
 
 ## P0 – Highest Leverage Next
-
-- Split `copilot.md` into modular prompts  
-  - `copilot-scout.md`, `copilot-confirm.md`, `copilot-recenter.md`, `copilot-debrief.md`  
-  Enables fast validation, emotional resets, and execution gating per phase  
-  **Tags:** `execution`, `structure`, `modularity`
 
 - Add front matter to log files  
   - `/logs/journal/2025-05-05-trading-journal.md`  

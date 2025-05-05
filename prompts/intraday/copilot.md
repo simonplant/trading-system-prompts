@@ -1,123 +1,38 @@
 ---
 title: Trading Copilot  
-description: Real-time execution and validation assistant for trade entries, resets, and behavioral postmortems  
-tags: [intraday, execution, reset, validation, behavior]  
+description: Intraday decision interface — routes execution through scout, confirm, reset, and debrief phases  
+tags: [intraday, execution, assistant, routing]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 2.2  
+version: 3.0  
 category: intraday  
-usage: Run before entering trades, after a trade fails, or when emotional clarity is lost. Produces decision support for entry, reset, or debrief. Consumes idea, structure, emotional state, and capital context.status: stable  
-requires: [trading-charter.md, trading-capital-profile.md, trading-behaviors-kb.md]  
-linked_outputs: [midday-reset.md, generate-daily-trade-log.md]  
+usage: Use as a quick reference to Copilot execution phases. Produces routing logic and unified state awareness. Consumes trade ideas, trigger readiness, and emotional state.  
+status: stable  
+requires: [copilot-scout.md, copilot-confirm.md, copilot-recenter.md, copilot-debrief.md]  
+linked_outputs: [generate-daily-trade-log.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: false  
 ---
 
-# TRADING COPILOT — UNIFIED INTRADAY INTERFACE
+# Trading Copilot — Modular Intraday Interface
 
-## PURPOSE
+This prompt is now a **router and usage guide** for executing trades with discipline across 4 distinct phases:
 
-To validate each trade against capital, behavior, and structure rules before entry or continuation. Also used for resets and postmortem review.
+## Copilot Phases
 
----
+| Phase | Prompt | When to Run | Purpose |
+|-------|--------|-------------|---------|
+| Scout | `copilot-scout.md` | Before entry | Validate setup, size, structure, emotion |
+| Confirm | `copilot-confirm.md` | At trigger | Final check on risk and behavior |
+| Recenter | `copilot-recenter.md` | Midday/tilt | Reset discipline after clarity breaks |
+| Debrief | `copilot-debrief.md` | After exit | Score trade, flag behavior, log lesson |
 
-## MODES
+## Suggested Flow
 
-| Mode       | Function                                    |
-|------------|---------------------------------------------|
-| `scout`    | Evaluate a potential idea before entry      |
-| `confirm`  | Revalidate structure and sizing at trigger  |
-| `recenter` | Pause and reset emotional clarity           |
-| `debrief`  | Log trade behavior and carry forward lessons|
+1. Use `copilot-scout.md` before any new entry idea  
+2. At the moment of trigger, run `copilot-confirm.md`  
+3. If emotional clarity degrades, run `copilot-recenter.md`  
+4. After each trade, run `copilot-debrief.md` and log outcome
 
----
-
-## INPUTS
-
-- **mode**: `scout`, `confirm`, `recenter`, or `debrief`  
-- **ticker / idea**: Contract, setup type, conviction level  
-- **entry context**: Planned level, stop, target, tier  
-- **capital status**: Live output from `capital-exposure-tracker.md`  
-- **emotional state**: Clarity, tilt, frustration, overconfidence  
-- **prior trade(s)**: Recent win/loss, behavior flags  
-
----
-
-## SCOUT MODE
-
-1. **Trade Plan Alignment**  
-   - Does this setup match the Unified Trade Plan or IC call?  
-   - Has it been visualized + staged?
-
-2. **Structure Confirmation**  
-   - Is there a valid trigger near level?  
-   - Is SPX/QQQ aligned? Time of day valid?
-
-3. **Sizing Validation**  
-   - Does this tier obey sizing rules from `trading-capital-profile.md`?
-     - Tier 1: `default_trade_size_dollars`  
-     - Tier 2: `scalp_trade_risk_budget_dollars`  
-     - Tier 3: `max_options_trade_dollars`
-
-4. **Capital Guardrails**  
-   - Are we below `max_exposure_dollars`?  
-   - Is buffer above `min_buffer_required_dollars`?  
-   - Is this trade justified after prior loss?
-
----
-
-## CONFIRM MODE
-
-1. **Final Check Before Entry**  
-   - Has anything changed in level, structure, macro?
-
-2. **Double Check Behavior State**  
-   - Any flags present in `trading-behaviors-kb.md`?  
-   - Review recent issues like “impulse size creep” or “emotional averaging” before entering.  
-   - Recent trades logged properly?
-
-3. **Capital + Risk Sync**  
-   - Exposure level still safe?  
-   - Loss limits respected (`daily_loss_soft_dollars`, `daily_loss_hard_dollars`)?  
-   - Are we chasing?
-
-4. **Execution Trigger**  
-   - Only execute if sizing, emotion, and structure all align
-
----
-
-## RECENTER MODE
-
-Trigger anytime emotional clarity is degraded or after two red trades.
-
-- Pause  
-- Run `midday-reset.md`  
-- Breathe + write the one thing you need to remember  
-- Set an intention (e.g. “Trade only structure,” “Don’t force,” “Let the trade come”)  
-- Decide: Stop or continue with reduced size
-
----
-
-## DEBRIEF MODE
-
-Used after each trade to score and extract learning.
-
-- Was this trade aligned with plan?  
-- What did you feel before / during / after?  
-- What tier was this? Did it match?  
-- What would you do differently? Map to common flags from `trading-behaviors-kb.md` if applicable.  
-- Update `trading-behaviors-kb.md` if needed  
-- Log in `generate-daily-trade-log.md`
-
----
-
-## LOCKOUT ENFORCEMENT
-
-Trading must stop immediately if:
-
-- Capital loss hits `daily_loss_hard_dollars`  
-- Behavior threshold violated repeatedly  
-- Two major flags within one session (see `trading-behaviors-kb.md`)  
-
----
+Each sub-prompt supports structured logs and behavior alignment across your system.

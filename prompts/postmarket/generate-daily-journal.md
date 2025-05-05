@@ -1,73 +1,70 @@
 ---
 title: Generate Daily Journal  
-description: Narrative journal prompt to reflect on mindset, clarity, emotion, and decisions after each session  
-tags: [postmarket, reflection, review]  
+description: End-of-day reflection to clarify mindset, emotional state, behavioral patterns, and tomorrow's intention  
+tags: [postmarket, journal, behavior, psychology]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.0  
+version: 2.0  
 category: postmarket  
-usage: Run after market close or before bed. Produces narrative reflection on mindset, emotion, and execution. Consumes memory of session, trade context, and emotional experience.
+usage: Run after market close or before bed. Produces a narrative snapshot of mindset, emotion, and behavioral themes. Consumes memory of trade flow, emotional highs/lows, and reset signals.  
 status: stable  
-requires: []  
-linked_outputs: [generate-kb-update.md, export-journal-entry.md]  
+requires: [trading-behaviors-kb.md, trading-behaviors-schema.md]  
+linked_outputs: [generate-kb-update.md, update-trading-behaviors-kb.md]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  
 ---
 
-## JOURNAL ENTRY GENERATOR — PROMPT
+# Daily Trading Journal — Reflection and Reset
 
-**Purpose:** Generate a clean, markdown-format daily journal entry based on:
-- Market behavior and context
-- Trader’s mental, physical, and emotional state
-- Observed themes and self-regulation quality
-- Summary of execution quality
+Use this prompt at the end of each trading day to reconnect with your internal state, clarify key lessons, and build emotional resilience.
 
----
+## 1. Emotional Snapshot
 
-### INPUT FIELDS
-- **Date**: (YYYY-MM-DD)
-- **Market Regime**: (trend/chop/vol spike/news/event)
-- **Macro Context**: (FOMC, earnings, war, etc.)
-- **Bias/Focus**: Bullish/Bearish/Mixed/None
-- **Emotional State**: Cautious / Confident / Frantic / Flat / etc.
-- **Energy + Focus**: (Low/Medium/High)
-- **Intentional Actions Taken**: (e.g., cut size, followed SOP)
-- **Key Reflection**: What stood out most about today?
+- How do you feel right now (honestly)?  
+- What stuck with you emotionally from today’s session?  
+- Any lingering frustration, regret, fear, pride, or confidence?
 
----
+## 2. What Actually Happened?
 
-### OUTPUT STRUCTURE
-```markdown
----
-title: Daily Journal — YYYY-MM-DD
-description: End-of-day reflection on psychological performance and market behavior  
-tags: [journal, log, mindset]
-author: Simon Plant
-last_updated: YYYY-MM-DD
-version: 1.0
-category: log-template
-status: draft
----
+- One sentence summary of the market today  
+  (trend? chop? gamma-driven? event overhang?)
 
-## Market & Regime Context
-- Regime: ___
-- Context: ___
-- SPX / QQQ / VIX: ___
+- One sentence summary of your behavior today  
+  (aligned? erratic? controlled? hesitant? overly aggressive?)
 
-## Emotional State
-- Mood: ___
-- Focus: ___
-- Energy: ___
+## 3. Behavioral Flags or Themes
 
-## Observations
-- ___
-- ___
+- Did any of the behavior flags from `trading-behaviors-schema.md` show up?  
+  (e.g. chasing, tilt, hesitation, passivity)
 
-## Execution
-- What went well: ___
-- Where I drifted: ___
-- Did I trade my plan? ___
+- Were there multiple trades with the same mistake or emotional pattern?
 
-## Daily Lesson
-> "___"
+- Was there a reset moment? If so, what triggered it and how did you respond?
+
+## 4. Lessons and Adjustments
+
+- What lesson do you want to remember tomorrow morning?  
+- If this pattern repeats, what would you do differently?
+
+- Should this be added to the behavior KB?
+
+## 5. Intention for Tomorrow
+
+Write a single, clear intention — a behavioral or structural mantra to carry into the next session:
+
+INTENTION: ___________________________________
+
+## Output Format (for archival)
+
+```yaml
+date: 2025-05-05
+emotion: "fatigued but grounded"
+market_summary: "Gap-up open, range-bound, strong SPX close above resistance"
+self_summary: "Hesitant on first trigger, better structure mid-session, cut size appropriately after miss"
+flags_triggered: [hesitation, late-cut]
+reset_triggered: midday-reset
+lesson: "When in doubt, trim fast and revisit structure. Price can reoffer — you can’t reenter discipline."
+intention: "Trade only levels with full prep — no half-ready setups"
+kb_update_suggested: true
+```

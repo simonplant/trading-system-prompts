@@ -5,7 +5,7 @@
 .vscode/
 
 # Log files and generated content
-logs/**/*.md
+!logs/**/*.md
 !logs/template.md
 !logs/2025/.gitkeep  # optional empty file to preserve folder in git
 

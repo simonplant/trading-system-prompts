@@ -1,105 +1,92 @@
 ---
-title: Daily Trade Log Template  
-description: Template for structured daily trade logs, modeled after Inner Circle execution review  
-tags: [log, behavioral]  
+title: Trade Log Template  
+description: Daily markdown template used to record structured trading logs for journaling and postmarket review  
+tags: [log, postmarket, journal]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.0  
+version: 1.1  
 category: log  
-usage: Fill one per trading day and save under /logs/ with the date  
+usage: Use at EOD to populate `/logs/YYYY/YYYY-MM-DD.md` with structured trading data and observations  
 status: stable  
-requires: []  
-linked_outputs: [export-journal-entry.md, update-trading-behaviors-kb.md]  
+requires: [generate-daily-trade-log.md]  
+linked_outputs: [daily-performance-debrief.md, update-trading-behaviors-kb.md]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  
 ---
 
-# DAILY TRADE LOG — [YYYY-MM-DD]
+# [YYYY-MM-DD] — Daily Trade Log
 
-## 1. TICKERS TRADED
-List all tickers traded today (e.g., SPX, MSFT, NFLX):
+## 1. Summary
 
-[AAPL, SPX, QQQ, etc.]
+- Capital Deployed:  
+- P&L Outcome:  
+- Net R Multiple:  
+- Win/Loss Streak:  
+- Overall Trade Quality: [Excellent | Good | Mixed | Poor]  
+- Notes on Market Environment:  
 
-## 2. P&L SNAPSHOT
-Overall and per-ticker result (optional to include actual $$):
+---
 
-Total: +$X / -$X  
-By ticker: SPX +$300, NFLX -$200, TSLA +$150
+## 2. Trade Entries
 
-## 3. MARKET CONTEXT
-Summarize the key market structure and drivers from today:
+### Trade 1  
+- Ticker / Direction:  
+- Setup Type:  
+- Entry / Stop / Target:  
+- Sizing:  
+- Result (Win/Loss, % or R):  
+- Time Held:  
+- Notes:  
 
-- Macro events (e.g. NFP, CPI)  
-- SPX levels hit / missed  
-- Volatility shift (VIX)  
-- Relevant notes from Unified Plan
+### Trade 2  
+[Repeat as needed...]
 
-## 4. MODERATOR TRADE ACTIONS
-List IC trades you tracked, followed, or ignored. Be specific.
+---
 
-- DP added NFLX puts at 10:12am at $610; I did not take it  
-- DP sold META near HOD — I caught the exit 5 mins later  
-- Adam's SPX 5606 reclaim worked — I missed the entry
+## 3. Behavioral Notes
 
-## 5. TRADES EXECUTED
-Repeat the structure below for each trade:
+- Flags Observed: [Impulse | Size Creep | No Plan | Avoided Setup | None]  
+- Emotion Ratings: [Frustration, Clarity, Patience, FOMO, Tilt]  
+- Cognitive Errors:  
+- Alignment with Charter: [Yes / Partial / No]  
 
-### [TICKER] / [CALL or PUT or STOCK] / [LONG or SHORT]  
-- Entry: [Time, Price]  
-- Exit: [Time, Price]  
-- Size: [Quantity or $ Risked]  
-- Outcome: [+/- $ or %]  
-- Setup Type: [Big Idea, Cashflow, Lotto, Unplanned]  
-- Source: [DP, Mancini, Plan, Unplanned]  
-- Alignment: [In Plan, Off-Plan, Reactive, Blind Spot]  
-- Notes: [Emotion, hesitation, mod influence, FOMO, etc.]
+---
 
-## 6. INTRADAY NOTES + EMOTIONAL TRIGGERS
-Bullet points of emotional surges, uncertainty, mistakes:
+## 4. Moderator Trades
 
-- Chased SPX call after it ran 15 points → stopped out  
-- Hesitated on MSFT long despite clean reclaim — confidence issue  
-- Didn't trust the plan after first red trade
+- DP Trades Taken:  
+- DP Trades Missed:  
+- Mancini Blueprint Levels Hit:  
+- Contradictions or Conflicts:  
+- Lessons from Moderator Calls:  
 
-## 7. LESSONS + ACTION PLAN
-Write 2–3 bullet points to guide future decisions:
+---
 
-- No more buying into resistance unless reclaim confirmed  
-- Respect plan size — avoid jumping to full size out of FOMO  
-- When DP sizes up — don’t fade the trade, follow with structure
+## 5. Midday Reset Events (if triggered)
 
-## 8. BLIND SPOT CHECK
-Did I violate any known blind spots?
+If no resets occurred, note: “None triggered.”
 
-☐ Chased strength?  
-☐ Traded during chop zone?  
-☐ Ignored pre-staged plan?  
-☐ Overtraded after red?  
-☐ Emotional revenge trade?  
-☐ Held lotto too long?
+### Reset #1  
+- Time:  
+- Capital State: [$ at risk / max]  
+- Emotional State:  
+- Behavior Flags:  
+- Regime Context:  
+- Action Taken: [Pause, Refocus, Reduce, Exit, Journal]  
+- Insight: [1-line intention or realization]
 
-## 9. DAILY SCORECARD (1–5 scale)
+### Reset #2  
+[Repeat if needed...]
 
-| CATEGORY             | SCORE |
-|----------------------|-------|
-| Focus                |       |
-| Discipline           |       |
-| Setup Quality        |       |
-| Risk/Size Adherence  |       |
-| Plan Execution       |       |
-| **OVERALL SCORE**    |       |
+---
 
-## 10. MANCINI AFTER-ACTION REVIEW (Optional)
+## 6. Closing Reflections
 
-- Which blueprint levels were hit?  
-- Did you enter the best setups?  
-- Any missed reclaim/backtest trades?  
-- How can you improve blueprint execution?
+- What worked today?  
+- What didn’t work?  
+- What can be improved tomorrow?  
+- 1 Key Insight to Reinforce:  
+- Any Behavior KB Updates Needed? [Yes / No]
 
-## 11. COACHING SUMMARY (for Prompt-PerformanceDebrief)
-
-- What did I do well today?  
-- What must I fix tomorrow?  
-- What trend is improving?
+---

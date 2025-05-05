@@ -1,15 +1,15 @@
 ---
 title: Daily Performance Debrief  
-description: End-of-day review prompt to log trade outcomes, emotional state, and execution score  
-tags: [postmarket, behavioral]  
+description: Postmarket prompt to evaluate trade execution quality, behavior, and decision outcomes against plan  
+tags: [postmarket, debrief, behavior, performance]  
 author: Simon Plant  
 last_updated: 2025-05-05  
 version: 1.1  
 category: postmarket  
-usage: Run after market close to document and review trade performance  
+usage: Run after completing your daily log to summarize trade quality, behavior, and coaching insights  
 status: stable  
-requires: [trade-log-template.md]  
-linked_outputs: [export-journal-entry.md, update-trading-behaviors-kb.md]  
+requires: [trade-log-template.md, generate-daily-trade-log.md]  
+linked_outputs: [update-trading-behaviors-kb.md]  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: true  
@@ -17,63 +17,82 @@ ai_enabled: true
 
 ## DAILY PERFORMANCE DEBRIEF — PROMPT
 
-**Purpose:**
-Structured end-of-day evaluation and coaching to improve future performance. Analyzes execution vs. plan, identifies behavioral blindspots, and integrates learnings into the system.
+**When to Use:**  
+Run at the end of the day, after completing `generate-daily-trade-log.md` and saving your log to `/logs/YYYY/YYYY-MM-DD.md`.
+
+**Purpose:**  
+- Evaluate trade execution quality against your plan and charter  
+- Identify behavioral patterns or blindspots  
+- Surface adjustments for sizing, selection, or process  
+- Document any required updates to `trading-behaviors-kb.md`
 
 ---
 
-### INPUTS (REQUIRED)
-- Unified Daily Trade Plan (PDF or pasted text)
-- Trade log or screenshots (including entries, exits, sizes, timestamps)
-- Screenshots of relevant charts (5-minute, daily)
-- Inner Circle moderator trade callouts
-- Any surprises, pivots, or macro events
-- Current version of Trading Behaviors Knowledge Base (optional)
+## INPUTS
+
+- Full daily trade log (structured via `trade-log-template.md`)  
+- Trades executed and not taken  
+- Capital outcome and streaks  
+- Midday reset events (if any)  
+- Moderator calls from DP and Mancini  
+- Journal reflections and emotional patterns  
 
 ---
 
-### INSTRUCTIONS TO AI
-1. **Plan vs. Execution**
-   - Which planned trades were taken, skipped, or mistimed?
-   - Were any unplanned trades taken? Why?
+## DEBRIEF STRUCTURE
 
-2. **Blind Spot Triggers**
-   - Identify behaviors that violated the Trading Charter or Knowledge Base
-   - Flag late entries, oversized positions, reactive trades, chasing, etc.
+### 1. Execution Summary
 
-3. **Trade-by-Trade Coaching**
-   - Give feedback on setup, entry quality, exit timing, and size
-   - Note risk/reward, market alignment, and emotional cues
-
-4. **Coaching Summary**
-   - What worked well today?
-   - What must be fixed or avoided going forward?
-   - What is improving or showing progress?
-
-5. **Flag New Insights**
-   - Generate 1 insight to feed into `update-trading-behaviors-kb`
-   - Format it as a clear bullet point with appropriate category
+- Number of trades taken  
+- Percent aligned with Unified Trade Plan  
+- Any deviation from levels, size, or trigger logic?  
+- Most profitable trade vs. most damaging  
+- Slippage, fill issues, or mismanagement?
 
 ---
 
-### OUTPUT FORMAT
-**DAILY REVIEW — [YYYY-MM-DD]**
+### 2. Behavioral Review
 
-**1. Plan vs Execution:**  
-- [Which trades followed the plan? Which didn’t?]  
-- [Any surprise trades or deviations?]  
+- Were any behavioral flags noted in the log?  
+- How well did you recognize and respond to risk patterns?  
+- Did emotion (fear, greed, frustration) affect decisions?  
+- Any mistakes repeated from prior sessions?
 
-**2. Blind Spot Summary:**  
-- [List any charter or behavioral KB violations]  
+---
 
-**3. Trade Coaching (by ticker):**  
-- **[TICKER]**: [Entry, exit, sizing, timing, what was done well, what to fix]
+### 3. Midday Reset Event Review
 
-**4. Coaching Summary:**  
-- What I did well: [ ]  
-- What I must fix: [ ]  
-- What’s improving: [ ]  
+- Were any resets triggered? [Yes / No]  
+- What emotional or behavioral patterns led to the reset?  
+- Did the action taken help stabilize decision quality?  
+- Did the day improve or deteriorate after the reset?  
+- Any insight that should be added to `trading-behaviors-kb.md`?
 
-**5. Knowledge Base Insight Suggestion:**  
-CATEGORY: [Category]  
-ENTRY: - [Insight to feed into update-trading-behaviors-kb.md]
+---
+
+### 4. Plan Adherence & Adjustment
+
+- Was conviction sizing applied correctly?  
+- Did market regime affect your trade frequency or bias?  
+- Were your tiering and exit rules respected?
+
+---
+
+### 5. Moderator Sync
+
+- Which DP or Mancini trades did you align with?  
+- Were any calls missed or misunderstood?  
+- Did moderator sentiment align with your actions?  
+- Any follow-through worth swinging?
+
+---
+
+### 6. Closing Actions
+
+- Update KB if a new blindspot or pattern emerged  
+- Flag any trades worth revisiting for deeper breakdown  
+- Archive log to `/logs/YYYY/YYYY-MM-DD.md` if not already done  
+- Rate the day overall [Excellent | Solid | Mixed | Poor]  
+- Set 1 intention for tomorrow  
+
+---

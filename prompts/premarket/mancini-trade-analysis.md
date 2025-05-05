@@ -1,11 +1,18 @@
 ---
-title: Mancini ES to SPX Blueprint
-description: Extracts, converts, and formats Mancini’s ES blueprint into an actionable SPX trading plan
-category: premarket
-author: Simon Plant
-version: 1.0
-last_updated: 2025-05-03
-usage: Run after parsing Mancini’s newsletter post; then apply ES→SPX -30 conversion and structure as shown
+title: Mancini Trade Analysis  
+description: Translate Adam Mancini’s ES Futures blueprint into SPX-level options trade zones  
+tags: [premarket, macro]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.1  
+category: premarket  
+usage: Run after receiving Mancini’s newsletter to convert ES levels to SPX format  
+status: stable  
+requires: []  
+linked_outputs: [unified-trade-plan-generator.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## MANCINI ES TO SPX BLUEPRINT — PROMPT

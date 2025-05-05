@@ -1,11 +1,18 @@
 ---
-title: Chart Visual Legend
-description: Visual color coding and indicator legend used on Simon Plant’s trading charts
-category: system
-author: Simon Plant
-version: 1.0
-last_updated: 2025-05-03
-usage: Reference this when interpreting chart screenshots or aligning system visuals
+title: Chart Visual Legend  
+description: Visual color coding and indicator legend used to interpret chart screenshots  
+tags: [system]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: system  
+usage: Reference this when interpreting chart screenshots in trade reviews  
+status: stable  
+requires: []  
+linked_outputs: []  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 # CHART VISUAL LEGEND

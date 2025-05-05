@@ -1,11 +1,18 @@
 ---
-title: Main Controller Guide
-description: How to engage and operate the full trading prompt system in AI assistant using the main-controller prompt
-category: system
-author: Simon Plant
-version: 1.0
-last_updated: 2025-05-03
-usage: Read before using this system; describes how to run prompts in sequence with the zipped repo
+title: Main Controller Guide  
+description: Documentation and usage guide for the trading system’s main controller routing prompt  
+tags: [system, guide]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: system  
+usage: Use this to understand and update how the `main-controller.md` routes workflow prompts  
+status: stable  
+requires: [main-controller.md]  
+linked_outputs: []  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 # MAIN CONTROLLER GUIDE — TRADING SYSTEM

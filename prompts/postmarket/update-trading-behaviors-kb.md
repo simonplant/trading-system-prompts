@@ -1,12 +1,18 @@
 ---
-title: Update Trading Behaviors Knowledge Base  
-description: Capture a new insight, blindspot, or best practice after each trading session  
-tags: [postmarket, behavior, discipline, knowledge-base]  
+title: Update Trading Behaviors KB  
+description: Review and update the behavioral knowledge base based on the day’s performance and patterns  
+tags: [postmarket, behavioral]  
 author: Simon Plant  
-last_updated: 2025-05-03  
+last_updated: 2025-05-05  
 version: 1.0  
 category: postmarket  
-usage: Run after daily debrief to update `system/trading-behaviors-kb.md` with new insight  
+usage: Run to capture new patterns, blindspots, and behavioral improvements into the KB  
+status: stable  
+requires: [daily-performance-debrief.md]  
+linked_outputs: [trading-behaviors-kb.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## KNOWLEDGE BASE UPDATE — PROMPT

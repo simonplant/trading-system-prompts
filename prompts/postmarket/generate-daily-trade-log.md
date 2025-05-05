@@ -1,11 +1,18 @@
 ---
-title: Generate Daily Trade Log
-description: Template prompt for capturing daily trades, moderator actions, and execution summary after market close
-author: Simon Plant
-version: 1.0
-category: postmarket
-last_updated: 2025-05-03
-usage: Run immediately after market close. Save output to /logs/[YYYY]/YYYY-MM-DD.md
+title: Generate Daily Trade Log  
+description: Prompt used to scaffold a structured trade log entry for each trading day  
+tags: [postmarket, log]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: postmarket  
+usage: Run at EOD to create a structured markdown entry capturing trades, notes, and emotion ratings  
+status: stable  
+requires: [trade-log-template.md]  
+linked_outputs: [export-journal-entry.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## Prompt Role: `generate-daily-trade-log.md`

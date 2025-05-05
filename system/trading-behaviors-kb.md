@@ -1,11 +1,18 @@
 ---
-title: Trading Behaviors Knowledge Base
-description: Curated list of trading behaviors, blindspots, and improvement heuristics based on real-world performance reviews
-author: Simon Plant
-version: 1.0
-last_updated: 2025-05-03
-category: system
-usage: Review daily; update after each postmarket debrief or behavioral breakdown
+title: Trading Behaviors Knowledge Base  
+description: Curated list of trading behaviors, blindspots, and improvement heuristics based on real-world performance reviews  
+tags: [system]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: system  
+usage: Review daily; update after each postmarket debrief or behavioral breakdown  
+status: stable  
+requires: []  
+linked_outputs: []  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 # TRADING BEHAVIORS KNOWLEDGE BASE — SIMON PLANT

@@ -1,12 +1,18 @@
 ---
 title: Daily Trade Log Template  
-description: Template for structured daily trade logs, moderator actions, and trade performance review  
-tags: [log, postmarket, performance, moderator, trade-log]  
+description: Template for structured daily trade logs, modeled after Inner Circle execution review  
+tags: [log, behavioral]  
 author: Simon Plant  
-last_updated: 2025-05-03  
+last_updated: 2025-05-05  
 version: 1.0  
-category: log-template  
-usage: Fill one per trading day and save under /logs/YYYY-MM-DD.md  
+category: log  
+usage: Fill one per trading day and save under /logs/ with the date  
+status: stable  
+requires: []  
+linked_outputs: [export-journal-entry.md, update-trading-behaviors-kb.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 # DAILY TRADE LOG — [YYYY-MM-DD]

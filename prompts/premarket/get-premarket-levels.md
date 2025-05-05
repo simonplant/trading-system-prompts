@@ -1,12 +1,18 @@
 ---
 title: Get Premarket Levels  
-description: Quickly extract and organize key SPX, QQQ, and futures levels for the current trading day  
-tags: [premarket, levels, spx, qqq, vix]  
+description: Fetch and summarize premarket levels for SPY, QQQ, VIX, and ES to inform bias and setup zones  
+tags: [premarket, macro]  
 author: Simon Plant  
-last_updated: 2025-05-03  
+last_updated: 2025-05-05  
 version: 1.0  
 category: premarket  
-usage: Run before market open to surface all relevant support/resistance zones and macro context  
+usage: Run as part of premarket planning to align on market context and likely structure  
+status: stable  
+requires: []  
+linked_outputs: [unified-trade-plan-generator.md]  
+input_format: prompt  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## GET PREMARKET LEVELS — PROMPT

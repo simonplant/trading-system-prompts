@@ -1,12 +1,18 @@
 ---
-title: DP Trade Analysis Prompt  
-description: Analyze and extract structured trade ideas from David Prince's morning call  
-tags: [premarket, dp, trade-analysis, inner-circle]  
+title: DP Trade Analysis  
+description: Extract and label all trade ideas from David Prince’s morning call based on sentiment, conviction, and duration  
+tags: [premarket]  
 author: Simon Plant  
-last_updated: 2025-05-03  
+last_updated: 2025-05-05  
 version: 1.1  
 category: premarket  
-usage: Run after pasting DP call notes to extract trades and sentiment  
+usage: Run immediately after DP’s call to tag and summarize all trade ideas  
+status: stable  
+requires: []  
+linked_outputs: [unified-trade-plan-generator.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## DP TRADE ANALYSIS — PROMPT

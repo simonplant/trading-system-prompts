@@ -1,12 +1,18 @@
 ---
-title: Daily Performance Debrief Prompt  
-description: End-of-day coaching prompt to analyze trade execution, plan adherence, and behavioral patterns  
-tags: [debrief, postmarket, performance, coaching, plan-vs-execution]  
+title: Daily Performance Debrief  
+description: End-of-day review prompt to log trade outcomes, emotional state, and execution score  
+tags: [postmarket, behavioral]  
 author: Simon Plant  
-last_updated: 2025-05-03  
-version: 1.0  
+last_updated: 2025-05-05  
+version: 1.1  
 category: postmarket  
-usage: Run after market close with trade log, plan, charts, and notes attached  
+usage: Run after market close to document and review trade performance  
+status: stable  
+requires: [trade-log-template.md]  
+linked_outputs: [export-journal-entry.md, update-trading-behaviors-kb.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## DAILY PERFORMANCE DEBRIEF — PROMPT

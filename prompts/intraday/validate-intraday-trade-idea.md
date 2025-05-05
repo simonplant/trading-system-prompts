@@ -1,12 +1,18 @@
 ---
-title: Trade Idea Validator Prompt
-description: Polymorphic real-time validation prompt for intraday trading decisions
-tags: [intraday, trade-validation, decision-support]
-author: Simon Plant
-last_updated: 2025-05-03
-version: 1.0
-category: intraday
-usage: Use to evaluate any active trade idea before entry. Run interactively in AI assistant.
+title: Validate Intraday Trade Idea  
+description: Evaluate real-time trade ideas against premarket plan, market regime, setups, and behavioral risk  
+tags: [intraday]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: intraday  
+usage: Run to evaluate potential trades during the trading session  
+status: stable  
+requires: [unified-trade-plan-generator.md, market-regimes.md]  
+linked_outputs: [copilot.md]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 ## TRADE IDEA VALIDATOR — PROMPT

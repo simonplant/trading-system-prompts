@@ -1,12 +1,18 @@
 ---
 title: Get Daily SMA for Tickers  
-description: Analyzes and reports the current position of key tickers relative to their important daily simple moving averages (SMAs) for premarket technical analysis  
-tags: [premarket, technical-analysis, moving-averages, support-resistance]  
+description: Extract and return key daily moving averages (8d, 21d, 34d, 50d, 100d, 200d) for specified tickers  
+tags: [premarket, macro, setup]  
 author: Simon Plant  
-last_updated: 2025-05-04  
+last_updated: 2025-05-05  
 version: 1.0  
 category: premarket  
-usage: Use during premarket preparation to get a quick technical overview of market strength/weakness and identify potential support/resistance levels  
+usage: Run during morning prep to identify relevant support/resistance MAs for trade planning  
+status: stable  
+requires: []  
+linked_outputs: [unified-trade-plan-generator.md]  
+input_format: prompt  
+output_format: markdown  
+ai_enabled: true  
 ---
 # Get Daily SMA for Tickers
 
@@ -21,7 +27,6 @@ This prompt analyzes and reports the current position of key tickers relative to
 ## Key Moving Averages
 - 8-day SMA (short-term trend)
 - 21-day SMA (intermediate-term trend)
-- 34-day SMA (Fibonacci-based trend)
 - 50-day SMA (medium-term trend)
 - 100-day SMA (longer-term trend) 
 - 200-day SMA (major long-term trend)

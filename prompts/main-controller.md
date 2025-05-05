@@ -1,11 +1,18 @@
 ---
-title: Trading System Main Controller
-description: Master routing prompt for executing structured trading tasks across premarket, intraday, postmarket, and system workflows
-category: core
-author: Simon Plant
-version: 1.01
-last_updated: 2025-05-05
-usage: Run first to orchestrate any task using the zipped prompt framework; provides intelligent dispatching across all modules
+title: Trading System Main Controller  
+description: Master routing prompt for executing structured trading workflows across phases  
+tags: [system]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.01  
+category: system  
+usage: Run first to orchestrate any task using the zipped prompt repo  
+status: stable  
+requires: [unified-trade-plan-generator.md, validate-intraday-trade-idea.md, export-journal-entry.md]  
+linked_outputs: []  
+input_format: markdown  
+output_format: GPT-ready prompt  
+ai_enabled: true  
 ---
 
 # TRADING SYSTEM MAIN CONTROLLER — PROMPT

@@ -1,116 +1,148 @@
 ---
-title: Trading System Prompts
-description: Structured GPT-based prompt library to support disciplined options trading alongside Inner Circle and Mancini
-author: Simon Plant
-version: 1.0
-last_updated: 2025-05-03
-category: system
-usage: Upload this repo as a ZIP and use `prompts/main-controller.md` as the command router
+title: Trading System Prompts  
+description: Structured GPT-based prompt library to support disciplined options trading alongside Inner Circle and Mancini  
+tags: [system]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.3  
+category: system  
+usage: Upload the repo as a ZIP or repo link and use `prompts/main-controller.md` to engage the command router and copilot.  
+status: stable  
+requires: []  
+linked_outputs: []  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
-# Trading System Prompts — Usage Guide
+# Trading System Prompts — Unified Execution Framework
 
-## 1. How to Use This ZIP + Main Controller
+This is a modular AI-assisted trading framework designed by Simon Plant to support high-conviction, structure-driven options trading. It integrates David Prince's Inner Circle trade ideas, Adam Mancini’s SPX blueprint, and Simon’s personal SOPs, conviction sizing, and behavioral filters.
 
-Start a fresh AI assistant session and upload the zipped folder containing this repo. Then run:
+---
+
+## 🧭 System Overview — Visual Flow
+
+The following flow represents the full lifecycle of daily execution:
+
+**Premarket → Intraday → Postmarket**  
+Each phase connects via the Copilot, which serves as the execution and validation interface across all modules.
+
+📌 **Premarket**  
+- Extract trade ideas (DP, Mancini)
+- Map levels, structure plan
+
+📌 **Intraday**  
+- Validate trade ideas via Copilot
+- Align with setup library, regime, and behavior
+
+📌 **Postmarket**  
+- Log trades
+- Debrief and update behavioral KB
+- Export journal
+
+---
+
+## 1. How to Use This Repo
+
+Start a new assistant session and upload this ZIP. Then run:
 
 > Use `prompts/main-controller.md` as the routing layer. I want to interact with my trading system.
 
-This engages the structured routing logic across all phases: premarket, intraday, postmarket, and system reference.
+---
+
+## 2. What `main-controller.md` Does
+
+- Routes input to correct phase prompt
+- Loads key files like the charter, trade plan, and KB
+- Applies guardrails and SOP rules
+- Enables phase-to-phase continuity (plan → trade → review)
 
 ---
 
-## 2. Purpose of `main-controller.md`
+## 3. Supported Workflows
 
-The main controller serves as the system’s command router. It:
+### ➤ 🧠 Premarket Planning
 
-- Directs inputs to the appropriate prompts by phase
-- Runs multi-step workflows across DP, Mancini, and execution prompts
-- Enforces trading charter rules, blindspot filters, and SOP structure
-- Centralizes interaction with the system through a single entry point
+Prompt:  
+`Run premarket prep. Here’s the DP transcript and macro context.`
 
----
+Workflow:  
+- `dp-trade-analysis.md` → Tags DP trade ideas with conviction/duration/sizing
+- `mancini-trade-analysis.md` → Translates ES levels to SPX zones
+- `unified-trade-plan-generator.md` → Generates daily trade plan
 
-## 3. Primary Use Cases
-
-### ➤ Premarket Prep
-
-**Prompt:**  
-`Run premarket prep. Here’s the DP transcript. Also use today’s ES/QQQ/SPY levels.`
-
-**Workflow:**  
-- `dp-trade-analysis.md` → parses and tags DP trades
-- `mancini-trade-analysis.md` → extracts ES blueprint and converts to SPX
-- `unified-trade-plan-generator.md` → generates full daily trade plan
-
-**Output:**  
-Unified Trade Plan including: Market Bias, 5-Min Focus, Trade Stack, SPX Decision Tree, Execution Checklist.
+Output:  
+- Unified Trade Plan with bias, execution checklist, 5-min focus stack
 
 ---
 
-### ➤ Intraday Trade Validation
+### ➤ 📈 Intraday Trade Validation
 
-**Prompt:**  
-`Validate this intraday trade idea: TSLA long above 180 reclaim, cashflow. SPX reclaiming 5606.`
+Prompt:  
+`Validate this trade: AAPL reclaiming 170, scalp long, same-day expiration.`
 
-**Workflow:**  
-- `validate-intraday-trade-idea.md` → tests against technicals, plan, and behavioral risks
+Workflow:  
+- `validate-intraday-trade-idea.md` → Applies plan alignment, setup match, behavior check
+- `copilot.md` → Real-time agent validation with conviction, regime, and behavior overlay
 
-**Output:**  
-GO / WAIT / NO GO assessment, with rationale, blindspots, and plan compliance check.
-
----
-
-### ➤ Postmarket Review & Behavior Logging
-
-**Prompt:**  
-`Here’s my trade log and notes. Help me debrief and update my trading behavior KB.`
-
-**Workflow:**  
-- `daily-performance-debrief.md` → processes execution, notes, trade outcomes  
-- `update-trading-behaviors-kb.md` → updates blindspot patterns, discipline rules
-
-**Output:**  
-- Daily postmortem log saved to `/logs/YYYY/YYYY-MM-DD.md`  
-- Updated `system/trading-behaviors-kb.md`
+Output:  
+- GO / WAIT / NO GO response, tier sizing, linked Charter clause or blindspot
 
 ---
 
-### ➤ System Reference
+### ➤ 🧾 Postmarket Debrief + Behavior Update
 
-**Prompt:**  
-`Show me my Trading Charter and Behavior KB.`
+Prompt:  
+`Here’s my trade log and reflection. Help me review and learn.`
 
-**Workflow:**  
-Displays the latest versions of:
+Workflow:  
+- `daily-performance-debrief.md` → Logs trades and flags behavioral issues
+- `update-trading-behaviors-kb.md` → Updates knowledge base of patterns
+- `export-journal-entry.md` → Generates end-of-day summary
 
-- `system/trading-charter.md`
-- `system/trading-behaviors-kb.md`
-- `system/trading-system-sop.md` (if needed)
-
----
-
-## 4. Folder Structure
-
-| Folder           | Purpose                                                 |
-|------------------|----------------------------------------------------------|
-| `prompts/`       | Phase-specific prompts (premarket, intraday, postmarket) |
-| `logs/`          | Structured daily trade logs and reviews                  |
-| `system/`        | Charter, SOP, behavioral KB                              |
-| `README.md`      | Usage guide and reference instructions                   |
+Output:  
+- Structured log, updated KB, journaling template
 
 ---
 
-## 5. Optional TODOs
+### ➤ 📚 Reference + System Utilities
 
-- Add `friday-lotto-rules.md` checklist
-- Create `mirror-log-template.md` to compare IC trades vs own
-- Add `main-controller-guide.md` with prompt examples for all workflows
-- Optional: automation to create `/logs/YYYY-MM-DD.md` daily template
+Prompt:  
+`Show me my Charter, SOP, or chart legend.`
+
+- `trading-charter.md` → Risk, mindset, structure
+- `trading-system-sop.md` → Phase-by-phase checklists
+- `chart-visual-legend.md` → Screenshot interpretation key
+- `market-regimes.md` → Defines current state and active setup types
 
 ---
 
-## Author
+## 4. New Additions (May 2025)
+
+| File | Description |
+|------|-------------|
+| `prompts/intraday/copilot.md` | Central AI agent for validating trades and sizing |
+| `system/trade-setups-kb.md` | Canonical library of setups (e.g., Failed Reclaim, Scalp, Swing) |
+| `system/market-regimes.md` | Classifies market bias and filters valid setups |
+| `prompts/postmarket/export-journal-entry.md` | Generates daily Markdown summary for trade logs |
+
+---
+
+## 5. Folder Structure
+
+| Folder            | Purpose                                                   |
+|-------------------|------------------------------------------------------------|
+| `prompts/`        | Core prompt logic by phase (premarket, intraday, postmarket) |
+| `system/`         | Charter, SOP, KBs, setups, market regimes, chart legend     |
+| `logs/`           | Structured markdown files for daily trade logs             |
+| `README.md`       | This file — primary usage guide and system map             |
+
+---
+
+## 6. Author
 
 Simon Plant  
 [GitHub: simonplant](https://github.com/simonplant)
+
+---

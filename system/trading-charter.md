@@ -1,11 +1,18 @@
 ---
-title: Trading System Charter
-description: Defines Simon’s daily operating framework for disciplined, structured trading execution
-category: system
-author: Simon Plant
-version: 1.1
-last_updated: 2025-05-03
-usage: Reference each morning before market open and review during trade decision moments
+title: Trading System Charter  
+description: Defines Simon’s daily operating framework for disciplined, structured trading execution  
+tags: [system]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.1  
+category: system  
+usage: Reference each morning before market open and review during trade decision moments  
+status: stable  
+requires: []  
+linked_outputs: []  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 # TRADING SYSTEM CHARTER

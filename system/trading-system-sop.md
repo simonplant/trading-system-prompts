@@ -1,11 +1,18 @@
 ---
-title: Trading System SOP
-description: Daily operational playbook for Simon Plant’s structured trading workflow
-category: system
-author: Simon Plant
-version: 1.0
-last_updated: 2025-05-03
-usage: Use this SOP as a live reference to manage premarket prep, intraday execution, and postmarket review
+title: Trading System SOP  
+description: Daily operational playbook for Simon Plant’s structured trading workflow  
+tags: [system]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: system  
+usage: Use this SOP as a live reference to manage premarket, intraday, and postmarket phases  
+status: stable  
+requires: [trading-charter.md]  
+linked_outputs: []  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
 ---
 
 # TRADING SYSTEM SOP — SIMON PLANT

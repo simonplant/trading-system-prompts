@@ -115,3 +115,42 @@ ai_enabled: false
 - Add optional `model:` and `behavior_mode:` fields  
   For future AI tuning and prompt tone/role  
   **Tags:** `infra`, `meta`, `behavior`
+
+---
+
+# TODO: MAY 5 AUDIT EXTENSION
+
+sop_and_system_architecture:
+  - "[ ] Add a visual dependency graph or flow diagram to `system/trading-system-sop.md` showing prompt relationships."
+  - "[ ] Add `trigger:`, `last_run:`, and `status:` fields to YAML frontmatter across all prompts for better automation tracking."
+  - "[ ] Add explicit journaling rules to SOP (e.g., minimum trade count or PnL thresholds)."
+
+behavioral_integration:
+  - "[ ] Enhance `trading-behaviors-kb.md` with live prompt triggers like `behavior_trigger:` and `override_action:` logic."
+  - "[ ] Add system-level rule for 'Avoidance Zones' (e.g., chop, overlapping macro events, Fed days)."
+
+copilot_and_intraday_flow:
+  - "[ ] Improve `copilot.md` logic with tactical checks (e.g., 'If SPX breaks level with volume, AND confidence was high…')."
+  - "[ ] Add scenario prompts for:"
+  - "    - Choppy market playbook"
+  - "    - Macro/news-driven volatility"
+  - "    - Gap-and-fade setups"
+  - "    - Flip/abort trades on key level breach"
+
+unified_trade_plan_generator:
+  - "[ ] Add logic to downgrade trade ideas with <2R setups."
+  - "[ ] Add `stack_rank:` field to help prioritize high-confidence ideas."
+  - "[ ] Add flip logic for major level failures (e.g., if SPX breaks support with volume, flag short setup)."
+
+postmarket_enhancements:
+  - "[ ] Add 'Missed Setups' section to `daily-performance-debrief.md`."
+  - "[ ] Add PnL Attribution logic (Structure vs. Impulse)."
+  - "[ ] Add 'Next-Day Hypothesis' block to connect postmarket to premarket planning."
+
+capital_and_tiering_logic:
+  - "[ ] Add tiering decision logic by trade type (e.g., tier early for swings, late for scalps)."
+  - "[ ] Automate trade tiering into premarket trade idea output based on confidence/sentiment/structure."
+
+automation_opportunities:
+  - "[ ] Auto-fetch and filter key MAs (8/21/34/50/100/200) across core tickers for the next 2 days."
+  - "[ ] Add daily 'no trade' check logic and affirmations."

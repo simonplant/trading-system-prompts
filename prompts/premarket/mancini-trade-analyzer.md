@@ -28,7 +28,7 @@ Extract structured technical data, trade setups, and market structure insights f
    - Extract exact numerical levels with context
    - Identify primary structure levels vs. intraday magnets
    - Catalog prior day's highs/lows and V-shape recovery points
-   - Convert ES levels to SPX (-30 points)
+   - Convert ES levels to SPX -20 points)
 
 2. **TRADE SETUPS**
    - Focus on Failed Breakdown opportunities

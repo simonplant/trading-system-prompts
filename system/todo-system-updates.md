@@ -61,6 +61,24 @@ ai_enabled: false
   Minimal block needed for parsing + archival  
   **Tags:** `infra`, `logs`, `ai_enabled`
 
+- Add a visual dependency graph or flow diagram to `system/trading-system-sop.md` showing prompt relationships  
+  **Tags:** `infra`, `routing`, `docs`
+
+- Add `trigger:`, `last_run:`, and `status:` fields to YAML frontmatter across all prompts  
+  **Tags:** `infra`, `metadata`, `automation`
+
+- Add explicit journaling rules to SOP (e.g., minimum trade count or PnL thresholds)  
+  **Tags:** `review`, `logs`, `discipline`
+
+- Improve `copilot.md` logic with tactical checks (e.g., “If SPX breaks level with volume, AND confidence was high…”)  
+  **Tags:** `execution`, `structure`, `risk control`
+
+- Add logic to downgrade trade ideas with <2R setups in trade plan  
+  **Tags:** `risk control`, `sizing`, `reward:risk`
+
+- Add flip logic for major level failures (e.g., if SPX breaks support with volume, flag short setup)  
+  **Tags:** `structure`, `reversal`, `macro`
+
 ## P1 – Tactical Execution Enhancements
 
 - Create `trade-intent-validator.md`  
@@ -70,6 +88,24 @@ ai_enabled: false
 - Add precise capital enforcement logic to `copilot-confirm.md`  
   Enforce tier-based checks using `trading-capital-profile.md` values  
   **Tags:** `risk control`, `position sizing`, `capital discipline`
+
+- Enhance `trading-behaviors-kb.md` with `behavior_trigger:` and `override_action:` logic  
+  **Tags:** `behavior`, `discipline`, `execution`
+
+- Add system-level rule for “Avoidance Zones” (e.g., chop, overlapping macro events, Fed days)  
+  **Tags:** `discipline`, `structure`, `risk filter`
+
+- Add `stack_rank:` field to premarket trade plan for real-time prioritization  
+  **Tags:** `focus`, `conviction`, `structure`
+
+- Add “Missed Setups” section to `daily-performance-debrief.md`  
+  **Tags:** `review`, `learning`, `resilience`
+
+- Add PnL Attribution logic (Structure vs. Impulse) to debrief  
+  **Tags:** `review`, `psychology`, `meta-learning`
+
+- Add “Next-Day Hypothesis” field to bridge postmarket and premarket logic  
+  **Tags:** `structure`, `review`, `continuity`
 
 - Add `intent_vs_outcome:` scoring to trade log and debrief  
   Separates quality of decision from result for clearer learning  
@@ -96,7 +132,13 @@ ai_enabled: false
   - `generate-kb-update.md`  
   **Tags:** `infra`, `structure`, `consistency`
 
-## P2 – System Navigation + Templates
+## P2 – System Navigation + Tiering + Templates
+
+- Add tiering decision logic by trade type (e.g., tier early for swings, late for scalps)  
+  **Tags:** `position sizing`, `discipline`, `structure`
+
+- Automate trade tiering into premarket trade idea output based on confidence/sentiment  
+  **Tags:** `execution`, `automation`, `sizing`
 
 - Create `prompt-routing-overview.md`  
   Visualize prompt flow across phases (Mermaid/markdown)  
@@ -106,7 +148,7 @@ ai_enabled: false
   `/templates/trade-log.md`, `/templates/kb-entry.md`, `/templates/journal-entry.md`  
   **Tags:** `structure`, `reference`, `UX`
 
-## P3 – Documentation Polish + Metadata Extensions
+## P3 – Documentation Polish + Automation Infrastructure
 
 - Refine `description:` fields across all prompts  
   Improve clarity and specificity  
@@ -116,41 +158,8 @@ ai_enabled: false
   For future AI tuning and prompt tone/role  
   **Tags:** `infra`, `meta`, `behavior`
 
----
+- Auto-fetch and filter relevant MAs (8/21/34/50/100/200) for each ticker over next 2 days  
+  **Tags:** `automation`, `levels`, `prep`
 
-# TODO: MAY 5 AUDIT EXTENSION
-
-sop_and_system_architecture:
-  - "[ ] Add a visual dependency graph or flow diagram to `system/trading-system-sop.md` showing prompt relationships."
-  - "[ ] Add `trigger:`, `last_run:`, and `status:` fields to YAML frontmatter across all prompts for better automation tracking."
-  - "[ ] Add explicit journaling rules to SOP (e.g., minimum trade count or PnL thresholds)."
-
-behavioral_integration:
-  - "[ ] Enhance `trading-behaviors-kb.md` with live prompt triggers like `behavior_trigger:` and `override_action:` logic."
-  - "[ ] Add system-level rule for 'Avoidance Zones' (e.g., chop, overlapping macro events, Fed days)."
-
-copilot_and_intraday_flow:
-  - "[ ] Improve `copilot.md` logic with tactical checks (e.g., 'If SPX breaks level with volume, AND confidence was high…')."
-  - "[ ] Add scenario prompts for:"
-  - "    - Choppy market playbook"
-  - "    - Macro/news-driven volatility"
-  - "    - Gap-and-fade setups"
-  - "    - Flip/abort trades on key level breach"
-
-unified_trade_plan_generator:
-  - "[ ] Add logic to downgrade trade ideas with <2R setups."
-  - "[ ] Add `stack_rank:` field to help prioritize high-confidence ideas."
-  - "[ ] Add flip logic for major level failures (e.g., if SPX breaks support with volume, flag short setup)."
-
-postmarket_enhancements:
-  - "[ ] Add 'Missed Setups' section to `daily-performance-debrief.md`."
-  - "[ ] Add PnL Attribution logic (Structure vs. Impulse)."
-  - "[ ] Add 'Next-Day Hypothesis' block to connect postmarket to premarket planning."
-
-capital_and_tiering_logic:
-  - "[ ] Add tiering decision logic by trade type (e.g., tier early for swings, late for scalps)."
-  - "[ ] Automate trade tiering into premarket trade idea output based on confidence/sentiment/structure."
-
-automation_opportunities:
-  - "[ ] Auto-fetch and filter key MAs (8/21/34/50/100/200) across core tickers for the next 2 days."
-  - "[ ] Add daily 'no trade' check logic and affirmations."
+- Add daily “no trade” check logic and affirmations for flat days  
+  **Tags:** `psychology`, `discipline`, `meta-awareness`

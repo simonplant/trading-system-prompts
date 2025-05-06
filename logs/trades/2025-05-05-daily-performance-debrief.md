@@ -1,3 +1,20 @@
+---
+title: Daily Performance Debrief – May 5, 2025  
+description: Quantitative and qualitative review of all trades placed on May 5  
+tags: [log, postmarket, trading, performance]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: log  
+usage: Used nightly to analyze trade execution, P&L, conviction alignment, and errors  
+status: stable  
+requires: [unified-trade-plan-2025-05-05.md]  
+linked_outputs: [log-template, kb-update-recommendations]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
+---
+
  # DAILY PERFORMANCE DEBRIEF - Monday, May 5, 2025
 
 ## MARKET CONTEXT

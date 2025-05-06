@@ -1,3 +1,20 @@
+---
+title: KB Update Recommendations – May 5, 2025  
+description: Extracted lessons and system enhancements from May 5 trading performance  
+tags: [log, system, behavioral, export]  
+author: Simon Plant  
+last_updated: 2025-05-05  
+version: 1.0  
+category: log  
+usage: Captures behavioral corrections and system improvements for updating core KB  
+status: stable  
+requires: [2025-05-05-trading-journal.md, 2025-05-05-daily-performance-debrief.md]  
+linked_outputs: [behavior-kb, system-updates-log]  
+input_format: markdown  
+output_format: markdown  
+ai_enabled: true  
+---
+
 # KNOWLEDGE BASE UPDATE RECOMMENDATIONS
 
 Based on today's trading session and observed patterns, the following updates to the Trading Behaviors Knowledge Base are recommended:

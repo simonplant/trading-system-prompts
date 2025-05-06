@@ -15,83 +15,50 @@ output_format: markdown
 ai_enabled: true  
 ---
 
-# KNOWLEDGE BASE UPDATE RECOMMENDATIONS
+# KNOWLEDGE BASE UPDATE - Monday, May 5, 2025
 
-Based on today's trading session and observed patterns, the following updates to the Trading Behaviors Knowledge Base are recommended:
+## Positive Tags
+- Proper implementation of predetermined stop losses
+- Disciplined honoring of stop losses despite adverse moves
+- Adaptation to changing IC signals (shifting with DP's positioning)
+- Intentional risk reduction after previous session losses
 
-## NEW PATTERNS TO DOCUMENT
+## Negative Patterns
+- Multiple small entries across extended timeframes (4 entries for META, multiple for NFLX)
+- Mixed bias trading with conflicting IC signals (NFLX)
+- Entry timing issues (NFLX entry at near daily high)
+- Attempting to trade in pre-FOMC choppy conditions without specialized approach
 
-### 12. Pre-FOMC Trading Protocol
-- **Pattern**: Trading normal size/frequency during pre-FOMC indecision
-- **Impact**: Increased stop-outs from choppy price action with diminished directional conviction
-- **Fix**: Implement Pre-FOMC Protocol:
-  - 50% max position size for all trades
-  - Require 2+ technical confirmations (not just one)
-  - Focus on mean-reversion setups vs. breakouts
-  - Prefer longer-dated options (2+ weeks) to mitigate theta
+## Rules Violated
+- SOP: Position sizing consistency (multiple small entries vs. conviction-based sizing)
+- Charter: Trading without clear IC confirmation on NFLX (mixed signals)
 
-### 13. Conviction-Based Position Building
-- **Pattern**: Multiple small entries across extended timeframes vs. decisive positioning
-- **Impact**: Commission drag, psychological fatigue, suboptimal average entry prices
-- **Fix**: Entry Conviction Framework:
-  - Tier 1 (High): 80-100% position in single entry
-  - Tier 2 (Medium): 50% initial + 1 scaling opportunity (25% each)
-  - Tier 3 (Low): 25% initial + 2 scaling opportunities
-  - No position should require more than 3 total entries
+## Observed Causes
+- Pre-FOMC indecision creating choppy market conditions
+- Reduced conviction leading to incremental position building
+- Asymmetric approach to winning trades vs. losing trades
+- Conflicting signals from different IC members
 
-## REFINEMENTS TO EXISTING PATTERNS
+## Adjustments
 
-### Pattern #3: Gave Up Winners / Late Entries
-**Current Definition**: "Missed exits on ITM positions; chased extended names"
+### Pre-FOMC Trading Protocol
+- Implement 50% max position size for all trades during pre-FOMC periods
+- Require 2+ technical confirmations (not just one)
+- Focus on mean-reversion setups rather than breakouts
+- Prefer longer-dated options (2+ weeks) to mitigate theta decay
 
-**Recommended Refinement**:
-- **Pattern**: Inconsistent approach to winning trades vs. losing trades
-- **Impact**: Asymmetric exit discipline (tight stops for losses, loose for gains)
-- **Fix**: Symmetric Trade Management:
-  - All trades require predefined 1:2 minimum risk/reward
-  - Set trailing stop to breakeven at +1R
-  - Take partial profits (50%) at +1.5R
-  - Trail remainder with technical stops (MAs or structure)
+### Entry Conviction Framework
+- Tier 1 (High): 80-100% position in single entry
+- Tier 2 (Medium): 50% initial + 1 scaling opportunity (25% each)
+- Tier 3 (Low): 25% initial + 2 scaling opportunities
+- No position should require more than 3 total entries
 
-### Pattern #7: Mixed Bias with No Confirmation
-**Current Definition**: "Traded both calls/puts on same names without clarity"
+### Signal Consensus Framework
+- Primary Signal: DP's explicit trade call
+- Confirmation Signal: Second IC member OR strong technical setup
+- Contradiction Protocol: When IC members contradict, default to:
+  1. DP's most recent explicit position
+  2. Technical structure alignment with bigger timeframe
+  3. Reduced size (50% max) if entering despite contradictions
 
-**Recommended Refinement**:
-- **Pattern**: Acting on conflicting signals from different IC members
-- **Impact**: Reduced conviction, unclear directional bias, hesitant execution
-- **Fix**: Signal Consensus Framework:
-  - Primary Signal: DP's explicit trade call
-  - Confirmation Signal: Second IC member OR strong technical setup
-  - Contradiction Protocol: When IC members contradict, default to:
-    1. DP's most recent explicit position
-    2. Technical structure alignment with bigger timeframe
-    3. Reduced size (50% max) if entering despite contradictions
-
-## NEW CONCEPTS TO INCORPORATE
-
-### Market Regime Awareness
-- Different setups work in different market regimes
-- Pre-FOMC represents a specific regime requiring adjusted execution
-- Identify current regime before determining valid setup types
-- Each regime has specific volatility characteristics requiring position sizing adjustments
-
-### Entry Quality vs. Entry Timing
-- Perfect entry timing with poor setup quality leads to losses
-- Excellent setup quality with suboptimal timing can still be profitable
-- Prioritize setup quality over entry timing
-- Score each entry on both dimensions: Setup Quality (A/B/C) and Entry Timing (1/2/3)
-
-### IC Implementation Protocol
-- Create structured approach for implementing IC trades
-- Precise matching of expiration and strike
-- Tiered sizing based on conviction signals and confirmation
-- Clear criteria for exits that may differ from IC members
-
-## IMPLEMENTATION RECOMMENDATIONS
-
-1. Update the Trading Behaviors KB document with these additions
-2. Create a new section on "Market Regimes" with specific protocols
-3. Develop a Pre-FOMC Trading Playbook as a separate document
-4. Update the daily checklist to include regime identification step
-
-These changes will enhance the knowledge base with systemic patterns observed across multiple trading sessions while incorporating today's specific learnings into broader frameworks.
+> "Less is more means exactly that, less trades and greater focus on r/r. I had quite a few mention record days, weeks or year but hope to hear it from most of you. In 30 years it always comes down to doing enough of the A plus set ups while not throwing money in the toilet in between." - DP (11:41 AM)

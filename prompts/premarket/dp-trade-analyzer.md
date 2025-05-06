@@ -4,14 +4,14 @@ description: Extract structured trade ideas, conviction signals, and coaching in
 tags: [premarket, analysis, dp]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 2.1  
+version: 2.2  
 category: premarket  
 usage: Run after the Inner Circle morning call. Produces structured trade data and coaching insights for system integration. Consumes call transcript or live notes.
 status: active  
 requires: []  
-linked_outputs: [unified-trade-plan-generator.md]  
+linked_outputs: [dp-trade-summary.md, unified-trade-plan-generator.md]  
 input_format: markdown  
-output_format: markdown  
+output_format: json  
 ai_enabled: true  
 ---
 
@@ -109,13 +109,13 @@ Fields:
    | MEDIUM     | HALF        | HALF        | None        | SMALL     |  
    | LOW        | QUARTER     | QUARTER     | None        | TINY      |  
 
-4. Trigger Type Classification (NEW):  
+4. Trigger Type Classification:  
    - exact: Specific price, range, or MA cited  
    - loose-trigger: Directional idea without hard level  
      Examples:  
-     - “I’d buy that on a dip”  
-     - “Looks good post earnings”  
-     - “Buyer if this fades”  
+     - "I'd buy that on a dip"  
+     - "Looks good post earnings"  
+     - "Buyer if this fades"  
 
 ---
 
@@ -130,12 +130,17 @@ Step 6: Format everything according to JSON spec
 
 ---
 
-### OUTPUT FORMAT
+### FINAL OUTPUT — SYSTEM JSON
 
-1. SYSTEM DATA (FOR INTEGRATION)  
-- TRADE_DATA  
-- MARKET_BIAS  
-- COACHING_INSIGHTS  
+Please now output ONLY the following valid JSON object:
+```json
+{
+  "TRADE_DATA": [...],
+  "MARKET_BIAS": {...},
+  "COACHING_INSIGHTS": {...}
+}
+```
 
-2. HUMAN-READABLE SUMMARY  
-Format:
+Do not output any summaries, notes, or comments outside this JSON block.
+
+To generate a human-readable version of the trade ideas, run `dp-trade-summary.md` separately after confirming JSON output integrity.

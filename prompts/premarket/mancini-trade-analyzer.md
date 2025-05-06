@@ -4,14 +4,14 @@ description: Extract structured technical levels, trade setups, and acceptance p
 tags: [premarket, analysis, technical]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 2.1  
+version: 2.2  
 category: premarket  
 usage: Run before market open after Mancini newsletter is available. Produces structured technical data and trade setups for system integration. Consumes ES/SPX levels and Mancini's blueprint notes.
 status: active  
 requires: []  
-linked_outputs: [unified-trade-plan-generator.md]  
+linked_outputs: [mancini-blueprint-summary.md, unified-trade-plan-generator.md]  
 input_format: markdown  
-output_format: markdown  
+output_format: json  
 ai_enabled: true  
 ---
 
@@ -62,7 +62,8 @@ For each extraction category, maintain this exact structure for downstream syste
 {
   "metadata": {
     "es_to_spx_conversion": "current conversion value used",
-    "date": "analysis date"
+    "date": "analysis date",
+    "version": "2.2"
   },
   "market_structure": {
     "regime": "BUY_DIPS|SELL_RIPS|RANGE_BOUND|TRENDING",
@@ -218,12 +219,10 @@ Process the Mancini blueprint in these precise steps:
 
 ---
 
-### OUTPUT FORMAT
+### FINAL OUTPUT — SYSTEM JSON
 
-Provide the extracted data in two formats:
-
-1. **SYSTEM DATA (FOR INTEGRATION)**:
-```
+Please now output ONLY the following valid JSON object:
+```json
 {
   "TECHNICAL_DATA": {...},
   "TRADE_SETUPS": {...},
@@ -231,38 +230,9 @@ Provide the extracted data in two formats:
 }
 ```
 
-2. **HUMAN-READABLE SUMMARY (FOR REVIEW)**:
-```
-MANCINI SPX BLUEPRINT: [DATE]
+Do not output any summaries, notes, or comments outside this JSON block.
 
-ES TO SPX CONVERSION: [CURRENT VALUE USED]
-
-MARKET STRUCTURE:
-[1-2 sentences on current regime and pattern]
-
-KEY TECHNICAL LEVELS:
-• Structure: [Critical technical pattern levels]
-• Historical: [Prior day's high/low, significant pivots]
-• Magnets: [Price clustering zones]
-• Current Range: [Active trading range]
-
-PRIORITIZED SETUPS:
-1. [SETUP TYPE]: [Direction] [Conviction]
-   LEVEL: [Primary level]
-   ACCEPTANCE: [Required pattern]
-   EXECUTION: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
-   NOTES: [Context and reasoning]
-
-2. [Continue format for additional setups]
-
-EXECUTION GUIDELINES:
-• Windows: [Optimal timing]
-• Management: [Profit-taking protocol]
-• Runners: [Trailing methodology]
-
-INVALIDATION SIGNALS:
-• [Conditions that would invalidate setups]
-```
+To generate a human-readable version of the Mancini blueprint analysis, run `mancini-blueprint-summary.md` separately after confirming JSON output integrity.
 
 ---
 
@@ -287,5 +257,6 @@ The structured JSON data must be exact for system integration to function proper
 ---
 
 ### CHANGELOG
+- v2.2 (2025-05-05): Enforced strict JSON-only output and added summary generator reference
 - v2.1 (2025-05-05): Added ES_TO_SPX_CONVERSION parameter to account for dynamic conversion ratio throughout quarter
 - v2.0 (2025-05-01): Initial template design

@@ -1,20 +1,19 @@
 ---
-
 title: Unified Trade Plan Generator
 description: Generate an actionable daily trading plan integrating DP and Mancini insights
-tags: \[premarket, plan, execution]
+tags: [premarket, plan, execution]
 author: Simon Plant
-last\_updated: 2025-05-05
-version: 2.1
+last_updated: 2025-05-05
+version: 2.2
 category: premarket
 usage: Run after analyzing both DP and Mancini sources. Produces a comprehensive trade plan with execution rules. Consumes structured trade data, technical levels, and market bias.
 status: active
-requires: \[dp-morning-call-analyzer.md, mancini-blueprint-analyzer.md, system-parameters.md]
-linked\_outputs: \[copilot.md, generate-daily-trade-log.md]
-input\_format: markdown
-output\_format: markdown
-ai\_enabled: true
------------------
+requires: [dp-trade-analyzer.md, mancini-trade-analyzer.md, system-parameters.md]
+linked_outputs: [copilot.md, generate-daily-trade-log.md]
+input_format: json
+output_format: markdown
+ai_enabled: true
+---
 
 ## UNIFIED TRADE PLAN GENERATOR — PROMPT
 
@@ -28,11 +27,29 @@ Generate a comprehensive, execution-ready trade plan by integrating structured d
 This generator imports parameters from the central system-parameters.md file.
 Key parameters used:
 
-* ES\_TO\_SPX\_CONVERSION: Value used to convert ES futures levels to SPX
-* SPX\_TO\_SPY\_DIVISOR: Value used for SPX to SPY calculations
-* CONFIDENCE\_THRESHOLD: Minimum confidence required for trade inclusion
-* MAX\_POSITION\_SIZE: Maximum position size as percentage of portfolio
-* DAILY\_RISK\_LIMIT: Maximum daily risk allowed
+* ES_TO_SPX_CONVERSION: Value used to convert ES futures levels to SPX
+* SPX_TO_SPY_DIVISOR: Value used for SPX to SPY calculations
+* CONFIDENCE_THRESHOLD: Minimum confidence required for trade inclusion
+* MAX_POSITION_SIZE: Maximum position size as percentage of portfolio
+* DAILY_RISK_LIMIT: Maximum daily risk allowed
+
+---
+
+### DATA VALIDATION
+
+Before processing, validate the incoming JSON data:
+
+```javascript
+// Check for minimum required data
+if (!input.DP_DATA || !input.DP_DATA.TRADE_DATA || !Array.isArray(input.DP_DATA.TRADE_DATA) || 
+    !input.MANCINI_DATA || !input.MANCINI_DATA.TECHNICAL_DATA || !input.MANCINI_DATA.TRADE_SETUPS) {
+    
+    return {
+        error: "ERROR: Missing required upstream JSON. Check DP and Mancini analyzers.",
+        details: "The unified trade plan generator requires valid TRADE_DATA from DP and TECHNICAL_DATA/TRADE_SETUPS from Mancini."
+    };
+}
+```
 
 ---
 
@@ -42,25 +59,43 @@ Key parameters used:
 
    ```json
    {
-     "TRADE_DATA": [...],
-     "MARKET_BIAS": {...},
-     "COACHING_INSIGHTS": {...}
+     "DP_DATA": {
+       "TRADE_DATA": [...],
+       "MARKET_BIAS": {...},
+       "COACHING_INSIGHTS": {...}
+     }
    }
    ```
 
 2. **MANCINI TECHNICAL DATA**
 
-   * Key SPX levels and acceptance patterns
-   * Failed Breakdown opportunities
-   * Market structure analysis
-   * Execution windows and trade management protocols
+   ```json
+   {
+     "MANCINI_DATA": {
+       "TECHNICAL_DATA": {...},
+       "TRADE_SETUPS": {...},
+       "MARKET_ANALYSIS": {...}
+     }
+   }
+   ```
 
 3. **MARKET CONTEXT**
 
-   * Current ES/SPX/QQQ/SPY levels
-   * VIX reading
-   * Key economic events
-   * Major earnings reports
+   ```json
+   {
+     "MARKET_CONTEXT": {
+       "current_levels": {
+         "ES": 0.0,
+         "SPX": 0.0,
+         "QQQ": 0.0,
+         "SPY": 0.0,
+         "VIX": 0.0
+       },
+       "economic_events": [...],
+       "earnings_reports": [...]
+     }
+   }
+   ```
 
 ---
 
@@ -70,13 +105,13 @@ Follow this precise decision tree to determine trade prioritization:
 
 1. **PRIORITY TIER 1: Technical + Conviction Alignment**
 
-   * DP BIG\_IDEA/HIGH trades that align with Mancini key levels
+   * DP BIG_IDEA/HIGH trades that align with Mancini key levels
    * Must have precise entry, target, and stop levels
    * Technical structure must support directional bias
 
 2. **PRIORITY TIER 2: Strong Single-Source Setups**
 
-   * DP BIG\_IDEA/HIGH trades without clear technical alignment
+   * DP BIG_IDEA/HIGH trades without clear technical alignment
    * Mancini high-confidence setups without corresponding DP ideas
    * Must have clear trigger conditions and risk parameters
 
@@ -105,7 +140,7 @@ Follow this precise decision tree to determine trade prioritization:
 
 2. **Trade Categorization:**
 
-   * **Core Positions**: BIG\_IDEA + LONGTERM + technical alignment
+   * **Core Positions**: BIG_IDEA + LONGTERM + technical alignment
    * **Directional Trades**: HIGH/MEDIUM + SWING + clear structure
    * **Intraday Setups**: HIGH/MEDIUM + CASHFLOW + specific triggers
    * **Spec Plays**: Any conviction + LOTTO + tight risk control
@@ -130,9 +165,9 @@ Follow this precise decision tree to determine trade prioritization:
 
 1. **Technical Level Alignment**
 
-   * Harmonize levels across sources using system ES\_TO\_SPX\_CONVERSION parameter
+   * Harmonize levels across sources using system ES_TO_SPX_CONVERSION parameter
    * Convert all ES futures levels to SPX equivalents
-   * Convert SPX levels to SPY using system SPX\_TO\_SPY\_DIVISOR parameter when needed
+   * Convert SPX levels to SPY using system SPX_TO_SPY_DIVISOR parameter when needed
    * Ensure consistency in all numerical values
 
 2. **Level Prioritization**
@@ -216,6 +251,35 @@ TRADE MANAGEMENT RULES:
 
 ---
 
+### ERROR HANDLING
+
+If the script encounters errors, output a specific error message:
+
+```
+ERROR GENERATING UNIFIED TRADE PLAN
+
+Missing or invalid input data:
+- [Specific error message]
+
+Required JSON structure:
+{
+  "DP_DATA": {
+    "TRADE_DATA": [...],
+    "MARKET_BIAS": {...},
+    "COACHING_INSIGHTS": {...}
+  },
+  "MANCINI_DATA": {
+    "TECHNICAL_DATA": {...},
+    "TRADE_SETUPS": {...},
+    "MARKET_ANALYSIS": {...}
+  }
+}
+
+Please re-run the DP and Mancini analyzers with the corrected JSON output format.
+```
+
+---
+
 ### EXAMPLE TRADE INTEGRATION
 
 To illustrate proper integration, here's an example:
@@ -257,5 +321,6 @@ DIRECTIONAL TRADES:
 
 ### CHANGELOG
 
+* v2.2 (2025-05-05): Added JSON validation check and error handling
 * v2.1 (2025-05-05): Added support for system parameters reference
 * v2.0 (2025-05-01): Initial template design

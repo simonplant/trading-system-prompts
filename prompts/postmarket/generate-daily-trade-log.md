@@ -6,7 +6,7 @@ author: Simon Plant
 last_updated: 2025-05-05  
 version: 1.1  
 category: postmarket  
-usage: Run at session end to document trades and behavior flags. Produces a markdown log of trades, outcomes, scores, and lessons. Consumes entry/exit data and Copilot context.
+usage: Run at session end to document trades and behavior flags. Produces a markdown log of trades, outcomes, scores, and lessons. Consumes entry/exit data and Copilot context.  
 status: stable  
 requires: [trading-charter.md, trading-behaviors-kb.md]  
 linked_outputs: [daily-performance-debrief.md, generate-kb-update.md]  
@@ -17,7 +17,8 @@ ai_enabled: true
 
 ## TRADE LOG EXPORTER — PROMPT
 
-**Purpose:** Generate a Markdown file for structured trade-level data, excluding journal or behavioral KB notes.
+**Purpose:**  
+Generate a Markdown file for structured trade-level data, excluding journal or behavioral KB notes.
 
 ---
 
@@ -33,7 +34,7 @@ ai_enabled: true
 JSON-style embedded log in Markdown file:
 ```json
 {
-  "trading_day": { ... },
-  "trades": [ ... ],
-  "daily_performance": { ... }
+  "trading_day": { [complete this section] },
+  "trades": [ [complete this section] ],
+  "daily_performance": { [complete this section] }
 }

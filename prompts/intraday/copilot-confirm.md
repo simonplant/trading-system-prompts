@@ -95,7 +95,40 @@ Validate the psychological context of the trade:
 4. Can you articulate exactly why this trade aligns with your plan in 1-2 sentences? [YES/NO]
 5. If the setup is not in today's pre-session commitment, is there compelling evidence to take it anyway? [YES/NO/NA]
 
+### Behavioral Enforcement Logic (Gate 3 extensions)
+
+impulse_entry (0DTE constraint logic)
+Do NOT flag 0DTE trades by default.
+
+Allow 0DTE trades when:
+- Trade idea is explicitly mentioned by DP (or a moderator) during the session
+- You have structural confirmation (level break, backtest, reversal bar)
+- Entry is planned ahead in premarket OR matches a tier-1 intraday trigger
+- You are sizing within 1/3 position size unless trade is actively moving
+
+Flag 0DTE trade as impulse_entry if:
+- It was not discussed by DP or other moderators
+- You enter without level confluence or volume signal
+- It’s executed early in the session without system boot completion
+
+mod_capitulation_exit (tier downgrade logic)
+When all 3 moderators exit a trade (same direction, same instrument), downgrade the position to tier-zero unless:
+- You have a separate structural thesis to hold
+- Price is at key reversal support (e.g. reclaiming VWAP or trendline)
+- You are scaling out proactively, not passively waiting
+
+swing_strike_sync (mod-aligned entry hygiene)
+When joining a swing idea from moderators:
+- Prefer matching strike and expiration unless:
+  - You're entering for a scalp against their swing
+  - Your thesis has a different timeframe
+
+Flag deviation if:
+- Strike mismatch increases theta risk
+- Expiry mismatch misaligns with mod exits or volatility windows
+
 GATE 3 RESULT: [PASS if aligned with good behavior, otherwise FAIL with specific reason]
+
 
 ## Time-Based Validation
 

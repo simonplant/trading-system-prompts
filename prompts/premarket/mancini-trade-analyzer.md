@@ -4,7 +4,7 @@ description: Extract structured technical levels, trade setups, and acceptance p
 tags: [premarket, analysis, technical]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 2.0  
+version: 2.1  
 category: premarket  
 usage: Run before market open after Mancini newsletter is available. Produces structured technical data and trade setups for system integration. Consumes ES/SPX levels and Mancini's blueprint notes.
 status: active  
@@ -22,13 +22,21 @@ Extract structured technical data, trade setups, and market structure insights f
 
 ---
 
+### CONFIGURATION PARAMETERS
+
+ES_TO_SPX_CONVERSION: -30  # Update this value regularly as quarter progresses
+                           # Typical range: -40 (start of quarter) to -20 (mid-quarter)
+                           # May approach -10 or less near quarterly options expiration
+
+---
+
 ### EXTRACTION PRIORITIES
 
 1. **TECHNICAL LEVELS**
    - Extract exact numerical levels with context
    - Identify primary structure levels vs. intraday magnets
    - Catalog prior day's highs/lows and V-shape recovery points
-   - Convert ES levels to SPX -20 points)
+   - Convert ES levels to SPX using ES_TO_SPX_CONVERSION value
 
 2. **TRADE SETUPS**
    - Focus on Failed Breakdown opportunities
@@ -51,6 +59,10 @@ For each extraction category, maintain this exact structure for downstream syste
 **TECHNICAL_DATA**: 
 ```json
 {
+  "metadata": {
+    "es_to_spx_conversion": "current conversion value used",
+    "date": "analysis date"
+  },
   "market_structure": {
     "regime": "BUY_DIPS|SELL_RIPS|RANGE_BOUND|TRENDING",
     "current_pattern": "description of active technical structure",
@@ -158,7 +170,9 @@ For each extraction category, maintain this exact structure for downstream syste
 ### EXTRACTION RULES
 
 1. **Level Processing Logic**:
-   - Convert all ES levels to SPX by subtracting exactly 30 points
+   - Convert all ES levels to SPX by subtracting ${ES_TO_SPX_CONVERSION} points
+   - Note: This conversion factor varies throughout the quarter
+   - Document the current conversion factor used in the output
    - Maintain level precision (e.g., 5642 not 5640)
    - Identify level significance from context
    - Differentiate between strict levels and zones
@@ -179,6 +193,10 @@ For each extraction category, maintain this exact structure for downstream syste
    - **RECLAIM**: Price recovers level after flushing below
    - **BOTH**: Requires both patterns in sequence
 
+5. **Conversion Validation**:
+   - Verify ES_TO_SPX_CONVERSION against previous day's close in both indices
+   - Include validation in metadata section of output
+
 ---
 
 ### INSTRUCTIONS TO AI
@@ -187,7 +205,7 @@ Process the Mancini blueprint in these precise steps:
 
 1. First pass: Identify all technical structures and market regime
    
-2. Second pass: Extract and convert all price levels to SPX terms
+2. Second pass: Extract and convert all price levels to SPX terms using the ES_TO_SPX_CONVERSION parameter
    
 3. Third pass: Identify all trade setups with acceptance criteria
    
@@ -204,44 +222,46 @@ Process the Mancini blueprint in these precise steps:
 Provide the extracted data in two formats:
 
 1. **SYSTEM DATA (FOR INTEGRATION)**:
-   ```json
-   {
-     "TECHNICAL_DATA": {...},
-     "TRADE_SETUPS": {...},
-     "MARKET_ANALYSIS": {...}
-   }
-   ```
+```
+{
+  "TECHNICAL_DATA": {...},
+  "TRADE_SETUPS": {...},
+  "MARKET_ANALYSIS": {...}
+}
+```
 
 2. **HUMAN-READABLE SUMMARY (FOR REVIEW)**:
-   ```
-   MANCINI SPX BLUEPRINT: [DATE]
-   
-   MARKET STRUCTURE:
-   [1-2 sentences on current regime and pattern]
-   
-   KEY TECHNICAL LEVELS:
-   • Structure: [Critical technical pattern levels]
-   • Historical: [Prior day's high/low, significant pivots]
-   • Magnets: [Price clustering zones]
-   • Current Range: [Active trading range]
-   
-   PRIORITIZED SETUPS:
-   1. [SETUP TYPE]: [Direction] [Conviction]
-      LEVEL: [Primary level]
-      ACCEPTANCE: [Required pattern]
-      EXECUTION: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
-      NOTES: [Context and reasoning]
-   
-   2. [Continue format for additional setups]
-   
-   EXECUTION GUIDELINES:
-   • Windows: [Optimal timing]
-   • Management: [Profit-taking protocol]
-   • Runners: [Trailing methodology]
-   
-   INVALIDATION SIGNALS:
-   • [Conditions that would invalidate setups]
-   ```
+```
+MANCINI SPX BLUEPRINT: [DATE]
+
+ES TO SPX CONVERSION: [CURRENT VALUE USED]
+
+MARKET STRUCTURE:
+[1-2 sentences on current regime and pattern]
+
+KEY TECHNICAL LEVELS:
+• Structure: [Critical technical pattern levels]
+• Historical: [Prior day's high/low, significant pivots]
+• Magnets: [Price clustering zones]
+• Current Range: [Active trading range]
+
+PRIORITIZED SETUPS:
+1. [SETUP TYPE]: [Direction] [Conviction]
+   LEVEL: [Primary level]
+   ACCEPTANCE: [Required pattern]
+   EXECUTION: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
+   NOTES: [Context and reasoning]
+
+2. [Continue format for additional setups]
+
+EXECUTION GUIDELINES:
+• Windows: [Optimal timing]
+• Management: [Profit-taking protocol]
+• Runners: [Trailing methodology]
+
+INVALIDATION SIGNALS:
+• [Conditions that would invalidate setups]
+```
 
 ---
 
@@ -262,3 +282,9 @@ This data will feed directly into:
 - Risk management systems
 
 The structured JSON data must be exact for system integration to function properly.
+
+---
+
+### CHANGELOG
+- v2.1 (2025-05-05): Added ES_TO_SPX_CONVERSION parameter to account for dynamic conversion ratio throughout quarter
+- v2.0 (2025-05-01): Initial template design

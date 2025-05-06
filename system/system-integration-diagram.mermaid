@@ -1,0 +1,47 @@
+flowchart TD
+    subgraph Premarket
+        A[DP Morning Call] -->|Extract| B[DP Morning Call Analyzer]
+        C[Mancini Newsletter] -->|Extract| D[Mancini Blueprint Analyzer]
+        
+        B -->|Structured JSON| E[TRADE_DATA]
+        B -->|Structured JSON| F[MARKET_BIAS]
+        B -->|Structured JSON| G[COACHING_INSIGHTS]
+        
+        D -->|Structured JSON| H[TECHNICAL_DATA]
+        D -->|Structured JSON| I[TRADE_SETUPS]
+        D -->|Structured JSON| J[MARKET_ANALYSIS]
+        
+        E --> K[Unified Trade Plan Generator]
+        F --> K
+        G --> K
+        H --> K
+        I --> K
+        J --> K
+        
+        K -->|Actionable Plan| L[Final Trade Plan]
+    end
+    
+    subgraph Intraday
+        L --> M[Copilot]
+        M -->|Execution| N[Trade Validation]
+        N -->|Logging| O[Trade Log]
+    end
+    
+    subgraph Postmarket
+        O --> P[Daily Performance Debrief]
+        P --> Q[KB Update Recommendations]
+        P --> R[Generate Daily Journal]
+        R --> S[Export Journal Entry]
+    end
+    
+    style Premarket fill:#f9f7e8,stroke:#333,stroke-width:2px
+    style Intraday fill:#e8f4f9,stroke:#333,stroke-width:2px
+    style Postmarket fill:#f9e8f0,stroke:#333,stroke-width:2px
+    
+    classDef jsonData fill:#ffeecc,stroke:#f9c270,stroke-width:1px
+    classDef processor fill:#ccf5ff,stroke:#70c9f9,stroke-width:1px
+    classDef output fill:#ccffcc,stroke:#70f970,stroke-width:1px
+    
+    class E,F,G,H,I,J jsonData
+    class B,D,K,M,N,P,Q,R processor
+    class L,O,S output

@@ -22,11 +22,12 @@ Extract structured technical data, trade setups, and market structure insights f
 
 ---
 
-### CONFIGURATION PARAMETERS
+### SYSTEM PARAMETERS
 
-ES_TO_SPX_CONVERSION: -30  # Update this value regularly as quarter progresses
-                           # Typical range: -40 (start of quarter) to -20 (mid-quarter)
-                           # May approach -10 or less near quarterly options expiration
+This analyzer imports parameters from the central system-parameters.md file.
+Key parameters used:
+- ES_TO_SPX_CONVERSION: Value used to convert ES futures levels to SPX
+- SPX_TO_SPY_DIVISOR: Value used for SPX to SPY calculations when needed
 
 ---
 

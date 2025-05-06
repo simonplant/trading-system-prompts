@@ -1,30 +1,45 @@
 ---
-title: Unified Trade Plan Generator  
-description: Generate an actionable daily trading plan integrating DP and Mancini insights  
-tags: [premarket, plan, execution]  
-author: Simon Plant  
-last_updated: 2025-05-05  
-version: 2.0  
-category: premarket  
+
+title: Unified Trade Plan Generator
+description: Generate an actionable daily trading plan integrating DP and Mancini insights
+tags: \[premarket, plan, execution]
+author: Simon Plant
+last\_updated: 2025-05-05
+version: 2.1
+category: premarket
 usage: Run after analyzing both DP and Mancini sources. Produces a comprehensive trade plan with execution rules. Consumes structured trade data, technical levels, and market bias.
-status: active  
-requires: [dp-morning-call-analyzer.md, mancini-trade-analysis.md]  
-linked_outputs: [copilot.md, generate-daily-trade-log.md]  
-input_format: markdown  
-output_format: markdown  
-ai_enabled: true  
----
+status: active
+requires: \[dp-morning-call-analyzer.md, mancini-blueprint-analyzer.md, system-parameters.md]
+linked\_outputs: \[copilot.md, generate-daily-trade-log.md]
+input\_format: markdown
+output\_format: markdown
+ai\_enabled: true
+-----------------
 
 ## UNIFIED TRADE PLAN GENERATOR — PROMPT
 
-**Purpose:**  
+**Purpose:**
 Generate a comprehensive, execution-ready trade plan by integrating structured data from DP's morning call analysis and Mancini's SPX blueprint. Prioritize trade ideas based on conviction, technical alignment, and risk management parameters.
+
+---
+
+### SYSTEM PARAMETERS
+
+This generator imports parameters from the central system-parameters.md file.
+Key parameters used:
+
+* ES\_TO\_SPX\_CONVERSION: Value used to convert ES futures levels to SPX
+* SPX\_TO\_SPY\_DIVISOR: Value used for SPX to SPY calculations
+* CONFIDENCE\_THRESHOLD: Minimum confidence required for trade inclusion
+* MAX\_POSITION\_SIZE: Maximum position size as percentage of portfolio
+* DAILY\_RISK\_LIMIT: Maximum daily risk allowed
 
 ---
 
 ### DATA INPUTS
 
 1. **DP STRUCTURED DATA**
+
    ```json
    {
      "TRADE_DATA": [...],
@@ -34,16 +49,18 @@ Generate a comprehensive, execution-ready trade plan by integrating structured d
    ```
 
 2. **MANCINI TECHNICAL DATA**
-   - Key SPX levels and acceptance patterns
-   - Failed Breakdown opportunities
-   - Market structure analysis
-   - Execution windows and trade management protocols
+
+   * Key SPX levels and acceptance patterns
+   * Failed Breakdown opportunities
+   * Market structure analysis
+   * Execution windows and trade management protocols
 
 3. **MARKET CONTEXT**
-   - Current ES/SPX/QQQ/SPY levels
-   - VIX reading
-   - Key economic events
-   - Major earnings reports
+
+   * Current ES/SPX/QQQ/SPY levels
+   * VIX reading
+   * Key economic events
+   * Major earnings reports
 
 ---
 
@@ -52,52 +69,83 @@ Generate a comprehensive, execution-ready trade plan by integrating structured d
 Follow this precise decision tree to determine trade prioritization:
 
 1. **PRIORITY TIER 1: Technical + Conviction Alignment**
-   - DP BIG_IDEA/HIGH trades that align with Mancini key levels
-   - Must have precise entry, target, and stop levels
-   - Technical structure must support directional bias
+
+   * DP BIG\_IDEA/HIGH trades that align with Mancini key levels
+   * Must have precise entry, target, and stop levels
+   * Technical structure must support directional bias
 
 2. **PRIORITY TIER 2: Strong Single-Source Setups**
-   - DP BIG_IDEA/HIGH trades without clear technical alignment
-   - Mancini high-confidence setups without corresponding DP ideas
-   - Must have clear trigger conditions and risk parameters
+
+   * DP BIG\_IDEA/HIGH trades without clear technical alignment
+   * Mancini high-confidence setups without corresponding DP ideas
+   * Must have clear trigger conditions and risk parameters
 
 3. **PRIORITY TIER 3: Medium-Conviction Opportunities**
-   - DP MEDIUM conviction trades with some technical support
-   - Secondary Mancini setups
-   - Situational opportunities (earnings, event-driven)
+
+   * DP MEDIUM conviction trades with some technical support
+   * Secondary Mancini setups
+   * Situational opportunities (earnings, event-driven)
 
 4. **PRIORITY TIER 4: Watchlist Only**
-   - DP LOW conviction ideas
-   - Unclear technical structure
-   - Setups requiring multiple conditions
-   - Ideas without clear risk parameters
+
+   * DP LOW conviction ideas
+   * Unclear technical structure
+   * Setups requiring multiple conditions
+   * Ideas without clear risk parameters
 
 ---
 
 ### PLAN GENERATION RULES
 
 1. **Market Bias Determination:**
-   - If DP and Mancini align on direction: Strong bias
-   - If mixed signals: Cautious bias toward higher-conviction source
-   - If contradictory: Neutral bias with conditional scenarios
+
+   * If DP and Mancini align on direction: Strong bias
+   * If mixed signals: Cautious bias toward higher-conviction source
+   * If contradictory: Neutral bias with conditional scenarios
 
 2. **Trade Categorization:**
-   - **Core Positions**: BIG_IDEA + LONGTERM + technical alignment
-   - **Directional Trades**: HIGH/MEDIUM + SWING + clear structure
-   - **Intraday Setups**: HIGH/MEDIUM + CASHFLOW + specific triggers
-   - **Spec Plays**: Any conviction + LOTTO + tight risk control
+
+   * **Core Positions**: BIG\_IDEA + LONGTERM + technical alignment
+   * **Directional Trades**: HIGH/MEDIUM + SWING + clear structure
+   * **Intraday Setups**: HIGH/MEDIUM + CASHFLOW + specific triggers
+   * **Spec Plays**: Any conviction + LOTTO + tight risk control
 
 3. **Risk Management Rules:**
-   - Never exceed 2 tier-1 positions simultaneously
-   - Size all positions according to conviction matrix
-   - Reduce all sizing by 25% during high-volatility or event-driven sessions
-   - Combine similar directional exposures when calculating total risk
+
+   * Never exceed 2 tier-1 positions simultaneously
+   * Size all positions according to conviction matrix
+   * Reduce all sizing by 25% during high-volatility or event-driven sessions
+   * Combine similar directional exposures when calculating total risk
 
 4. **Execution Timing:**
-   - Respect Mancini's execution windows (7:30-11:00, after 3:00)
-   - Prioritize DP's specific timing instructions (e.g., "at open")
-   - Avoid new positions during 11:00-2:00 chop window
-   - Honor event timing (pre/post FOMC, earnings, economic data)
+
+   * Respect Mancini's execution windows (7:30–11:00, after 3:00)
+   * Prioritize DP's specific timing instructions (e.g., "at open")
+   * Avoid new positions during 11:00–2:00 chop window
+   * Honor event timing (pre/post FOMC, earnings, economic data)
+
+---
+
+### LEVEL INTEGRATION
+
+1. **Technical Level Alignment**
+
+   * Harmonize levels across sources using system ES\_TO\_SPX\_CONVERSION parameter
+   * Convert all ES futures levels to SPX equivalents
+   * Convert SPX levels to SPY using system SPX\_TO\_SPY\_DIVISOR parameter when needed
+   * Ensure consistency in all numerical values
+
+2. **Level Prioritization**
+
+   * Consensus levels (mentioned by both DP and Mancini): Highest priority
+   * Structure levels (identified by Mancini): Secondary priority
+   * Indicator levels (from DP): Tertiary priority
+
+3. **Level Context**
+
+   * Preserve original context from source data
+   * Add cross-reference when level appears in multiple sources
+   * Include confidence rating based on source agreement
 
 ---
 
@@ -127,7 +175,7 @@ CORE POSITIONS:
    NOTES: [Integration context, DP/Mancini alignment]
 
 DIRECTIONAL TRADES:
-1. [TICKER] [DIRECTION] [CONVICTION/DURATION/SIZE] 
+1. [TICKER] [DIRECTION] [CONVICTION/DURATION/SIZE]
    SETUP: [Entry conditions]
    TRIGGER: [Precise execution signal]
    LEVELS: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
@@ -155,7 +203,7 @@ RISK MANAGEMENT PROTOCOL:
 • [Current portfolio heat constraints]
 
 KEY EVENTS:
-• [Time]: [Event] - [Trading implications]
+• [Time]: [Event] – [Trading implications]
 • Earnings After Close: [Tickers]
 • Tomorrow Pre-Market: [Tickers]
 
@@ -173,6 +221,7 @@ TRADE MANAGEMENT RULES:
 To illustrate proper integration, here's an example:
 
 **DP Data:**
+
 ```json
 {
   "ticker": "META",
@@ -188,11 +237,13 @@ To illustrate proper integration, here's an example:
 ```
 
 **Mancini Data:**
-- No specific META mention
-- General market structure supports sector
-- Key SPX level at 5642 must hold for bullish trades
+
+* No specific META mention
+* General market structure supports sector
+* Key SPX level at 5642 must hold for bullish trades
 
 **Integrated Output:**
+
 ```
 DIRECTIONAL TRADES:
 1. META LONG [HIGH/SWING/FULL]
@@ -201,3 +252,10 @@ DIRECTIONAL TRADES:
    LEVELS: Entry 585 → Targets 595, 605, 620 → Stop 575
    NOTES: DP high conviction call, conditional on SPX holding 5642 support
 ```
+
+---
+
+### CHANGELOG
+
+* v2.1 (2025-05-05): Added support for system parameters reference
+* v2.0 (2025-05-01): Initial template design

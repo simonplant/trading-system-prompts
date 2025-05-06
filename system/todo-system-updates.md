@@ -4,7 +4,7 @@ description: Prioritized list of trading system tweaks and improvements
 tags: [system, backlog, architecture, refactor]
 author: Simon Plant
 last_updated: 2025-05-06
-version: 1.7
+version: 1.8
 category: system
 usage: Edit during system development or prompt refactor planning.
 status: active
@@ -27,6 +27,23 @@ ai_enabled: false
 # TODO: SYSTEM ENHANCEMENTS
 
 ## P0 – Highest Leverage Next
+
+- **Add full trade lifecycle capture to `dp-analyzer.md`**  
+  Refactor DP analyzer logic to capture:
+  - Entry triggers
+  - Exit actions (full or partial)
+  - Profit-taking notes
+  - Tiering in/out behavior
+  - Stop-loss updates
+  - Runner logic (trail, extend, adjust)
+  - Position status (e.g. active, trimmed, closed, watching)
+  
+  Ensure summaries and JSON reflect lifecycle, not just new trades.  
+  Must also:
+  - Surface “first trades” and “take profits” calls
+  - Stack rank by conviction and time urgency
+  - Treat trade management events as equal weight to new ideas  
+  **Tags:** `prompt_engineering`, `execution`, `lifecycle`, `mirror_mods`, `discipline`  
 
 - Complete `daily-performance-debrief.md`  
   Postmarket review + self-assessment prompt. Should pull in:  

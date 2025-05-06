@@ -1,15 +1,15 @@
 ---
-title: Trading Capital Profile  
-description: Central source of truth for trading capital, daily loss thresholds, position sizing rules, and exposure limits  
-tags: [system, control, capital]  
+title: Trading System Prompt Library  
+description: Master index and usage guide for Simon Plant’s AI-assisted trading framework  
+tags: [readme, index, overview]  
 author: Simon Plant  
-last_updated: 2025-05-05  
-version: 2.2  
-category: system  
-usage: Upload repo or browse locally to run prompt-driven trading system. Produces structured trade planning and execution flow. Consumes prompt inputs, journal context, and daily routines.
+last_updated: 2025-05-06  
+version: 1.0  
+category: root  
+usage: Start here when opening the repo. Describes architecture, file roles, workflows, and LLM routing.  
 status: stable  
 requires: []  
-linked_outputs: [capital-exposure-tracker, copilot, generate-daily-trade-log]  
+linked_outputs: []  
 input_format: markdown  
 output_format: markdown  
 ai_enabled: false  
@@ -25,18 +25,18 @@ This is a modular AI-assisted trading framework designed by Simon Plant to suppo
 
 The following flow represents the full lifecycle of daily execution:
 
-**Premarket → Intraday → Postmarket**  
+Premarket → Intraday → Postmarket  
 Each phase connects via the Copilot, which serves as the execution and validation interface across all modules.
 
-**Premarket**  
+Premarket  
 - Extract trade ideas (DP, Mancini)
 - Map levels, structure plan
 
-**Intraday**  
+Intraday  
 - Validate trade ideas via Copilot
 - Align with setup library, regime, and behavior
 
-**Postmarket**  
+Postmarket  
 - Log trades
 - Debrief and update behavioral KB
 - Export journal
@@ -65,55 +65,49 @@ Start a new assistant session and upload this ZIP. Then run:
 ### ➤ Premarket Planning
 
 Prompt:  
-`Run premarket prep. Here’s the DP transcript and macro context.`
+Run premarket prep. Here’s the DP transcript and macro context.
 
 Workflow:  
-- `dp-trade-analysis.md` → Tags DP trade ideas with conviction/duration/sizing
-- `mancini-trade-analysis.md` → Translates ES levels to SPX zones
+- `dp-trade-analysis.md` → Tags DP trade ideas with conviction/duration/sizing  
+- `mancini-trade-analysis.md` → Translates ES levels to SPX zones  
 - `unified-trade-plan-generator.md` → Generates daily trade plan
 
 Output:  
 - Unified Trade Plan with bias, execution checklist, 5-min focus stack
 
----
-
 ### ➤ Intraday Trade Validation
 
 Prompt:  
-`Validate this trade: AAPL reclaiming 170, scalp long, same-day expiration.`
+Validate this trade: AAPL reclaiming 170, scalp long, same-day expiration.
 
 Workflow:  
-- `validate-intraday-trade-idea.md` → Applies plan alignment, setup match, behavior check
+- `validate-intraday-trade-idea.md` → Applies plan alignment, setup match, behavior check  
 - `copilot.md` → Real-time agent validation with conviction, regime, and behavior overlay
 
 Output:  
 - GO / WAIT / NO GO response, tier sizing, linked Charter clause or blindspot
 
----
-
 ### ➤ Postmarket Debrief + Behavior Update
 
 Prompt:  
-`Here’s my trade log and reflection. Help me review and learn.`
+Here’s my trade log and reflection. Help me review and learn.
 
 Workflow:  
-- `daily-performance-debrief.md` → Logs trades and flags behavioral issues
-- `update-trading-behaviors-kb.md` → Updates knowledge base of patterns
+- `daily-performance-debrief.md` → Logs trades and flags behavioral issues  
+- `update-trading-behaviors-kb.md` → Updates knowledge base of patterns  
 - `export-journal-entry.md` → Generates end-of-day summary
 
 Output:  
 - Structured log, updated KB, journaling template
 
----
-
 ### ➤ Reference + System Utilities
 
 Prompt:  
-`Show me my Charter, SOP, or chart legend.`
+Show me my Charter, SOP, or chart legend.
 
-- `trading-charter.md` → Risk, mindset, structure
-- `trading-system-sop.md` → Phase-by-phase checklists
-- `chart-visual-legend.md` → Screenshot interpretation key
+- `trading-charter.md` → Risk, mindset, structure  
+- `trading-system-sop.md` → Phase-by-phase checklists  
+- `chart-visual-legend.md` → Screenshot interpretation key  
 - `market-regimes.md` → Defines current state and active setup types
 
 ---
@@ -140,9 +134,63 @@ Prompt:
 
 ---
 
+## 5a. File-Level Index
+
+Detailed list of all files by phase and system role. Helps search, indexing, and LLM compatibility (e.g., Claude).
+
+### Prompts
+
+prompts/premarket/
+- dp-trade-analysis.md — Extracts DP's morning call trade ideas, sentiment, and sizing
+- mancini-trade-analysis.md — Converts Mancini ES blueprint into actionable SPX levels
+- get-daily-sma-for-tickers.md — Surfaces daily SMAs likely to act as S/R
+- get-premarket-levels.md — Gathers SPX/ES/QQQ key levels for staging
+- unified-trade-plan-generator.md — Merges all premarket data into a single daily plan
+
+prompts/intraday/
+- copilot.md — Primary interface for validating and managing intraday trades
+- copilot-scout.md — Identifies new setups intraday
+- copilot-confirm.md — Validates if a trade is actionable
+- copilot-reset.md — Clears mental tilt or indecision
+- copilot-recenter.md — Returns focus to charter
+- midday-reset.md — Midday clarity check
+- copilot-debrief.md — Post-trade intra-session reflection
+
+prompts/postmarket/
+- generate-daily-trade-log.md
+- generate-daily-journal.md
+- daily-performance-debrief.md
+- generate-kb-update.md
+- update-trading-behaviors-kb.md
+
+### System
+
+- trading-system-sop.md — Master standard operating procedures
+- trading-charter.md — Your personal trading constitution
+- trading-capital-profile.md — Account size, sizing rules, tiers
+- market-regimes.md — Framework for adjusting strategy by macro regime
+- trading-behaviors-schema.md — Mental performance model
+- trade-setups-kb.md — Your library of validated setups
+- trading-behaviors-kb.md — Specific mental errors, corrections, affirmations
+- chart-visual-legend.md — Color key for interpreting screenshots
+- todo-system-updates.md — Pending changes to the system
+
+### Logs
+
+logs/trades/
+- 2025-05-05-daily-performance-debrief.md
+
+logs/journal/
+- 2025-05-05-trading-journal.md
+
+logs/kb-updates/
+- 2025-05-05-kb-update-recommendations.md
+
+---
+
 ## 6. Author
 
 Simon Plant  
-[GitHub: simonplant](https://github.com/simonplant)
+GitHub: https://github.com/simonplant
 
 ---

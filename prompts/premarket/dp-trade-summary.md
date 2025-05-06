@@ -4,12 +4,12 @@ description: Generate a human-readable summary of DP's trade ideas from structur
 tags: [premarket, analysis, dp]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 1.0  
+version: 1.1  
 category: premarket  
-usage: Run after dp-trade-analyzer.md produces JSON output. Creates a readable summary of trade ideas and coaching insights. Consumes structured JSON data.
+usage: Run after dp-trade-analyzer.md produces JSON output. Creates a readable summary of trade ideas and coaching insights. Consumes structured JSON data.  
 status: active  
 requires: [dp-trade-analyzer.md]  
-linked_outputs: []  
+linked_outputs: [unified-trade-plan-generator.md]  
 input_format: json  
 output_format: markdown  
 ai_enabled: true  
@@ -22,9 +22,9 @@ Convert the structured JSON data from the DP Morning Call Analyzer into a human-
 
 ---
 
-### INPUT REQUIREMENTS
+### INPUT STRUCTURE
 
-This tool requires valid JSON output from the dp-trade-analyzer.md prompt in the following format:
+Expected input from the analyzer:
 
 ```json
 {
@@ -34,190 +34,97 @@ This tool requires valid JSON output from the dp-trade-analyzer.md prompt in the
 }
 ```
 
-If the JSON is invalid or missing, the tool will return an error message and instructions to re-run the analyzer.
+Each entry in `TRADE_DATA` must include:
+
+```json
+{
+  "ticker": "string",
+  "direction": "LONG | SHORT",
+  "confidence": "BIG_IDEA | HIGH | MEDIUM | LOW",
+  "duration": "CASHFLOW | SWING | LONGTERM | LOTTO",
+  "position_size": "FULL_DOUBLE | FULL | HALF | QUARTER | SMALL | TINY",
+  "trigger_type": "exact | loose-trigger",
+  "levels": {
+    "entry": [number or string],
+    "target": [number or string],
+    "stop": number or string
+  },
+  "timing": "optional string",
+  "context": "string",
+  "earnings": {
+    "upcoming": true | false,
+    "date": "optional string",
+    "strategy": "pre | post"
+  }
+}
+```
 
 ---
 
 ### OUTPUT FORMAT
 
-Generate a clear, concise summary in the following format:
+Use this exact structure:
 
 ```
 # DP MORNING CALL SUMMARY — [DATE]
 
-## MARKET BIAS: [BULLISH/BEARISH/NEUTRAL/CAUTIOUS]
+## MARKET BIAS: [OVERALL SENTIMENT]
 
-[2-3 sentence overview of DP's market perspective]
+[1–3 sentence summary of DP's broad view.]
 
-## HIGH CONVICTION TRADE IDEAS
+## HIGH CONVICTION TRADES
 
-### [TICKER] — [DIRECTION] — [CONVICTION] — [DURATION]
-- Entry: [level or condition]
+### [TICKER] — [DIRECTION] — [CONFIDENCE] — [DURATION]
+- Entry: [entry zone]
 - Targets: [T1, T2, T3]
 - Stop: [stop level]
-- Context: [brief rationale or catalyst]
-- Timing: [specific execution window if mentioned]
+- Size: [position size]
+- Context: [why DP likes it]
+- Timing: [if specified]
 
-[Repeat for each HIGH or BIG_IDEA trade]
+## MEDIUM CONVICTION TRADES
 
-## MEDIUM CONVICTION IDEAS
+[Same format as above, grouped below HIGH]
 
-### [TICKER] — [DIRECTION] — [MEDIUM] — [DURATION]
-- Entry: [level or condition]
-- Targets: [T1, T2, T3]
-- Stop: [stop level]
-- Context: [brief rationale or catalyst]
+## WATCHLIST (LOW CONVICTION)
 
-[Repeat for each MEDIUM conviction trade]
+- [TICKER] [DIRECTION]: [brief context or levels]
 
-## WATCHLIST
+## COACHING INSIGHTS
 
-- [TICKER] [DIRECTION]: [brief context] [levels if available]
-- [TICKER] [DIRECTION]: [brief context] [levels if available]
+- [risk_management, timing, and other tactical notes]
 
-[List all LOW conviction trades with minimal details]
+## DIRECT QUOTES
 
-## KEY COACHING INSIGHTS
+> "[Quote from DP if available]"
 
-- [Risk management point]
-- [Timing advice]
-- [Market condition warning]
-- [Other notable advice]
+## CATALYSTS
 
-## NOTABLE QUOTES
-
-> [Direct quote from DP with strong emphasis or emotion]
-> [Another notable quote if available]
-
-## CATALYST WATCH
-
-- [Key economic data]
-- [FOMC, CPI, etc.]
-- [Sector catalysts]
-- [Notable earnings]
+- [Events like CPI, FOMC, earnings to watch]
 ```
 
 ---
 
-### FORMATTING GUIDELINES
+### PARSING LOGIC
 
-1. **High Conviction Trades**:
-   - Include all BIG_IDEA and HIGH conviction trades
-   - Provide full details with entry, targets, stops
-   - Bold the ticker symbols
-
-2. **Medium Conviction Trades**:
-   - Include all MEDIUM conviction trades
-   - Provide most details but less emphasis
-   - Group similar trades if appropriate
-
-3. **Watchlist**:
-   - List LOW conviction ideas in a concise format
-   - Emphasize any with specific catalysts
-   - Format as a simple bullet list
-
-4. **Coaching Insights**:
-   - Prioritize actionable risk management advice
-   - Highlight timing guidance for day structure
-   - Include direct quotes for key warnings
-
-5. **Overall Formatting**:
-   - Use clear hierarchical headers
-   - Bold key levels and signals
-   - Maintain consistent structure throughout
+1. Validate the input JSON.
+2. Categorize trades by `confidence`: BIG_IDEA → HIGH → MEDIUM → LOW.
+3. Use only fields present — gracefully handle missing `timing`, `earnings`, etc.
+4. Summarize all coaching and bias data clearly.
+5. Output only the formatted summary in markdown.
 
 ---
 
-### INSTRUCTIONS TO AI
+### ERROR HANDLING
 
-1. Parse the input JSON data
-2. Validate that all required sections exist
-3. Sort trade ideas by conviction level
-4. Format each trade according to guidelines
-5. Extract and prioritize coaching insights
-6. Generate a clean, readable summary using the exact format above
-7. Ensure all numerical values (levels, targets, stops) are preserved exactly
-8. Include the current date in the header
-
-If the input JSON is missing or malformed, output:
+If input is invalid:
 
 ```
 ERROR: Invalid or missing JSON input.
 
-Please run dp-trade-analyzer.md first and ensure it outputs valid JSON data in the format:
+Please run dp-trade-analyzer.md first and supply valid JSON:
 {
   "TRADE_DATA": [...],
   "MARKET_BIAS": {...},
   "COACHING_INSIGHTS": {...}
 }
-
-Then run this summary generator with the JSON output as input.
-```
-
----
-
-### EXAMPLE OUTPUT
-
-```
-# DP MORNING CALL SUMMARY — MAY 5, 2025
-
-## MARKET BIAS: CAUTIOUSLY BULLISH
-
-DP notes markets are extended after 9 consecutive green days but still sees upside potential in select names. Emphasizes being selective and taking profits quickly on intraday plays. Watching 5650 on SPX as key resistance.
-
-## HIGH CONVICTION TRADE IDEAS
-
-### **NVDA** — LONG — HIGH — SWING
-- Entry: 950-955 zone
-- Targets: 975, 1000, 1025
-- Stop: Below 940
-- Context: AI demand remains strong, pullbacks are buyable
-- Timing: Buy on morning weakness if markets open red
-
-### **META** — LONG — HIGH — SWING
-- Entry: 580-585 zone
-- Targets: 595, 605, 620
-- Stop: Below 575
-- Context: Strong earnings, highlighted as "cheap" multiple
-- Timing: On pullback
-
-## MEDIUM CONVICTION IDEAS
-
-### **XLE** — SHORT — MEDIUM — CASHFLOW
-- Entry: On test of 78.50
-- Targets: 77.50, 76.80
-- Stop: Above 79
-- Context: Overbought on daily, fading recent strength
-
-### **TSLA** — LONG — MEDIUM — SWING
-- Entry: Above 187
-- Targets: 195, 205
-- Stop: Below 181
-- Context: Basing pattern, looking for continuation
-
-## WATCHLIST
-
-- **CRWD** LONG: Watching for pull to 310 area, buyer there
-- **AMZN** LONG: If market strength continues, target 190
-- **XLF** SHORT: Potential fade at 42.50 for quick scalp
-- **AAPL** LONG: Only on strong market, above 185
-
-## KEY COACHING INSIGHTS
-
-- Take half position size on all intraday trades after 9 green days
-- Book profits quickly into strength today, market extended
-- First hour likely to be choppy; better setups after 10:30am ET
-- Watch VIX for sudden expansion above 16 as warning sign
-
-## NOTABLE QUOTES
-
-> "I'm not chasing anything today. Let things come to you, be patient and selective."
-> "NVDA is the one name I'd buy all day on pullbacks. The AI story hasn't changed."
-
-## CATALYST WATCH
-
-- CPI data tomorrow morning - critical for market direction
-- FOMC minutes Wednesday at 2pm ET
-- Tech earnings continue this week (list provided separately)
-- Watch semiconductors for sector leadership
-```

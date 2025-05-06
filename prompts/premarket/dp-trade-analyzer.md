@@ -4,15 +4,15 @@ description: Extract structured trade ideas, conviction signals, and coaching in
 tags: [premarket, analysis, dp]  
 author: Simon Plant  
 last_updated: 2025-05-05  
-version: 2.2  
+version: 2.3  
 category: premarket  
-usage: Run after the Inner Circle morning call. Produces structured trade data and coaching insights for system integration. Consumes call transcript or live notes.
+usage: Run after the Inner Circle morning call. Produces structured trade data and coaching insights for system integration.  
 status: active  
-requires: []  
-linked_outputs: [dp-trade-summary.md, unified-trade-plan-generator.md]  
 input_format: markdown  
 output_format: json  
 ai_enabled: true  
+linked_outputs: [dp-trade-summary.md, unified-trade-plan-generator.md]  
+schema_version: 1.0  
 ---
 
 ## DP MORNING CALL ANALYZER — PROMPT
@@ -24,123 +24,126 @@ Extract structured trade data, conviction signals, and coaching insights from DP
 
 ### EXTRACTION PRIORITIES
 
-1. TRADE IDEAS  
+1. **TRADE IDEAS**  
    - Focus on clear directional calls with levels  
-   - Also include directionally biased ideas without specific entry if intent is actionable — tag as `trigger_type: loose-trigger`  
-   - Filter out all analyst upgrades/downgrades unless DP explicitly endorses them  
-   - Only include the second half "trade ideas" section, not the market overview  
+   - Include directional biases without specific entries if actionable (tag as `trigger_type: loose-trigger`)  
+   - Exclude all analyst upgrades unless explicitly endorsed by DP  
+   - Only extract from the "second half" trade ideas section  
 
-2. CONVICTION SIGNALS  
-   - Note emotional language, repetition, and emphasis patterns  
-   - Track specific price levels vs. vague commentary  
-   - Identify DP's personal positioning ("I'm in this" vs "watching")  
+2. **CONVICTION SIGNALS**  
+   - Emotional language, repetition, personal position (“I’m in this”)  
+   - Specific price levels vs. vague commentary  
 
-3. COACHING INSIGHTS  
-   - Capture specific risk management guidance  
-   - Note market condition warnings (e.g., "after 9 green days...")  
-   - Extract timing advice (e.g., "take profits at open")  
-
----
-
-### DATA STRUCTURE SPECIFICATION
-
-For each extraction category, maintain this exact structure for downstream system integration:
-
-TRADE_DATA: [Array of structured trade objects]  
-Fields:
-- ticker: TICKER  
-- direction: LONG | SHORT  
-- conviction:  
-  - level: BIG_IDEA | HIGH | MEDIUM | LOW  
-  - signals: [emotional language, repetition, personal position, etc.]  
-- duration: CASHFLOW | SWING | LONGTERM | LOTTO  
-- sizing: FULL_DOUBLE | FULL | HALF | QUARTER | SMALL | TINY  
-- trigger_type: exact | loose-trigger  
-- levels:  
-  - entry: [price or condition]  
-  - targets: [T1, T2, T3]  
-  - stops: [stop level]  
-- timing: AT_OPEN | ON_PULLBACK | POST_EVENT | etc.  
-- context: direct quote or rationale  
-- earnings:  
-  - upcoming: true | false  
-  - date: optional string  
-  - strategy: pre | post earnings  
-
-MARKET_BIAS:  
-Fields:
-- overall: BULLISH | BEARISH | NEUTRAL | CAUTIOUS  
-- key_levels:  
-  - SPX: [...]  
-  - QQQ: [...]  
-  - SPY: [...]  
-  - VIX: [...]  
-- catalysts: [FOMC, CPI, EARNINGS, etc.]  
-- focus_sectors: [TECH, FINANCIALS, etc.]  
-
-COACHING_INSIGHTS:  
-Fields:
-- risk_management: [list]  
-- timing_advice: [list]  
-- market_condition_warnings: [list]  
-- direct_quotes: [list]  
+3. **COACHING INSIGHTS**  
+   - Risk management guidance  
+   - Market condition warnings  
+   - Timing advice (“take profits at open”)  
 
 ---
 
-### EXTRACTION RULES
+### DATA STRUCTURE — JSON SCHEMA
 
-1. Conviction Assessment Logic:  
-   - BIG_IDEA: Emotional language + Multiple mentions + Clear catalyst  
-   - HIGH: Specific levels + Strong conviction  
-   - MEDIUM: Some qualifiers or if/then structure  
-   - LOW: Tentative or vague  
+#### TRADE_DATA (array)
 
-2. Duration Classification Logic:  
-   - CASHFLOW: Intraday/Today  
-   - SWING: 1–5 day hold  
-   - LONGTERM: Position trade or macro thesis  
-   - LOTTO: Short-term, high-risk options  
+\`\`\`json
+{
+  "ticker": "string",
+  "direction": "LONG | SHORT",
+  "confidence": "BIG_IDEA | HIGH | MEDIUM | LOW",
+  "duration": "CASHFLOW | SWING | LONGTERM | LOTTO",
+  "position_size": "FULL_DOUBLE | FULL | HALF | QUARTER | SMALL | TINY",
+  "trigger_type": "exact | loose-trigger",
+  "levels": {
+    "entry": [number or string],
+    "target": [number or string],
+    "stop": number or string
+  },
+  "timing": "AT_OPEN | ON_PULLBACK | POST_EVENT | etc.",
+  "context": "string — quote or rationale",
+  "earnings": {
+    "upcoming": true | false,
+    "date": "optional string",
+    "strategy": "pre | post"
+  }
+}
+\`\`\`
 
-3. Sizing Determination Logic:  
-   | Conviction | Cashflow    | Swing       | Long-term   | Lotto     |  
-   |------------|-------------|-------------|-------------|-----------|  
-   | BIG_IDEA   | FULL_DOUBLE | FULL_DOUBLE | FULL        | SMALL     |  
-   | HIGH       | FULL        | FULL        | FULL        | SMALL     |  
-   | MEDIUM     | HALF        | HALF        | None        | SMALL     |  
-   | LOW        | QUARTER     | QUARTER     | None        | TINY      |  
+#### MARKET_BIAS (object)
 
-4. Trigger Type Classification:  
-   - exact: Specific price, range, or MA cited  
-   - loose-trigger: Directional idea without hard level  
-     Examples:  
-     - "I'd buy that on a dip"  
-     - "Looks good post earnings"  
-     - "Buyer if this fades"  
+\`\`\`json
+{
+  "overall": "BULLISH | BEARISH | NEUTRAL | CAUTIOUS",
+  "key_levels": {
+    "SPX": [number],
+    "QQQ": [number],
+    "SPY": [number],
+    "VIX": [number]
+  },
+  "catalysts": [string],
+  "focus_sectors": [string]
+}
+\`\`\`
+
+#### COACHING_INSIGHTS (object)
+
+\`\`\`json
+{
+  "risk_management": [string],
+  "timing_advice": [string],
+  "market_condition_warnings": [string],
+  "direct_quotes": [string]
+}
+\`\`\`
 
 ---
 
-### INSTRUCTIONS TO AI
+### LOGIC RULES
 
-Step 1: Identify trade ideas with LONG or SHORT bias  
-Step 2: Classify conviction, duration, sizing  
-Step 3: Tag trigger_type as `exact` or `loose-trigger`  
-Step 4: Parse key levels and DP language cues  
-Step 5: Capture market bias and coaching separately  
-Step 6: Format everything according to JSON spec  
+#### Conviction
+
+| Level     | Description |
+|-----------|-------------|
+| BIG_IDEA  | Strong emotion + multiple mentions + catalyst |
+| HIGH      | Specific levels + clear language |
+| MEDIUM    | Qualifiers or if/then language |
+| LOW       | Vague, soft language |
+
+#### Duration
+
+| Type       | Description           |
+|------------|-----------------------|
+| CASHFLOW   | Intraday only         |
+| SWING      | 1–5 day hold          |
+| LONGTERM   | Position trade        |
+| LOTTO      | Speculative short-term|
+
+#### Position Size
+
+| Confidence | CASHFLOW    | SWING        | LONGTERM     | LOTTO  |
+|------------|-------------|--------------|--------------|--------|
+| BIG_IDEA   | FULL_DOUBLE | FULL_DOUBLE  | FULL         | SMALL  |
+| HIGH       | FULL        | FULL         | FULL         | SMALL  |
+| MEDIUM     | HALF        | HALF         | —            | SMALL  |
+| LOW        | QUARTER     | QUARTER      | —            | TINY   |
+
+#### Trigger Type
+
+- `exact`: Numerical level or range given  
+- `loose-trigger`: Idea expressed with soft entry
 
 ---
 
-### FINAL OUTPUT — SYSTEM JSON
+### FINAL INSTRUCTION
 
-Please now output ONLY the following valid JSON object:
-```json
+Return one and only one JSON block in this structure:
+
+\`\`\`json
 {
   "TRADE_DATA": [...],
   "MARKET_BIAS": {...},
   "COACHING_INSIGHTS": {...}
 }
-```
+\`\`\`
 
-Do not output any summaries, notes, or comments outside this JSON block.
-
-To generate a human-readable version of the trade ideas, run `dp-trade-summary.md` separately after confirming JSON output integrity.
+No commentary, notes, or narrative.  
+For human-readable format, run `dp-trade-summary.md` after validating this JSON.

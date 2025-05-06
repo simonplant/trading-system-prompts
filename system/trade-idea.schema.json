@@ -1,0 +1,13 @@
+{
+    "ticker": "string",
+    "type": "scalp | day | swing | longterm",
+    "confidence": "L | M | H",
+    "sentiment": "bullish | bearish | neutral | unsure",
+    "levels": {
+      "entry": "number | [number]",
+      "target": "number | [number]",
+      "stop": "number"
+    },
+    "position_size": "small | 1/4 | 1/3 | 1/2 | full | double",
+    "notes": "string"
+  }

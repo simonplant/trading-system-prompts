@@ -4,7 +4,7 @@ description: Prioritized list of trading system tweaks and improvements
 tags: [system, backlog, architecture, refactor]
 author: Simon Plant
 last_updated: 2025-05-06
-version: 1.19
+version: 1.20
 category: system
 usage: Edit during system development or prompt refactor planning.
 status: active
@@ -27,6 +27,17 @@ ai_enabled: false
 # TODO: SYSTEM ENHANCEMENTS
 
 ## P0 – Highest Leverage Next
+
+- **Enforce `main-controller.md` routing across ALL prompts**  
+  Main controller must intercept and route every SOP phase prompt  
+  Fallback to ChatGPT logic only if no match found in trading system prompt routes  
+  **Tags:** `routing`, `structure`, `discipline`, `controller`
+
+- **Move tier-based risk logic to `system-parameters.md`**  
+  Refactor risk percentages (0.5%, 0.75%, 1.0%) out of `copilot-confirm.md`  
+  Create single source of truth in `system-parameters.md` for consistent access  
+  Update all prompts to reference that file for tier logic  
+  **Tags:** `structure`, `risk_control`, `parameters`
 
 - **Add full trade lifecycle capture to `dp-analyzer.md`**  
   Refactor DP analyzer logic to capture:
@@ -52,7 +63,7 @@ ai_enabled: false
 
 - Complete `daily-performance-debrief.md`  
   Postmarket review + self-assessment prompt. Should pull in:  
-  - Prior day's trade log  
+  - Prior days trade log  
   - Behavior flags  
   - Execution quality  
   **Tags:** `postmarket`, `review`, `behavior`  
@@ -141,9 +152,9 @@ ai_enabled: false
 
 ---
 
-# TOMORROW'S TRADING EDGE
+# TOMORROWS TRADING EDGE
 
-Implement these three items before tomorrow's market open:
+Implement these three items before tomorrows market open:
 
 1. **Add few-shot examples to copilot-confirm.md**
    - 3 short examples of the validation process

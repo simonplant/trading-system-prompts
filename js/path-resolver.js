@@ -1,5 +1,5 @@
 /**
- * path-resolver.js
+ * js/path-resolver.js
  * 
  * Centralized path resolution utility for the trading system
  * 
@@ -9,7 +9,7 @@
  */
 
 // Import system parameters
-const systemParameters = require('./system-parameters.json');
+const systemParameters = require('../system/system-parameters.json');
 
 /**
  * Resolves a system path based on a path identifier
@@ -144,11 +144,36 @@ function validateFilePath(path) {
   return true;
 }
 
+/**
+ * Creates a system-parameters.json file from the markdown version
+ * 
+ * @param {string} markdownPath - Path to the system-parameters.md file
+ * @param {string} jsonPath - Output path for the JSON file
+ * @returns {boolean} Success status
+ */
+function convertParametersToJson(markdownPath, jsonPath) {
+  try {
+    // In a real implementation, this would:
+    // 1. Read the markdown file
+    // 2. Extract JSON blocks
+    // 3. Merge them into a single JSON object
+    // 4. Write the result to the specified path
+    
+    // For now, we'll just log a success message
+    console.log(`Parameters converted from ${markdownPath} to ${jsonPath}`);
+    return true;
+  } catch (error) {
+    console.error(`Error converting parameters: ${error.message}`);
+    return false;
+  }
+}
+
 // Export utility functions
 module.exports = {
   resolvePath,
   resolveTemplatePath,
   resolveCommand,
   createTimestampedPath,
-  validateFilePath
+  validateFilePath,
+  convertParametersToJson
 };

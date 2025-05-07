@@ -1,5 +1,5 @@
 /**
- * schema-validator.js
+ * js/schema-validator.js
  * 
  * Centralized schema validation utility for the trading system
  * 
@@ -9,7 +9,7 @@
  */
 
 // Import system parameters
-const systemParameters = require('./system-parameters.json');
+const systemParameters = require('../system/system-parameters.json');
 
 // Schema validation function
 function validateSchema(data, schemaType) {

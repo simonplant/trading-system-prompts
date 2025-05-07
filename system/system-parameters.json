@@ -1,0 +1,125 @@
+{
+    "MARKET_CONVERSION_FACTORS": {
+      "ES_TO_SPX_CONVERSION": -20,
+      "SPX_TO_SPY_DIVISOR": 10,
+      "ES_TO_SPY_CONVERSION": -3
+    },
+    "SYSTEM_THRESHOLDS": {
+      "CONFIDENCE_THRESHOLD": 0.70,
+      "MAX_POSITION_SIZE": 0.05,
+      "DAILY_RISK_LIMIT": 0.02,
+      "SECURITY_VERIFICATION_TIMEOUT": 300,
+      "SESSION_TOKEN_EXPIRY": 86400
+    },
+    "TIMING_PARAMETERS": {
+      "PRIMARY_TRADING_WINDOW_START": "09:45:00",
+      "PRIMARY_TRADING_WINDOW_END": "15:30:00",
+      "AVOID_TRADING_WINDOWS": [
+        ["11:30:00", "13:30:00"],
+        ["14:00:00", "14:15:00"],
+        ["15:45:00", "16:00:00"]
+      ]
+    },
+    "POSITION_SIZE_MATRIX": {
+      "BIG_IDEA": {
+        "CASHFLOW": "FULL_DOUBLE",
+        "SWING": "FULL_DOUBLE",
+        "LONGTERM": "FULL",
+        "LOTTO": "SMALL"
+      },
+      "HIGH": {
+        "CASHFLOW": "FULL",
+        "SWING": "FULL",
+        "LONGTERM": "FULL",
+        "LOTTO": "SMALL"
+      },
+      "MEDIUM": {
+        "CASHFLOW": "HALF",
+        "SWING": "HALF",
+        "LONGTERM": "QUARTER",
+        "LOTTO": "SMALL"
+      },
+      "LOW": {
+        "CASHFLOW": "QUARTER",
+        "SWING": "QUARTER",
+        "LONGTERM": "QUARTER",
+        "LOTTO": "TINY"
+      }
+    },
+    "PATH_TEMPLATES": {
+      "TRADE_LOG_PATH_TEMPLATE": "/logs/trades/%YYYY%/%YYYY%-%MM%-%DD%.md",
+      "JOURNAL_PATH_TEMPLATE": "/logs/journal/%YYYY%/%YYYY%-%MM%-%DD%.md",
+      "KB_UPDATE_PATH_TEMPLATE": "/system/kb-updates/%YYYY%-%MM%-%DD%.md"
+    },
+    "SCHEMA_VERSIONS": {
+      "TRADE_DATA_SCHEMA_VERSION": "2.0",
+      "SYSTEM_PARAMETERS_VERSION": "1.1",
+      "CONTROLLER_VERSION": "2.5"
+    },
+    "FILE_PATHS": {
+      "ANALYZER_PATHS": {
+        "DP": "prompts/premarket/dp-trade-analyzer.md",
+        "MANCINI": "prompts/premarket/mancini-trade-analyzer.md",
+        "LEVELS": "prompts/premarket/get-premarket-levels.md",
+        "SMA": "prompts/premarket/get-daily-sma-for-tickers.md"
+      },
+      "SUMMARY_PATHS": {
+        "DP": "prompts/premarket/dp-trade-summary.md",
+        "MANCINI": "prompts/premarket/mancini-trade-summary.md",
+        "UNIFIED": "prompts/premarket/unified-trade-plan-generator.md"
+      },
+      "SYSTEM_PATHS": {
+        "CONTROLLER": "prompts/main-controller.md",
+        "CHARTER": "system/trading-charter.md",
+        "BEHAVIORS_KB": "system/trading-behaviors-kb.md",
+        "SOP": "system/trading-system-sop.md"
+      },
+      "SCHEMA_PATHS": {
+        "TRADE_DATA": "system/trade-data-schema.json",
+        "TRADE_IDEA": "system/trade-idea.schema.json"
+      }
+    },
+    "COMMAND_ROUTING_TABLE": {
+      "PREMARKET_COMMANDS": {
+        "premarket-sequence": "CONTROLLER.premarket_sequence",
+        "analyze-dp": "ANALYZER_PATHS.DP",
+        "dp-summary": "SUMMARY_PATHS.DP",
+        "analyze-mancini": "ANALYZER_PATHS.MANCINI",
+        "mancini-summary": "SUMMARY_PATHS.MANCINI",
+        "get-sma": "ANALYZER_PATHS.SMA",
+        "get-levels": "ANALYZER_PATHS.LEVELS",
+        "generate-trade-plan": "SUMMARY_PATHS.UNIFIED"
+      },
+      "INTRADAY_COMMANDS": {
+        "copilot": "prompts/intraday/copilot.md",
+        "copilot-scout": "prompts/intraday/copilot-scout.md",
+        "copilot-confirm": "prompts/intraday/copilot-confirm.md",
+        "copilot-recenter": "prompts/intraday/copilot-recenter.md",
+        "copilot-debrief": "prompts/intraday/copilot-debrief.md",
+        "midday-reset": "prompts/intraday/midday-reset.md"
+      },
+      "POSTMARKET_COMMANDS": {
+        "postmarket-sequence": "CONTROLLER.postmarket_sequence",
+        "generate-trade-log": "prompts/postmarket/generate-trade-log.md",
+        "performance-debrief": "prompts/postmarket/daily-performance-debrief.md",
+        "generate-journal": "prompts/postmarket/generate-journal.md",
+        "update-behaviors": "prompts/postmarket/update-trading-behaviors-kb.md",
+        "generate-kb-update": "prompts/postmarket/generate-kb-update.md"
+      },
+      "SYSTEM_COMMANDS": {
+        "system-parameters": "CONTROLLER.show_parameters",
+        "help": "CONTROLLER.show_help",
+        "status": "CONTROLLER.show_status",
+        "system-check": "CONTROLLER.system_check",
+        "security-verification": "CONTROLLER.security_verification"
+      }
+    },
+    "VALIDATION_PARAMETERS": {
+      "MAX_JSON_SIZE": 100000,
+      "REQUIRED_SCHEMA_FIELDS": {
+        "DP": ["metadata", "TRADE_DATA", "MARKET_BIAS", "COACHING_INSIGHTS"],
+        "MANCINI": ["metadata", "TECHNICAL_DATA", "TRADE_DATA", "MARKET_BIAS", "MARKET_ANALYSIS"]
+      },
+      "VALIDATION_TIMEOUT": 30
+    }
+  }

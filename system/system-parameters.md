@@ -113,6 +113,17 @@ ES_TO_SPX_CONVERSION: Currently set to -20. This value typically ranges from -40
 }
 ```
 
+### UTILITY PATHS
+
+```json
+{
+  "UTILITY_PATHS": {
+    "SCHEMA_VALIDATOR": "js/schema-validator.js",
+    "PATH_RESOLVER": "js/path-resolver.js"
+  }
+}
+```
+
 ### FILE PATHS
 
 ```json
@@ -133,6 +144,10 @@ ES_TO_SPX_CONVERSION: Currently set to -20. This value typically ranges from -40
     "CHARTER": "system/trading-charter.md",
     "BEHAVIORS_KB": "system/trading-behaviors-kb.md",
     "SOP": "system/trading-system-sop.md"
+  },
+  "SCHEMA_PATHS": {
+    "TRADE_DATA": "trade-data-schema.json",
+    "TRADE_IDEA": "trade-idea.schema.json"
   }
 }
 ```
@@ -191,5 +206,5 @@ ES_TO_SPX_CONVERSION: Currently set to -20. This value typically ranges from -40
 ```
 
 ### CHANGELOG
-- v1.1 (2025-05-07): Added position sizing matrix, path templates, schema versions, security parameters, file paths, command routing, and validation parameters
+- v1.1 (2025-05-07): Added utility paths for JS folder, position sizing matrix, path templates, schema versions, security parameters, file paths, command routing, and validation parameters
 - v1.0 (2025-05-05): Initial parameters file

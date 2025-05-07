@@ -1,0 +1,52 @@
+flowchart TD
+    MC[main-controller.md] -->|EXCLUSIVE ROUTING| PM
+    MC -->|EXCLUSIVE ROUTING| ID
+    MC -->|EXCLUSIVE ROUTING| PO
+    
+    subgraph PM[Premarket]
+        A[DP Morning Call] -->|/pre-dp| B[DP Analyzer]
+        C[Mancini Newsletter] -->|/pre-mancini| D[Mancini Analyzer]
+        K1[Market Levels] -->|/pre-levels| K2[Level Processor]
+        
+        B -->|Structured JSON| E[TRADE_DATA]
+        B -->|Structured JSON| F[MARKET_BIAS]
+        
+        D -->|Structured JSON| H[TECHNICAL_DATA]
+        D -->|Structured JSON| I[TRADE_SETUPS]
+        
+        K2 -->|Structured JSON| K3[LEVEL_DATA]
+        
+        E --> UTP[Unified Trade Plan Generator]
+        F --> UTP
+        H --> UTP
+        I --> UTP
+        K3 --> UTP
+        
+        UTP -->|/pre-plan| L[Final Trade Plan]
+    end
+    
+    subgraph ID[Intraday]
+        L --> M[Copilot]
+        CR[Trade Idea] -->|/trade-validate| N[Trade Validation]
+        M -->|Analysis| N
+        N -->|Decision| O[GO/WAIT/NO GO]
+        O -->|Execution| TL[Trade Log]
+    end
+    
+    subgraph PO[Postmarket]
+        TL -->|/post-debrief| P[Performance Debrief]
+        P -->|/post-kb-update| Q[KB Update]
+        P -->|/post-journal| R[Journal Generator]
+    end
+    
+    classDef controller fill:#f96, stroke:#333, stroke-width:2px
+    classDef jsonData fill:#fc9, stroke:#f96, stroke-width:1px
+    classDef processor fill:#9cf, stroke:#69c, stroke-width:1px
+    classDef output fill:#9f9, stroke:#6c6, stroke-width:1px
+    classDef command fill:#c9f, stroke:#96c, stroke-width:1px
+    
+    class MC controller
+    class E,F,H,I,K3 jsonData
+    class B,D,K2,UTP,M,N,P,Q,R processor
+    class L,O,TL output
+    class A,C,K1,CR command

@@ -120,21 +120,15 @@ All commands follow the standardized format:
 
 #### Postmarket Workflow
 
-- `/postmarket-sequence` - Run the complete postmarket workflow
-- `/generate-trade-log` - Create a structured log of today's trades
-- `/performance-debrief` - Analyze today's trading performance
-- `/generate-journal` - Create a trading journal entry
-- `/update-behaviors` - Update your trading behaviors knowledge base
-- `/generate-kb-update` - Generate knowledge base update recommendations
-- `/performance-vs-mancini` - Reconcile your trade plan and actual execution against DP's intent and Mancini's blueprint; log missed setups, alignment scores, and opportunity delta for next-day readiness
+#### Postmarket Workflow
 
-
-- `/postmarket-sequence` - Run the complete postmarket workflow
-- `/generate-trade-log` - Create a structured log of today's trades
-- `/performance-debrief` - Analyze today's trading performance
-- `/generate-journal` - Create a trading journal entry
-- `/update-behaviors` - Update your trading behaviors knowledge base
-- `/generate-kb-update` - Generate knowledge base update recommendations
+- `/postmarket-sequence` – Run the complete postmarket workflow
+- `/generate-trade-log` – Create a structured log of today's trades
+- `/performance-debrief` – Analyze today's trading performance
+- `/generate-journal` – Create a trading journal entry
+- `/update-behaviors` – Update your trading behaviors knowledge base
+- `/generate-kb-update` – Generate knowledge base update recommendations
+- `/performance-vs-mancini` – Compare your trade plan and actual execution against Mancini’s published setups and DP’s intent. Identify missed setups, execution errors, and PnL impact to improve next-day readiness.
 
 #### System Management
 

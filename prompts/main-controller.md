@@ -55,11 +55,10 @@ These utilities provide robust data validation, consistent parameter access, and
 ## Access Control & Security Measures
 
 1. **Component Validation**: Each component will verify it was called through the controller before executing
-2. **Session Token Management**: The controller generates and manages session tokens using secure cryptographic methods
-3. **Command Verification**: Only commands listed in this controller are valid; all others are rejected
-4. **Input Sanitization**: All inputs are validated before routing to prevent injection
-5. **Phase Locking**: Components check if they're appropriate for the current trading phase
-6. **Execution Tracking**: The controller logs all command executions for auditing
+2. **Command Verification**: Only commands listed in this controller are valid; all others are rejected
+3. **Input Sanitization**: All inputs are validated before routing to prevent injection
+4. **Phase Locking**: Components check if they're appropriate for the current trading phase
+5. **Execution Tracking**: The controller logs all command executions for auditing
 
 If any component detects an unauthorized access attempt, it will:
 1. Terminate execution immediately
@@ -182,7 +181,6 @@ When executing `/premarket-sequence`, the controller will:
 
 The implementation uses error handling to manage partial failures in any step.
 
-```javascript
 // Premarket sequence implementation (conceptual)
 async function runPremarketSequence(inputs) {
   const pipeline = new PremarketPipeline({
@@ -206,7 +204,6 @@ async function runPremarketSequence(inputs) {
     };
   }
 }
-```
 
 ### Trade Validation
 
@@ -218,7 +215,6 @@ When executing `/copilot-confirm`, the controller will:
 4. Enforce risk management rules (position sizing, max risk)
 5. Generate a GO/WAIT/NO GO assessment with detailed rationale
 
-```javascript
 // Trade validation implementation (conceptual)
 function validateTradeIdea(tradeIdea, tradePlan, behaviorKB) {
   // Validate schema
@@ -273,18 +269,14 @@ function validateTradeIdea(tradeIdea, tradePlan, behaviorKB) {
     }
   };
 }
-```
 
 ## Authentication & Session Management
 
 At session initialization, the controller will:
-1. Generate a unique session token using secure random methods
-2. Verify access to all required components
-3. Initialize the system state with current trading phase
-4. Perform a security check to detect unauthorized access attempts
-5. Set up the data flow architecture for the session
-
-All subsequent commands must include this session context to prevent direct component access.
+1. Verify access to all required components
+2. Initialize the system state with current trading phase
+3. Perform a security check to detect unauthorized access attempts
+4. Set up the data flow architecture for the session
 
 ## CHANGELOG
 - v3.0 (2025-05-10): Integrated JavaScript utilities, enhanced validation framework, improved error handling

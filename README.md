@@ -16,11 +16,11 @@ output_format: markdown
 ai_enabled: false
 ---
 
-# 🚀 Trading System Prompts — Unified Execution Framework
+# Trading System Prompts — Unified Execution Framework
 
 This is a modular AI-assisted trading framework designed by Simon Plant to support high-conviction, structure-driven options trading. It integrates David Prince's Inner Circle trade ideas, Adam Mancini's SPX blueprint, and Simon's personal SOPs, conviction sizing, and behavioral filters.
 
-## 📋 Quick Command Reference
+## Quick Command Reference
 
 All commands follow the slash command format defined in main-controller.md:
 
@@ -54,7 +54,7 @@ All commands follow the slash command format defined in main-controller.md:
 
 ---
 
-## 🔄 System Overview — Visual Flow
+## System Overview — Visual Flow
 
 The following flow represents the full lifecycle of daily execution:
 
@@ -68,7 +68,7 @@ Each phase connects via the Copilot, which serves as the execution and validatio
 
 ---
 
-## 1. 🔌 System Bootstrap Instructions
+## 1. System Bootstrap Instructions
 
 Following the main-controller.md specifications:
 
@@ -100,7 +100,7 @@ Following the main-controller.md specifications:
 
 ---
 
-## ⚠️ MANDATORY CONTROLLER ENFORCEMENT POLICY ⚠️
+## !MANDATORY CONTROLLER ENFORCEMENT POLICY!
 
 **ALL interactions with the trading system MUST be routed through main-controller.md without any exceptions.** 
 Direct access to individual component files is strictly prohibited. The controller is the ONLY authorized 
@@ -135,9 +135,9 @@ At the start of EVERY new trading session:
 3. Verify system readiness with: `/status`
 4. Proceed ONLY when the status confirms controller is active
 
-⚠️ **WARNING: Bypassing these safeguards may result in corrupted analysis, invalid trade signals, or risk management failures. Never attempt to directly access individual prompt files.**
+**WARNING: Bypassing these safeguards may result in corrupted analysis, invalid trade signals, or risk management failures. Never attempt to directly access individual prompt files.**
 
-### 🔍 System Readiness Check
+### System Readiness Check
 The system should confirm access to these critical files:
 - ✓ prompts/main-controller.md (routing layer)
 - ✓ system/trading-charter.md (risk parameters)
@@ -146,7 +146,7 @@ The system should confirm access to these critical files:
 
 ---
 
-## 2. ⚙️ System Architecture & Operation
+## 2. System Architecture & Operation
 
 The `main-controller.md` serves as the central command router and orchestration layer:
 
@@ -174,13 +174,13 @@ The trading system is organized into these functional areas:
 * Session state management for multi-phase operations
 * Validation checkpoints to ensure data integrity
 
-**⚠️ CRITICAL: NEVER attempt to access individual components directly. ALL commands MUST be routed through main-controller.md using the slash command format. The controller provides essential risk management and data validation that cannot be bypassed under any circumstances.**
+** CRITICAL: NEVER attempt to access individual components directly. ALL commands MUST be routed through main-controller.md using the slash command format. The controller provides essential risk management and data validation that cannot be bypassed under any circumstances.**
 
 ---
 
-## 3. 📝 Supported Workflows
+## 3. Supported Workflows
 
-### 🌅 Premarket Planning
+### Premarket Planning
 
 **Command Format:**
 ```
@@ -250,7 +250,7 @@ Market context: SPX reclaiming 5606, sector strength in tech.
 * Specific charter or behavior reference
 * Potential blindspots or cautions
 
-### 🌆 Postmarket Debrief
+### Postmarket Debrief
 
 **Command Format:**
 ```
@@ -279,7 +279,7 @@ Market context: SPX reclaiming 5606, sector strength in tech.
 * Updated knowledge base entries
 * Formatted journal template for the day
 
-### 📚 System Reference & Management
+### System Reference & Management
 
 **Command Formats:**
 ```
@@ -303,7 +303,7 @@ Market context: SPX reclaiming 5606, sector strength in tech.
 
 ---
 
-## 4. 🔧 System Requirements & Troubleshooting
+## 4. System Requirements & Troubleshooting
 
 ### Mandatory Controller Usage
 The controller-only policy is strictly enforced:
@@ -344,7 +344,7 @@ Follow the exact bootstrap process in the main-controller.md:
 
 ---
 
-## 5. 🆕 What's New (May 2025)
+## 5. What's New (May 2025)
 
 ### Latest Features
 * **Enhanced Copilot**: Real-time validation with conviction scoring
@@ -354,14 +354,14 @@ Follow the exact bootstrap process in the main-controller.md:
 
 | File | Description |
 |------|-------------|
-| ✨ `prompts/intraday/copilot.md` | Central AI agent for validating trades and sizing |
-| ✨ `system/trade-setups-kb.md` | Canonical library of setups (e.g., Failed Reclaim, Scalp, Swing) |
-| ✨ `system/market-regimes.md` | Classifies market bias and filters valid setups |
-| ✨ `prompts/postmarket/export-journal-entry.md` | Generates daily Markdown summary for trade logs |
+| `prompts/intraday/copilot.md` | Central AI agent for validating trades and sizing |
+| `system/trade-setups-kb.md` | Canonical library of setups (e.g., Failed Reclaim, Scalp, Swing) |
+| `system/market-regimes.md` | Classifies market bias and filters valid setups |
+| `prompts/postmarket/export-journal-entry.md` | Generates daily Markdown summary for trade logs |
 
 ---
 
-## 6. 📂 System Architecture
+## 6. System Architecture
 
 ### Functional Groups
 
@@ -401,7 +401,7 @@ Follow the exact bootstrap process in the main-controller.md:
 
 ---
 
-## 7. 📑 Complete File Index
+## 7. Complete File Index
 
 Detailed list of all files by phase and system role. Helps search, indexing, and LLM compatibility (e.g., Claude).
 
@@ -462,7 +462,7 @@ GitHub: [https://github.com/simonplant](https://github.com/simonplant)
 
 ---
 
-## 📝 Changelog
+## Changelog
 
 ### 1.4 — May 7, 2025
 - Added MANDATORY CONTROLLER ENFORCEMENT POLICY section

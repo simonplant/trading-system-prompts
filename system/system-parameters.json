@@ -56,8 +56,8 @@
     "PERFORMANCE_LOG_TEMPLATE": "logs/performance/%YYYY%-%MM%-%DD%-daily-performance-debrief.md"
   },
   "SCHEMA_VERSIONS": {
-    "TRADE_DATA_SCHEMA_VERSION": "2.0",
-    "SYSTEM_PARAMETERS_VERSION": "1.2",
+    "TRADE_DATA_SCHEMA_VERSION": "2.1",
+    "SYSTEM_PARAMETERS_VERSION": "1.3",
     "CONTROLLER_VERSION": "3.1",
     "TRADING_BEHAVIORS_SCHEMA_VERSION": "1.5"
   },
@@ -104,6 +104,13 @@
       "UTILITY_GUIDE": "docs/architecture/utility-integration-guide.md",
       "CONTROLLER_INTEGRATION": "docs/architecture/controller-integration-example.md",
       "RECOMMENDATIONS": "docs/architecture/trading-system-recommendations.md"
+    },
+    "TEMPLATE_PATHS": {
+      "UNIFIED_TRADE_PLAN": "system/templates/unified-trade-plan.hbs",
+      "TRADE_LOG": "system/templates/trade-log-template.md",
+      "JOURNAL_ENTRY": "system/templates/journal-entry-template.md",
+      "PERFORMANCE_DEBRIEF": "system/templates/performance-debrief-template.md",
+      "KB_UPDATE": "system/templates/kb-update-template.md"
     }
   },
   "COMMAND_ROUTING_TABLE": {
@@ -162,6 +169,26 @@
       "RETRY_DELAY_MS": 500,
       "FALLBACK_BEHAVIOR": "WARN_AND_PROCEED",
       "CRITICAL_VALIDATION_FIELDS": ["metadata", "TRADE_DATA"]
+    }
+  },
+  "ANALYTICS_SETTINGS": {
+    "TRACK_SETUP_PERFORMANCE": true,
+    "TRACK_TRADE_ACCURACY": true,
+    "TRACK_LEVEL_PRECISION": true,
+    "PERFORMANCE_METRICS": ["win_rate", "profit_factor", "avg_r", "largest_win", "largest_loss", "drawdown"],
+    "LOG_FREQUENCY": "daily",
+    "VISUALIZATION_ENABLED": true
+  },
+  "BEHAVIORAL_ANALYTICS": {
+    "TRACK_FLAGS": true,
+    "PATTERN_DETECTION": true,
+    "EARLY_WARNING_THRESHOLD": 2,
+    "COOLDOWN_PERIODS": {
+      "hesitation": 60,
+      "chasing": 120,
+      "overconfidence": 240,
+      "revenge": 480,
+      "tilt": 1440
     }
   }
 }

@@ -39,7 +39,7 @@ ai_enabled: false
   Update all prompts to reference that file for tier logic  
   **Tags:** `structure`, `risk_control`, `parameters`
 
-- **Add full trade lifecycle capture to `dp-analyzer.md`**  
+- **Add full trade lifecycle capture to `dp-trade-analyzer.md`**  
   Refactor DP analyzer logic to capture:
   - Entry triggers
   - Exit actions (full or partial)

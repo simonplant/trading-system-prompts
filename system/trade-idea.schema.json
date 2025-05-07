@@ -1,122 +1,181 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Trade Idea Schema",
-  "description": "Standardized schema for trade idea validation (aligned with trade-data-schema.json v2.0)",
+  "title": "TradeIdea",
+  "description": "Schema for validating trade ideas across DP, Mancini, and unified trade plans",
   "type": "object",
-  "required": ["ticker", "direction", "confidence", "duration", "levels"],
+  "required": ["ticker", "direction", "conviction", "duration", "levels", "strategy_type"],
   "properties": {
     "ticker": {
       "type": "string",
-      "description": "Symbol/ticker of the instrument"
+      "description": "Trading symbol for the asset"
     },
     "direction": {
       "type": "string",
       "enum": ["LONG", "SHORT"],
       "description": "Trade direction"
     },
-    "confidence": {
-      "type": "string",
-      "enum": ["BIG_IDEA", "HIGH", "MEDIUM", "LOW"],
-      "description": "Conviction level of the trade idea"
+    "conviction": {
+      "type": "object",
+      "required": ["level"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["BIG_IDEA", "HIGH", "MEDIUM", "LOW"],
+          "description": "Level of conviction in the trade idea"
+        },
+        "signals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Signals supporting the conviction level"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["DP", "MANCINI", "COMBINED"],
+          "description": "Source of the conviction assessment"
+        }
+      }
     },
     "duration": {
       "type": "string",
       "enum": ["CASHFLOW", "SWING", "LONGTERM", "LOTTO"],
-      "description": "Expected holding period"
+      "description": "Expected trade duration"
     },
-    "position_size": {
+    "strategy_type": {
+      "type": "string",
+      "enum": ["FAILED_BREAKDOWN", "FAILED_BREAKOUT", "RANGE_FADE", "TREND_CONTINUATION", "PULLBACK", "MOMENTUM", "OTHER"],
+      "description": "Type of trading strategy"
+    },
+    "sizing": {
       "type": "string",
       "enum": ["FULL_DOUBLE", "FULL", "HALF", "QUARTER", "SMALL", "TINY"],
-      "description": "Relative position size"
+      "description": "Position size relative to standard trade size"
     },
     "trigger_type": {
       "type": "string",
-      "enum": ["exact", "loose-trigger"],
-      "description": "Whether entry is precise or conditional"
+      "enum": ["EXACT", "LOOSE", "TIME_BASED", "PATTERN_BASED"],
+      "description": "Type of entry trigger"
     },
     "levels": {
       "type": "object",
+      "required": ["entry"],
       "properties": {
         "entry": {
-          "oneOf": [
-            { "type": "number" },
-            { "type": "string" },
-            { "type": "array", "items": { "type": "number" } }
-          ],
-          "description": "Entry price level or condition"
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Entry price levels or conditions"
         },
-        "target": {
-          "oneOf": [
-            { "type": "number" },
-            { "type": "string" },
-            { "type": "array", "items": { "type": "number" } }
-          ],
-          "description": "Target price level(s)"
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Target price levels"
         },
-        "stop": {
-          "oneOf": [
-            { "type": "number" },
-            { "type": "string" }
-          ],
-          "description": "Stop loss price level"
+        "stops": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Stop loss levels"
         }
       }
     },
     "timing": {
       "type": "string",
-      "description": "Timing guidance (e.g., AT_OPEN, ON_PULLBACK)"
+      "enum": ["AT_OPEN", "ON_PULLBACK", "POST_EVENT", "SPECIFIC_TIME", "SETUP_BASED"],
+      "description": "Timing considerations for the trade"
     },
     "context": {
       "type": "string",
-      "description": "Reasoning or quote behind the trade idea"
+      "description": "Additional context or rationale for the trade"
+    },
+    "earnings": {
+      "type": "object",
+      "properties": {
+        "upcoming": {
+          "type": "boolean",
+          "description": "Whether earnings are upcoming"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date of upcoming earnings"
+        },
+        "strategy": {
+          "type": "string",
+          "enum": ["PRE", "POST", "THROUGH", "AVOID"],
+          "description": "Strategy relative to earnings"
+        }
+      }
     },
     "risk_reward": {
       "type": "object",
       "properties": {
         "ratio": {
           "type": "number",
-          "description": "Risk/reward ratio (higher is better)"
+          "description": "Risk-reward ratio (e.g., 3.0 for 3:1)"
         },
-        "calculation": {
-          "type": "string",
-          "description": "Method used to calculate R/R"
-        }
-      }
-    },
-    "execution_priority": {
-      "type": "object",
-      "properties": {
-        "rank": {
+        "win_probability": {
           "type": "number",
-          "description": "Priority rank (1 is highest)"
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Estimated probability of success (0-1)"
         },
-        "reason": {
-          "type": "string",
-          "description": "Reason for this priority ranking"
+        "expected_value": {
+          "type": "number",
+          "description": "Expected value calculation"
         }
       }
     },
-    "order_suggestion": {
+    "metadata": {
       "type": "object",
       "properties": {
-        "type": {
+        "timestamp": {
           "type": "string",
-          "enum": ["market", "limit", "stop", "stop limit", "trailing stop"],
-          "description": "Suggested order type for TOS execution"
+          "format": "date-time",
+          "description": "When the trade idea was generated"
         },
-        "price": {
-          "type": ["number", "null"],
-          "description": "Suggested limit price if applicable"
-        },
-        "stop_trigger": {
-          "type": ["number", "null"],
-          "description": "Suggested stop trigger price if applicable"
-        },
-        "notes": {
+        "version": {
           "type": "string",
-          "description": "Additional order execution notes"
+          "description": "Schema version"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of the trade idea"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags for categorization"
         }
       }
+    },
+    "blindspot_check": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "description": "Behavioral pattern to check"
+          },
+          "risk_level": {
+            "type": "string",
+            "enum": ["HIGH", "MEDIUM", "LOW", "NONE"],
+            "description": "Risk level of this blindspot"
+          },
+          "mitigation": {
+            "type": "string",
+            "description": "Mitigation strategy"
+          }
+        }
+      },
+      "description": "Behavioral blindspot analysis"
     }
   }
 }

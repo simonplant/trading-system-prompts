@@ -1,463 +1,472 @@
 /**
- * js/json-validation-utility.js
+ * JSON Validation Utility
  * 
- * Enhanced JSON validation utility with domain-specific trading validation rules
+ * Provides robust validation for trading system JSON data structures
+ * against defined schemas with detailed error reporting and recovery options.
  * 
- * @version 1.0
- * @author Trading System
- * @last_updated 2025-05-10
+ * @version 1.2.0
+ * @author Simon Plant
+ * @updated 2025-05-07
  */
 
-const { validateSchema } = require('./schema-validator');
-const { getParameter } = require('./parameter-loader');
-const { resolvePath } = require('./path-resolver');
+// Import required dependencies
+const fs = require('fs');
+const path = require('path');
+const Ajv = require('ajv');
+const addFormats = require('ajv-formats');
+
+// Create validator instance with all options
+const ajv = new Ajv({
+  allErrors: true,
+  verbose: true,
+  $data: true,
+  strict: false
+});
+addFormats(ajv);
 
 /**
- * Comprehensive validation for trade data
- * 
- * @param {object} tradeData - The trade data to validate
- * @param {string} source - Source of the data ('dp' or 'mancini')
- * @returns {object} - Validation result with errors if any
+ * Configuration for the validation utility
  */
-function validateTradeData(tradeData, source) {
-  // Initial schema validation
-  const schemaResult = validateSchema(tradeData, source.toUpperCase());
-  if (!schemaResult.valid) {
+const config = {
+  schemaDirectory: path.resolve(__dirname, '../system'),
+  errorLogPath: path.resolve(__dirname, '../logs/errors/json-validation-errors.log'),
+  maxLogSize: 5 * 1024 * 1024, // 5MB
+  enableConsoleOutput: true,
+  maxRetries: 3,
+  retryDelayMs: 500
+};
+
+/**
+ * Cached schema objects to avoid repeated disk reads
+ */
+const schemaCache = {};
+
+/**
+ * Load schema from file or cache
+ * 
+ * @param {string} schemaName - Name of the schema file without extension
+ * @returns {Object} Loaded schema
+ * @throws {Error} If schema file cannot be found or parsed
+ */
+function loadSchema(schemaName) {
+  // Return from cache if available
+  if (schemaCache[schemaName]) {
+    return schemaCache[schemaName];
+  }
+  
+  // Construct full path and check if exists
+  const schemaPath = path.join(config.schemaDirectory, `${schemaName}.json`);
+  if (!fs.existsSync(schemaPath)) {
+    throw new Error(`Schema file not found: ${schemaPath}`);
+  }
+  
+  try {
+    // Load and parse schema
+    const schemaContent = fs.readFileSync(schemaPath, 'utf8');
+    const schema = JSON.parse(schemaContent);
+    
+    // Add to cache and return
+    schemaCache[schemaName] = schema;
+    return schema;
+  } catch (error) {
+    throw new Error(`Failed to load schema ${schemaName}: ${error.message}`);
+  }
+}
+
+/**
+ * Format validation errors into a readable structure
+ * 
+ * @param {Array} errors - Array of validation errors from AJV
+ * @returns {Array} Formatted error objects
+ */
+function formatErrors(errors) {
+  if (!errors || errors.length === 0) {
+    return [];
+  }
+  
+  return errors.map(error => ({
+    path: error.instancePath || '(root)',
+    keyword: error.keyword,
+    message: error.message,
+    params: error.params,
+    schemaPath: error.schemaPath
+  }));
+}
+
+/**
+ * Log validation errors for debugging
+ * 
+ * @param {string} schemaName - Name of the schema file
+ * @param {Array} errors - Formatted error objects
+ */
+function logValidationErrors(schemaName, errors) {
+  if (!errors || errors.length === 0) {
+    return;
+  }
+  
+  const timestamp = new Date().toISOString();
+  const logMessage = `[${timestamp}] Validation errors for ${schemaName}:\n${JSON.stringify(errors, null, 2)}\n\n`;
+  
+  // Console output if enabled
+  if (config.enableConsoleOutput) {
+    console.error(logMessage);
+  }
+  
+  // File logging
+  try {
+    // Check if log file exists and is too large
+    if (fs.existsSync(config.errorLogPath)) {
+      const stats = fs.statSync(config.errorLogPath);
+      if (stats.size > config.maxLogSize) {
+        // Rotate log file
+        const backupPath = `${config.errorLogPath}.bak`;
+        if (fs.existsSync(backupPath)) {
+          fs.unlinkSync(backupPath);
+        }
+        fs.renameSync(config.errorLogPath, backupPath);
+      }
+    }
+    
+    // Ensure directory exists
+    const logDir = path.dirname(config.errorLogPath);
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+    
+    // Append to log file
+    fs.appendFileSync(config.errorLogPath, logMessage);
+  } catch (error) {
+    console.error(`Failed to log validation errors: ${error.message}`);
+  }
+}
+
+/**
+ * Validate data against specified schema
+ * 
+ * @param {Object} data - Data to validate
+ * @param {string} schemaName - Name of the schema to validate against
+ * @returns {Object} Validation result with valid flag and errors
+ */
+function validateJson(data, schemaName) {
+  try {
+    // Load schema
+    const schema = loadSchema(schemaName);
+    
+    // Compile validator if not already in cache
+    const validator = ajv.getSchema(schemaName) || ajv.compile(schema);
+    
+    // Validate data
+    const valid = validator(data);
+    const errors = formatErrors(validator.errors);
+    
+    // Log any errors
+    if (!valid) {
+      logValidationErrors(schemaName, errors);
+    }
+    
+    return {
+      valid,
+      errors,
+      schema: schemaName
+    };
+  } catch (error) {
     return {
       valid: false,
-      errors: schemaResult.errors,
-      source: 'schema_validation'
+      errors: [{ path: '(validator)', message: error.message }],
+      schema: schemaName
     };
   }
-  
-  // Validate trade ideas
-  const tradeErrors = [];
-  
-  if (tradeData.TRADE_DATA && Array.isArray(tradeData.TRADE_DATA)) {
-    tradeData.TRADE_DATA.forEach((trade, index) => {
-      // Check level consistency
-      const levelErrors = validateLevelConsistency(trade, index);
-      if (levelErrors.length > 0) {
-        tradeErrors.push(...levelErrors);
-      }
-      
-      // Check risk/reward calculation
-      const rrErrors = validateRiskReward(trade, index);
-      if (rrErrors.length > 0) {
-        tradeErrors.push(...rrErrors);
-      }
-      
-      // Check position sizing alignment
-      const sizingErrors = validatePositionSizing(trade, index);
-      if (sizingErrors.length > 0) {
-        tradeErrors.push(...sizingErrors);
-      }
-    });
+}
+
+/**
+ * Attempt to fix common JSON errors
+ * 
+ * @param {string|Object} data - JSON string or object to fix
+ * @returns {Object} Fixed data object
+ * @throws {Error} If data cannot be fixed
+ */
+function fixCommonJsonErrors(data) {
+  // If data is already an object, return it
+  if (typeof data === 'object' && data !== null) {
+    return data;
   }
   
-  // Validate market bias
-  const biasErrors = validateMarketBias(tradeData);
-  
-  // Combine all errors
-  const allErrors = [...tradeErrors, ...biasErrors];
-  
-  if (allErrors.length > 0) {
-    return {
-      valid: false,
-      errors: allErrors,
-      source: 'domain_validation'
-    };
+  // If data is a string, try to parse it
+  if (typeof data === 'string') {
+    try {
+      // Try standard JSON.parse first
+      return JSON.parse(data);
+    } catch (e) {
+      // Fix common JSON formatting errors
+      try {
+        // Replace single quotes with double quotes
+        let fixedJson = data.replace(/'/g, '"');
+        
+        // Fix unquoted property names
+        fixedJson = fixedJson.replace(/(\w+):/g, '"$1":');
+        
+        // Remove trailing commas
+        fixedJson = fixedJson.replace(/,\s*([\]}])/g, '$1');
+        
+        // Try parsing again
+        return JSON.parse(fixedJson);
+      } catch (fixError) {
+        throw new Error(`Failed to parse JSON: ${fixError.message}`);
+      }
+    }
   }
   
+  throw new Error('Invalid data type: must be object or string');
+}
+
+/**
+ * Extract required fields according to schema
+ * 
+ * @param {Object} data - Data object to extract from
+ * @param {string} schemaName - Name of the schema
+ * @returns {Object} Object containing only required fields
+ */
+function extractRequiredFields(data, schemaName) {
+  try {
+    const schema = loadSchema(schemaName);
+    const requiredFields = schema.required || [];
+    
+    // Create new object with only required fields
+    const result = {};
+    for (const field of requiredFields) {
+      if (data.hasOwnProperty(field)) {
+        result[field] = data[field];
+      }
+    }
+    
+    return result;
+  } catch (error) {
+    console.error(`Failed to extract required fields: ${error.message}`);
+    return data;
+  }
+}
+
+/**
+ * Create a default object based on schema with required fields
+ * 
+ * @param {string} schemaName - Name of the schema
+ * @returns {Object} Default object with required fields initialized
+ */
+function createDefaultObject(schemaName) {
+  try {
+    const schema = loadSchema(schemaName);
+    const result = {};
+    
+    // Add required fields with default values
+    if (schema.required && schema.properties) {
+      for (const field of schema.required) {
+        const propSchema = schema.properties[field];
+        if (propSchema) {
+          // Set appropriate default value based on type
+          switch (propSchema.type) {
+            case 'string':
+              result[field] = propSchema.default || '';
+              break;
+            case 'number':
+              result[field] = propSchema.default || 0;
+              break;
+            case 'boolean':
+              result[field] = propSchema.default || false;
+              break;
+            case 'array':
+              result[field] = propSchema.default || [];
+              break;
+            case 'object':
+              result[field] = propSchema.default || {};
+              break;
+            default:
+              result[field] = null;
+          }
+        }
+      }
+    }
+    
+    return result;
+  } catch (error) {
+    console.error(`Failed to create default object: ${error.message}`);
+    return {};
+  }
+}
+
+/**
+ * Validate and fix JSON data with retry logic
+ * 
+ * @param {Object|string} data - Data to validate and fix
+ * @param {string} schemaName - Name of the schema
+ * @param {Object} options - Additional options
+ * @returns {Object} Validation result with fixed data if applicable
+ */
+async function validateAndFix(data, schemaName, options = {}) {
+  const opts = {
+    maxRetries: options.maxRetries || config.maxRetries,
+    retryDelay: options.retryDelay || config.retryDelayMs,
+    autoFix: options.autoFix !== undefined ? options.autoFix : true
+  };
+  
+  let attemptCount = 0;
+  let lastError = null;
+  let fixedData = data;
+  
+  while (attemptCount < opts.maxRetries) {
+    try {
+      // Try to fix common JSON errors
+      if (opts.autoFix) {
+        fixedData = fixCommonJsonErrors(fixedData);
+      }
+      
+      // Validate the fixed data
+      const result = validateJson(fixedData, schemaName);
+      
+      // If valid, return success
+      if (result.valid) {
+        return {
+          valid: true,
+          data: fixedData,
+          schema: schemaName,
+          fixed: fixedData !== data,
+          errors: []
+        };
+      }
+      
+      // Track errors and retry with fixes if possible
+      lastError = result.errors;
+      
+      // Apply automatic fixes if enabled
+      if (opts.autoFix) {
+        // Replace with defaults for missing required fields
+        const defaultObject = createDefaultObject(schemaName);
+        for (const key in defaultObject) {
+          if (!fixedData.hasOwnProperty(key)) {
+            fixedData[key] = defaultObject[key];
+          }
+        }
+      }
+      
+      // Delay before retry
+      await new Promise(resolve => setTimeout(resolve, opts.retryDelay));
+      attemptCount++;
+    } catch (error) {
+      lastError = [{ path: '(fix)', message: error.message }];
+      attemptCount++;
+      await new Promise(resolve => setTimeout(resolve, opts.retryDelay));
+    }
+  }
+  
+  // Extract required fields as a last resort
+  if (opts.autoFix) {
+    try {
+      const requiredOnly = extractRequiredFields(fixedData, schemaName);
+      const finalResult = validateJson(requiredOnly, schemaName);
+      
+      if (finalResult.valid) {
+        return {
+          valid: true,
+          data: requiredOnly,
+          schema: schemaName,
+          fixed: true,
+          partial: true,
+          errors: []
+        };
+      }
+      
+      return {
+        valid: false,
+        data: fixedData,
+        schema: schemaName,
+        errors: finalResult.errors,
+        attempted: true
+      };
+    } catch (error) {
+      // Fall through to error case
+    }
+  }
+  
+  // Return error after all retries failed
   return {
-    valid: true,
-    message: `Valid ${source.toUpperCase()} trade data`
+    valid: false,
+    data: fixedData,
+    schema: schemaName,
+    errors: lastError,
+    attempted: true
   };
 }
 
 /**
- * Validate price level consistency based on trade direction
+ * Merge multiple validated JSON objects
  * 
- * @param {object} trade - The trade to validate
- * @param {number} index - Index of the trade in the array
- * @returns {string[]} - Array of error messages
+ * @param {Array<Object>} objects - Array of validated objects
+ * @param {string} schemaName - Schema to validate the merged result
+ * @returns {Object} Merged object
  */
-function validateLevelConsistency(trade, index) {
-  const errors = [];
-  
-  if (!trade.levels) {
-    errors.push(`TRADE_DATA[${index}]: Missing levels object`);
-    return errors;
+function mergeValidatedObjects(objects, schemaName) {
+  if (!Array.isArray(objects) || objects.length === 0) {
+    return createDefaultObject(schemaName);
   }
   
-  const { direction, levels } = trade;
+  // Start with an empty result
+  const result = {};
   
-  // Skip validation if essential components are missing
-  if (!direction || !levels.entry || !levels.target || !levels.stop) {
-    return errors;
-  }
-  
-  // Handle array of targets
-  const targets = Array.isArray(levels.target) ? levels.target : [levels.target];
-  
-  // Convert any string values to numbers if possible
-  const entry = parseNumber(levels.entry);
-  const stop = parseNumber(levels.stop);
-  const numericTargets = targets.map(parseNumber).filter(t => !isNaN(t));
-  
-  // Skip validation if we couldn't parse the numbers
-  if (isNaN(entry) || isNaN(stop) || numericTargets.length === 0) {
-    return errors;
-  }
-  
-  // Validate based on direction
-  if (direction === 'LONG') {
-    // For LONG trades: entry < targets and stop < entry
-    if (numericTargets.some(target => entry >= target)) {
-      errors.push(`TRADE_DATA[${index}]: Invalid LONG trade - entry (${entry}) must be lower than all targets`);
+  // Merge all objects
+  for (const obj of objects) {
+    if (typeof obj === 'object' && obj !== null) {
+      Object.assign(result, obj);
     }
+  }
+  
+  // Validate merged result
+  const validation = validateJson(result, schemaName);
+  
+  // If invalid, log the errors
+  if (!validation.valid) {
+    logValidationErrors(schemaName, validation.errors);
+  }
+  
+  return result;
+}
+
+/**
+ * Get schema definition for documentation
+ * 
+ * @param {string} schemaName - Name of the schema
+ * @returns {Object} Human-readable schema properties
+ */
+function getSchemaDefinition(schemaName) {
+  try {
+    const schema = loadSchema(schemaName);
     
-    if (stop >= entry) {
-      errors.push(`TRADE_DATA[${index}]: Invalid LONG trade - stop (${stop}) must be lower than entry (${entry})`);
-    }
-  } else if (direction === 'SHORT') {
-    // For SHORT trades: entry > targets and stop > entry
-    if (numericTargets.some(target => entry <= target)) {
-      errors.push(`TRADE_DATA[${index}]: Invalid SHORT trade - entry (${entry}) must be higher than all targets`);
-    }
-    
-    if (stop <= entry) {
-      errors.push(`TRADE_DATA[${index}]: Invalid SHORT trade - stop (${stop}) must be higher than entry (${entry})`);
-    }
-  }
-  
-  // Validate target sequence
-  if (numericTargets.length > 1) {
-    // Check if targets are in ascending or descending order based on direction
-    const isSorted = direction === 'LONG' 
-      ? isSortedAscending(numericTargets)
-      : isSortedDescending(numericTargets);
-      
-    if (!isSorted) {
-      errors.push(`TRADE_DATA[${index}]: Targets are not in the correct sequence for ${direction} trade`);
-    }
-  }
-  
-  return errors;
-}
-
-/**
- * Validate risk/reward calculation
- * 
- * @param {object} trade - The trade to validate
- * @param {number} index - Index of the trade in the array
- * @returns {string[]} - Array of error messages
- */
-function validateRiskReward(trade, index) {
-  const errors = [];
-  
-  // Skip validation if risk_reward is not provided
-  if (!trade.risk_reward || !trade.risk_reward.ratio) {
-    return errors;
-  }
-  
-  const { direction, levels, risk_reward } = trade;
-  
-  // Skip validation if essential components are missing
-  if (!direction || !levels || !levels.entry || !levels.target || !levels.stop) {
-    return errors;
-  }
-  
-  // Convert any string values to numbers if possible
-  const entry = parseNumber(levels.entry);
-  const stop = parseNumber(levels.stop);
-  
-  // For multiple targets, use the first one for validation
-  const target = parseNumber(Array.isArray(levels.target) ? levels.target[0] : levels.target);
-  
-  // Skip validation if we couldn't parse the numbers
-  if (isNaN(entry) || isNaN(stop) || isNaN(target)) {
-    return errors;
-  }
-  
-  // Calculate risk and reward
-  let risk, reward;
-  
-  if (direction === 'LONG') {
-    risk = Math.abs(entry - stop);
-    reward = Math.abs(target - entry);
-  } else { // SHORT
-    risk = Math.abs(stop - entry);
-    reward = Math.abs(entry - target);
-  }
-  
-  // Calculate risk/reward ratio
-  const calculatedRatio = risk > 0 ? (reward / risk) : 0;
-  
-  // Compare with the provided ratio (allow 10% tolerance)
-  const tolerance = 0.1;
-  const difference = Math.abs(calculatedRatio - risk_reward.ratio);
-  
-  if (difference > tolerance * Math.max(calculatedRatio, risk_reward.ratio)) {
-    errors.push(
-      `TRADE_DATA[${index}]: Risk/reward ratio (${risk_reward.ratio}) doesn't match calculated value (${calculatedRatio.toFixed(2)})`
-    );
-  }
-  
-  return errors;
-}
-
-/**
- * Validate position sizing based on confidence and duration
- * 
- * @param {object} trade - The trade to validate
- * @param {number} index - Index of the trade in the array
- * @returns {string[]} - Array of error messages
- */
-function validatePositionSizing(trade, index) {
-  const errors = [];
-  
-  // Skip validation if essential components are missing
-  if (!trade.confidence || !trade.duration || !trade.position_size) {
-    return errors;
-  }
-  
-  const { confidence, duration, position_size } = trade;
-  
-  // Get position sizing matrix from parameters
-  const sizingMatrix = getParameter('POSITION_SIZE_MATRIX', {});
-  
-  // Skip validation if matrix is not available
-  if (!sizingMatrix || Object.keys(sizingMatrix).length === 0) {
-    return errors;
-  }
-  
-  // Check if confidence exists in matrix
-  if (!sizingMatrix[confidence]) {
-    errors.push(`TRADE_DATA[${index}]: Unknown confidence level "${confidence}"`);
-    return errors;
-  }
-  
-  // Check if duration exists for this confidence
-  if (!sizingMatrix[confidence][duration]) {
-    errors.push(`TRADE_DATA[${index}]: No sizing rule for duration "${duration}" with confidence "${confidence}"`);
-    return errors;
-  }
-  
-  // Compare with the expected position size
-  const expectedSize = sizingMatrix[confidence][duration];
-  
-  if (position_size !== expectedSize) {
-    errors.push(
-      `TRADE_DATA[${index}]: Position size "${position_size}" doesn't match expected "${expectedSize}" for ${confidence}/${duration}`
-    );
-  }
-  
-  return errors;
-}
-
-/**
- * Validate market bias consistency
- * 
- * @param {object} tradeData - The trade data to validate
- * @returns {string[]} - Array of error messages
- */
-function validateMarketBias(tradeData) {
-  const errors = [];
-  
-  // Skip validation if essential components are missing
-  if (!tradeData.MARKET_BIAS || !tradeData.MARKET_BIAS.overall || !tradeData.TRADE_DATA) {
-    return errors;
-  }
-  
-  const { overall } = tradeData.MARKET_BIAS;
-  const trades = tradeData.TRADE_DATA;
-  
-  // Count trades by direction
-  const longCount = trades.filter(t => t.direction === 'LONG').length;
-  const shortCount = trades.filter(t => t.direction === 'SHORT').length;
-  
-  // Check if trade directions align with overall bias
-  if (overall === 'BULLISH' && shortCount > longCount) {
-    errors.push(`Market bias is BULLISH but there are more SHORT trades (${shortCount}) than LONG trades (${longCount})`);
-  } else if (overall === 'BEARISH' && longCount > shortCount) {
-    errors.push(`Market bias is BEARISH but there are more LONG trades (${longCount}) than SHORT trades (${shortCount})`);
-  }
-  
-  return errors;
-}
-
-/**
- * Validate a trade idea against behavioral patterns
- * 
- * @param {object} tradeIdea - Trade idea to validate
- * @param {object} behaviorKB - Behavioral knowledge base content
- * @returns {object} - Validation result with potential behavioral flags
- */
-function validateBehavioralPatterns(tradeIdea, behaviorKB) {
-  const flags = [];
-  
-  // Skip validation if essential components are missing
-  if (!tradeIdea || !behaviorKB) {
-    return { flagged: false };
-  }
-  
-  // Extract relevant information
-  const { ticker, confidence, duration, position_size } = tradeIdea;
-  const now = new Date();
-  const currentHour = now.getHours();
-  const currentMinute = now.getMinutes();
-  
-  // Check for late day lotto trading
-  if (duration === 'LOTTO' && currentHour >= 11 && currentMinute >= 30) {
-    flags.push({
-      flag: 'overtrading',
-      pattern: 'Overtrading Lotto Contracts in Low Vol Environments',
-      context: 'Late day lotto trade without news/catalyst',
-      reset_type: 'midday-reset'
-    });
-  }
-  
-  // Check for oversized positions
-  if (position_size === 'FULL_DOUBLE' && confidence !== 'BIG_IDEA') {
-    flags.push({
-      flag: 'oversized',
-      pattern: 'Position Size Misaligned to Edge',
-      context: 'Max size deployed on non-BIG_IDEA setup',
-      reset_type: 'journal-review'
-    });
-  }
-  
-  // Check for mixed bias trading
-  // This would require access to previous trades and market bias
-  
-  // Check for emotional averaging or FOMO
-  // This would require access to previous trades
-  
-  if (flags.length > 0) {
+    // Extract relevant documentation
     return {
-      flagged: true,
-      flags,
-      message: `Detected ${flags.length} potential behavioral issue(s)`
+      title: schema.title || schemaName,
+      description: schema.description || '',
+      requiredFields: schema.required || [],
+      properties: Object.keys(schema.properties || {}).map(key => ({
+        name: key,
+        type: schema.properties[key].type,
+        description: schema.properties[key].description || '',
+        required: (schema.required || []).includes(key),
+        enum: schema.properties[key].enum,
+        format: schema.properties[key].format
+      }))
     };
+  } catch (error) {
+    console.error(`Failed to get schema definition: ${error.message}`);
+    return { title: schemaName, description: 'Error loading schema', properties: [] };
   }
-  
-  return { flagged: false };
 }
 
-/**
- * Perform comprehensive validation of unified trade plan
- * 
- * @param {object} tradePlan - Unified trade plan to validate
- * @returns {object} - Validation result with errors if any
- */
-function validateUnifiedTradePlan(tradePlan) {
-  const errors = [];
-  
-  // Validate basic structure
-  if (!tradePlan.market_bias) {
-    errors.push('Missing market_bias in trade plan');
-  }
-  
-  if (!tradePlan.priority_focus) {
-    errors.push('Missing priority_focus in trade plan');
-  }
-  
-  if (!tradePlan.trade_plan) {
-    errors.push('Missing trade_plan in trade plan');
-  }
-  
-  // Validate trade categories
-  const { trade_plan } = tradePlan;
-  
-  if (trade_plan) {
-    // Ensure at least one category has trades
-    const hasAnyTrades = 
-      (trade_plan.core_positions && trade_plan.core_positions.length > 0) ||
-      (trade_plan.directional_trades && trade_plan.directional_trades.length > 0) ||
-      (trade_plan.intraday_setups && trade_plan.intraday_setups.length > 0) ||
-      (trade_plan.spec_plays && trade_plan.spec_plays.length > 0);
-    
-    if (!hasAnyTrades) {
-      errors.push('Trade plan contains no trade ideas in any category');
-    }
-    
-    // Validate risk management rules
-    if (!tradePlan.risk_management || tradePlan.risk_management.length === 0) {
-      errors.push('Missing risk management rules');
-    }
-    
-    // Validate trade management rules
-    if (!tradePlan.trade_management || tradePlan.trade_management.length === 0) {
-      errors.push('Missing trade management rules');
-    }
-  }
-  
-  if (errors.length > 0) {
-    return {
-      valid: false,
-      errors
-    };
-  }
-  
-  return {
-    valid: true,
-    message: 'Valid unified trade plan'
-  };
-}
-
-/**
- * Helper function to check if array is sorted in ascending order
- * 
- * @param {number[]} arr - Array of numbers
- * @returns {boolean} - True if sorted in ascending order
- */
-function isSortedAscending(arr) {
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] > arr[i + 1]) return false;
-  }
-  return true;
-}
-
-/**
- * Helper function to check if array is sorted in descending order
- * 
- * @param {number[]} arr - Array of numbers
- * @returns {boolean} - True if sorted in descending order
- */
-function isSortedDescending(arr) {
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] < arr[i + 1]) return false;
-  }
-  return true;
-}
-
-/**
- * Helper function to parse a number from various formats
- * 
- * @param {*} value - Value to parse
- * @returns {number} - Parsed number or NaN
- */
-function parseNumber(value) {
-  if (typeof value === 'number') {
-    return value;
-  }
-  
-  if (typeof value === 'string') {
-    // Remove $ and other non-numeric characters except decimal point
-    const cleanedValue = value.replace(/[^\d.-]/g, '');
-    return parseFloat(cleanedValue);
-  }
-  
-  return NaN;
-}
-
+// Export public API
 module.exports = {
-  validateTradeData,
-  validateLevelConsistency,
-  validateRiskReward,
-  validatePositionSizing,
-  validateMarketBias,
-  validateBehavioralPatterns,
-  validateUnifiedTradePlan
+  validateJson,
+  validateAndFix,
+  fixCommonJsonErrors,
+  extractRequiredFields,
+  createDefaultObject,
+  mergeValidatedObjects,
+  getSchemaDefinition,
+  config
 };

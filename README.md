@@ -126,6 +126,15 @@ All commands follow the standardized format:
 - `/generate-journal` - Create a trading journal entry
 - `/update-behaviors` - Update your trading behaviors knowledge base
 - `/generate-kb-update` - Generate knowledge base update recommendations
+- `/performance-vs-mancini` - Reconcile your trade plan and actual execution against DP's intent and Mancini's blueprint; log missed setups, alignment scores, and opportunity delta for next-day readiness
+
+
+- `/postmarket-sequence` - Run the complete postmarket workflow
+- `/generate-trade-log` - Create a structured log of today's trades
+- `/performance-debrief` - Analyze today's trading performance
+- `/generate-journal` - Create a trading journal entry
+- `/update-behaviors` - Update your trading behaviors knowledge base
+- `/generate-kb-update` - Generate knowledge base update recommendations
 
 #### System Management
 

@@ -17,28 +17,44 @@ ai_enabled: false
 
 # Trading System Prompts — Unified Execution Framework
 
-## QUICK START
+## 1. System Bootstrap Instructions
 
-1. **Upload the system:**
-   - ChatGPT: Download and upload [this ZIP file](https://github.com/simonplant/trading-system-prompts/archive/refs/heads/main.zip)
-   - Claude: Share this URL: `https://github.com/simonplant/trading-system-prompts`
-
-2. **Initialize the system:**
+### Option A: ZIP Upload (For ChatGPT and Similar)
+1. Download [the zipped version](https://github.com/simonplant/trading-system-prompts/archive/refs/heads/main.zip)
+2. Upload the ZIP file to your AI assistant chat
+3. Enter this exact command (hover over code block and click the copy button that appears):
    ```
-   Please read and load ALL files from this repository.
-   Start with README.md, then load all files from /prompts, /system, and /logs.
+   Please read and load ALL files from this ZIP archive.
+   Start with README.md, then load all files in the /prompts, /system, and /logs directories.
    Once loaded, use prompts/main-controller.md as the EXCLUSIVE routing layer for ALL commands.
    I want to interact with my trading system.
    ```
 
-3. **Check system status:**
+### Option B: GitHub Direct (For Claude and Similar)
+1. Share this repo URL:
+   ```
+   https://github.com/simonplant/trading-system-prompts
+   ```
+   Alternative (if needed): `https://github.com/simonplant/trading-system-prompts/tree/main`
+
+2. Enter this exact command (hover over code block and click the copy button that appears):
+   ```
+   Please read and load ALL files from this repository.
+   Start with README.md to understand the structure, then load all files from /prompts, /system, and /logs.
+   Once loaded, use prompts/main-controller.md as the EXCLUSIVE routing layer for ALL commands.
+   I want to interact with my trading system.
+   ```
+
+### First Commands After Initialization
+
+1. Check system status:
    ```
    /system-status
    ```
 
-4. **Start using premarket workflow:**
+2. Start using premarket workflow:
    ```
-   /pre-sequence
+   /premarket-sequence
    Transcript:
    [paste DP transcript here]
    ```
@@ -212,12 +228,12 @@ This workflow:
 ## Prompt Routing Rules (Strictly Enforced)
 
 All prompt flows must be routed through the controller:
-- DP transcript → dp-trade-analyzer.md
-- Mancini newsletter → mancini-trade-analyzer.md
-- Levels data → get-daily-sma-for-tickers.md + get-premarket-levels.md
-- Final unification → unified-trade-plan-generator.md
-- Intraday validation → copilot-confirm.md
-- Postmarket debrief → daily-performance-debrief.md
+- DP transcript → prompts/premarket/dp-trade-analyzer.md
+- Mancini newsletter → prompts/premarket/mancini-trade-analyzer.md
+- Levels data → prompts/premarket/get-daily-sma-for-tickers.md + prompts/premarket/get-premarket-levels.md
+- Final unification → prompts/premarket/unified-trade-plan-generator.md
+- Intraday validation → prompts/intraday/copilot-confirm.md
+- Postmarket debrief → prompts/postmarket/daily-performance-debrief.md
 
 If any source fails (e.g., malformed input, missing level logic), the controller will flag it and skip that integration without hallucinating fallback content.
 
@@ -251,42 +267,57 @@ For all security alerts, restart the session with proper initialization.
 
 ```
 trading-system-prompts/
-├── README.md                 # This file - master guide
-├── prompts/                  # Command prompt files
-│   ├── main-controller.md    # EXCLUSIVE entry point
-│   ├── premarket/            # Morning preparation
-│   │   ├── dp-analyzer.md    # Process DP transcript
-│   │   └── ...
-│   ├── intraday/             # Trade execution
-│   │   ├── copilot.md        # Trade validation
-│   │   └── ...
-│   └── postmarket/           # End-of-day review
-│       ├── debrief.md        # Performance analysis
-│       └── ...
-├── system/                   # System configuration
-│   ├── trading-charter.md    # Trading rules
-│   ├── trading-behaviors-kb.md # Behavior knowledge
-│   └── ...
-└── logs/                     # Trading records
-    ├── trades/               # Trade logs
-    └── journal/              # Journal entries
+├── README.md                      # This file - master guide
+├── prompts/                       # Command prompt files
+│   ├── main-controller.md         # EXCLUSIVE entry point
+│   ├── premarket/                 # Morning preparation
+│   │   ├── dp-trade-analyzer.md   # Process DP transcript
+│   │   ├── mancini-trade-analyzer.md  # Process Mancini newsletter
+│   │   ├── get-daily-sma-for-tickers.md  # Get SMA data
+│   │   ├── get-premarket-levels.md  # Extract market levels
+│   │   └── unified-trade-plan-generator.md  # Create plan
+│   ├── intraday/                  # Trade execution
+│   │   ├── copilot.md             # Main trading assistant
+│   │   ├── copilot-scout.md       # Setup scanner
+│   │   ├── copilot-confirm.md     # Trade validator
+│   │   ├── copilot-recenter.md    # Focus reset
+│   │   ├── copilot-debrief.md     # Quick review
+│   │   └── midday-reset.md        # Mid-session review
+│   └── postmarket/                # End-of-day review
+│       ├── generate-trade-log.md           # Log creation
+│       ├── daily-performance-debrief.md    # Analysis
+│       ├── generate-journal.md             # Journal creation
+│       ├── update-trading-behaviors-kb.md  # KB update
+│       └── generate-kb-update.md           # KB recommendations
+├── system/                        # System configuration
+│   ├── trading-charter.md         # Trading rules
+│   ├── trading-behaviors-kb.md    # Behavior knowledge
+│   ├── trading-system-sop.md      # Standard procedures
+│   ├── market-regimes.md          # Market classifier
+│   └── chart-visual-legend.md     # Chart legend
+└── logs/                          # Trading records
+    ├── trades/                    # Trade logs
+    └── journal/                   # Journal entries
 ```
 
 ### Core Components
 
 | Component | Purpose | Access Method |
 |-----------|---------|--------------|
-| `main-controller.md` | Central command router | Direct - primary entry point |
-| `trading-charter.md` | Trading rules and principles | Via `/show-charter` |
-| `trading-system-sop.md` | Standard operating procedures | Via `/show-sop` |
-| `trading-behaviors-kb.md` | Behavior knowledge base | Via `/show-kb` |
-| `market-regimes.md` | Market condition classifier | Via `/show-regime` |
+| `prompts/main-controller.md` | Central command router | Direct - primary entry point |
+| `system/trading-charter.md` | Trading rules and principles | Via `/show-charter` |
+| `system/trading-system-sop.md` | Standard operating procedures | Via `/show-sop` |
+| `system/trading-behaviors-kb.md` | Behavior knowledge base | Via `/show-kb` |
+| `system/market-regimes.md` | Market condition classifier | Via `/show-regime` |
 
 ## Changelog
 
 ### 1.6 — May 7, 2025
 - Reorganized README to prioritize immediate usage instructions
-- Added Quick Start section at the top
+- Removed duplication between Quick Start and Bootstrap sections
+- Updated bootstrap instructions with precise Claude command format
+- Added hover-over copy button instructions
+- Corrected all file paths for consistency
 - Balanced user-friendliness with comprehensive documentation
 - Added detailed workflow examples
 - Restored complete command reference from controller

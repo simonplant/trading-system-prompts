@@ -1,13 +1,122 @@
 {
-    "ticker": "string",
-    "type": "scalp | day | swing | longterm",
-    "confidence": "L | M | H",
-    "sentiment": "bullish | bearish | neutral | unsure",
-    "levels": {
-      "entry": "number | [number]",
-      "target": "number | [number]",
-      "stop": "number"
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Trade Idea Schema",
+  "description": "Standardized schema for trade idea validation (aligned with trade-data-schema.json v2.0)",
+  "type": "object",
+  "required": ["ticker", "direction", "confidence", "duration", "levels"],
+  "properties": {
+    "ticker": {
+      "type": "string",
+      "description": "Symbol/ticker of the instrument"
     },
-    "position_size": "small | 1/4 | 1/3 | 1/2 | full | double",
-    "notes": "string"
+    "direction": {
+      "type": "string",
+      "enum": ["LONG", "SHORT"],
+      "description": "Trade direction"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["BIG_IDEA", "HIGH", "MEDIUM", "LOW"],
+      "description": "Conviction level of the trade idea"
+    },
+    "duration": {
+      "type": "string",
+      "enum": ["CASHFLOW", "SWING", "LONGTERM", "LOTTO"],
+      "description": "Expected holding period"
+    },
+    "position_size": {
+      "type": "string",
+      "enum": ["FULL_DOUBLE", "FULL", "HALF", "QUARTER", "SMALL", "TINY"],
+      "description": "Relative position size"
+    },
+    "trigger_type": {
+      "type": "string",
+      "enum": ["exact", "loose-trigger"],
+      "description": "Whether entry is precise or conditional"
+    },
+    "levels": {
+      "type": "object",
+      "properties": {
+        "entry": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "array", "items": { "type": "number" } }
+          ],
+          "description": "Entry price level or condition"
+        },
+        "target": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "array", "items": { "type": "number" } }
+          ],
+          "description": "Target price level(s)"
+        },
+        "stop": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ],
+          "description": "Stop loss price level"
+        }
+      }
+    },
+    "timing": {
+      "type": "string",
+      "description": "Timing guidance (e.g., AT_OPEN, ON_PULLBACK)"
+    },
+    "context": {
+      "type": "string",
+      "description": "Reasoning or quote behind the trade idea"
+    },
+    "risk_reward": {
+      "type": "object",
+      "properties": {
+        "ratio": {
+          "type": "number",
+          "description": "Risk/reward ratio (higher is better)"
+        },
+        "calculation": {
+          "type": "string",
+          "description": "Method used to calculate R/R"
+        }
+      }
+    },
+    "execution_priority": {
+      "type": "object",
+      "properties": {
+        "rank": {
+          "type": "number",
+          "description": "Priority rank (1 is highest)"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for this priority ranking"
+        }
+      }
+    },
+    "order_suggestion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["market", "limit", "stop", "stop limit", "trailing stop"],
+          "description": "Suggested order type for TOS execution"
+        },
+        "price": {
+          "type": ["number", "null"],
+          "description": "Suggested limit price if applicable"
+        },
+        "stop_trigger": {
+          "type": ["number", "null"],
+          "description": "Suggested stop trigger price if applicable"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional order execution notes"
+        }
+      }
+    }
   }
+}

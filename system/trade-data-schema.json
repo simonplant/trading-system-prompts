@@ -1,240 +1,572 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Trading System Data Schema",
-    "description": "Standardized schema for all trade analysis data",
-    "type": "object",
-    "required": ["TRADE_DATA", "MARKET_BIAS", "COACHING_INSIGHTS"],
-    "properties": {
-      "TRADE_DATA": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": ["ticker", "direction", "confidence", "duration", "position_size", "trigger_type", "levels"],
-          "properties": {
-            "ticker": {
-              "type": "string",
-              "description": "Symbol/ticker of the instrument"
-            },
-            "direction": {
-              "type": "string",
-              "enum": ["LONG", "SHORT"],
-              "description": "Trade direction"
-            },
-            "confidence": {
-              "type": "string",
-              "enum": ["BIG_IDEA", "HIGH", "MEDIUM", "LOW"],
-              "description": "Conviction level of the trade idea"
-            },
-            "duration": {
-              "type": "string",
-              "enum": ["CASHFLOW", "SWING", "LONGTERM", "LOTTO"],
-              "description": "Expected holding period"
-            },
-            "position_size": {
-              "type": "string",
-              "enum": ["FULL_DOUBLE", "FULL", "HALF", "QUARTER", "SMALL", "TINY"],
-              "description": "Relative position size"
-            },
-            "trigger_type": {
-              "type": "string",
-              "enum": ["exact", "loose-trigger"],
-              "description": "Whether entry is precise or conditional"
-            },
-            "levels": {
-              "type": "object",
-              "properties": {
-                "entry": {
-                  "oneOf": [
-                    { "type": "number" },
-                    { "type": "string" },
-                    { "type": "array", "items": { "type": "number" } }
-                  ],
-                  "description": "Entry price level or condition"
-                },
-                "target": {
-                  "oneOf": [
-                    { "type": "number" },
-                    { "type": "string" },
-                    { "type": "array", "items": { "type": "number" } }
-                  ],
-                  "description": "Target price level(s)"
-                },
-                "stop": {
-                  "oneOf": [
-                    { "type": "number" },
-                    { "type": "string" }
-                  ],
-                  "description": "Stop loss price level"
-                }
-              }
-            },
-            "timing": {
-              "type": "string",
-              "description": "Timing guidance (e.g., AT_OPEN, ON_PULLBACK)"
-            },
-            "context": {
-              "type": "string",
-              "description": "Reasoning or quote behind the trade idea"
-            },
-            "earnings": {
-              "type": "object",
-              "properties": {
-                "upcoming": {
-                  "type": "boolean",
-                  "description": "Whether earnings are upcoming"
-                },
-                "date": {
-                  "type": "string",
-                  "description": "Earnings date if known"
-                },
-                "strategy": {
-                  "type": "string",
-                  "enum": ["pre", "post"],
-                  "description": "Trade strategy relative to earnings"
-                }
-              }
-            },
-            "risk_reward": {
-              "type": "object",
-              "properties": {
-                "ratio": {
-                  "type": "number",
-                  "description": "Risk/reward ratio (higher is better)"
-                },
-                "calculation": {
-                  "type": "string",
-                  "description": "Method used to calculate R/R"
-                }
-              }
-            },
-            "execution_priority": {
-              "type": "object",
-              "properties": {
-                "rank": {
-                  "type": "number",
-                  "description": "Priority rank (1 is highest)"
-                },
-                "reason": {
-                  "type": "string",
-                  "description": "Reason for this priority ranking"
-                }
-              }
-            },
-            "order_suggestion": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": ["market", "limit", "stop", "stop limit", "trailing stop"],
-                  "description": "Suggested order type for TOS execution"
-                },
-                "price": {
-                  "type": ["number", "null"],
-                  "description": "Suggested limit price if applicable"
-                },
-                "stop_trigger": {
-                  "type": ["number", "null"],
-                  "description": "Suggested stop trigger price if applicable"
-                },
-                "notes": {
-                  "type": "string",
-                  "description": "Additional order execution notes"
-                }
-              }
-            },
-            "timing_details": {
-              "type": "object",
-              "properties": {
-                "optimal_entry_window": {
-                  "type": "string",
-                  "description": "Best time period for entry"
-                },
-                "setup_duration": {
-                  "type": "string",
-                  "description": "Expected duration of the setup"
-                },
-                "expiration": {
-                  "type": "string",
-                  "description": "When to abandon the setup if not triggered"
-                }
-              }
-            }
-          }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Trading System Data Schema",
+  "description": "Standardized schema for all trade analysis data (v2.0)",
+  "type": "object",
+  "required": ["metadata"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["source", "timestamp", "version"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["dp", "mancini"],
+          "description": "Source of the data"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of when the data was generated"
+        },
+        "version": {
+          "type": "string",
+          "description": "Schema version for compatibility checking"
+        },
+        "es_to_spx_conversion": {
+          "type": "number",
+          "description": "Current ES to SPX conversion factor (Mancini only)"
         }
-      },
-      "MARKET_BIAS": {
+      }
+    },
+    "TRADE_DATA": {
+      "type": "array",
+      "items": {
         "type": "object",
+        "required": ["ticker", "direction", "confidence", "duration", "position_size", "trigger_type", "levels"],
         "properties": {
-          "overall": {
+          "ticker": {
             "type": "string",
-            "enum": ["BULLISH", "BEARISH", "NEUTRAL", "CAUTIOUS", "MIXED"],
-            "description": "Overall market bias"
+            "description": "Symbol/ticker of the instrument"
           },
-          "key_levels": {
+          "direction": {
+            "type": "string",
+            "enum": ["LONG", "SHORT"],
+            "description": "Trade direction"
+          },
+          "confidence": {
+            "type": "string",
+            "enum": ["BIG_IDEA", "HIGH", "MEDIUM", "LOW"],
+            "description": "Conviction level of the trade idea"
+          },
+          "duration": {
+            "type": "string",
+            "enum": ["CASHFLOW", "SWING", "LONGTERM", "LOTTO"],
+            "description": "Expected holding period"
+          },
+          "position_size": {
+            "type": "string",
+            "enum": ["FULL_DOUBLE", "FULL", "HALF", "QUARTER", "SMALL", "TINY"],
+            "description": "Relative position size"
+          },
+          "trigger_type": {
+            "type": "string",
+            "enum": ["exact", "loose-trigger"],
+            "description": "Whether entry is precise or conditional"
+          },
+          "setup_type": {
+            "type": "string",
+            "description": "Type of setup (Mancini-specific)"
+          },
+          "levels": {
             "type": "object",
             "properties": {
-              "SPX": {
-                "type": "array",
-                "items": { "type": "number" }
+              "entry": {
+                "oneOf": [
+                  { "type": "number" },
+                  { "type": "string" },
+                  { "type": "array", "items": { "type": "number" } }
+                ],
+                "description": "Entry price level or condition"
               },
-              "QQQ": {
-                "type": "array",
-                "items": { "type": "number" }
+              "target": {
+                "oneOf": [
+                  { "type": "number" },
+                  { "type": "string" },
+                  { "type": "array", "items": { "type": "number" } }
+                ],
+                "description": "Target price level(s)"
               },
-              "SPY": {
-                "type": "array",
-                "items": { "type": "number" }
-              },
-              "VIX": {
-                "type": "array",
-                "items": { "type": "number" }
+              "stop": {
+                "oneOf": [
+                  { "type": "number" },
+                  { "type": "string" }
+                ],
+                "description": "Stop loss price level"
               }
             }
           },
-          "catalysts": {
-            "type": "array",
-            "items": { "type": "string" }
-          },
-          "focus_sectors": {
-            "type": "array",
-            "items": { "type": "string" }
-          },
-          "market_regime": {
+          "timing": {
             "type": "string",
-            "enum": ["trending", "range_bound", "volatile", "low_volatility"],
-            "description": "Current market regime"
+            "description": "Timing guidance (e.g., AT_OPEN, ON_PULLBACK)"
           },
-          "volume_profile": {
+          "context": {
             "type": "string",
-            "enum": ["above_average", "average", "below_average"],
-            "description": "Current volume profile"
+            "description": "Reasoning or quote behind the trade idea"
+          },
+          "acceptance": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["BACKTEST", "RECLAIM", "BOTH"],
+                "description": "Type of acceptance pattern (Mancini-specific)"
+              },
+              "pattern": {
+                "type": "string",
+                "description": "Description of ideal pattern"
+              },
+              "example": {
+                "type": "string",
+                "description": "Example if provided"
+              }
+            },
+            "description": "Acceptance criteria information (Mancini-specific)"
+          },
+          "earnings": {
+            "type": "object",
+            "properties": {
+              "upcoming": {
+                "type": "boolean",
+                "description": "Whether earnings are upcoming"
+              },
+              "date": {
+                "type": "string",
+                "description": "Earnings date if known"
+              },
+              "strategy": {
+                "type": "string",
+                "enum": ["pre", "post"],
+                "description": "Trade strategy relative to earnings"
+              }
+            }
+          },
+          "risk_reward": {
+            "type": "object",
+            "properties": {
+              "ratio": {
+                "type": "number",
+                "description": "Risk/reward ratio (higher is better)"
+              },
+              "calculation": {
+                "type": "string",
+                "description": "Method used to calculate R/R"
+              }
+            }
+          },
+          "execution_priority": {
+            "type": "object",
+            "properties": {
+              "rank": {
+                "type": "number",
+                "description": "Priority rank (1 is highest)"
+              },
+              "reason": {
+                "type": "string",
+                "description": "Reason for this priority ranking"
+              }
+            }
+          },
+          "order_suggestion": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["market", "limit", "stop", "stop limit", "trailing stop"],
+                "description": "Suggested order type for TOS execution"
+              },
+              "price": {
+                "type": ["number", "null"],
+                "description": "Suggested limit price if applicable"
+              },
+              "stop_trigger": {
+                "type": ["number", "null"],
+                "description": "Suggested stop trigger price if applicable"
+              },
+              "notes": {
+                "type": "string",
+                "description": "Additional order execution notes"
+              }
+            }
+          },
+          "timing_details": {
+            "type": "object",
+            "properties": {
+              "optimal_entry_window": {
+                "type": "string",
+                "description": "Best time period for entry"
+              },
+              "setup_duration": {
+                "type": "string",
+                "description": "Expected duration of the setup"
+              },
+              "expiration": {
+                "type": "string",
+                "description": "When to abandon the setup if not triggered"
+              }
+            }
           },
           "notes": {
             "type": "string",
-            "description": "Additional notes about market context"
+            "description": "Additional notes about the trade idea"
           }
         }
-      },
-      "COACHING_INSIGHTS": {
-        "type": "object",
-        "properties": {
-          "risk_management": {
-            "type": "array",
-            "items": { "type": "string" }
+      }
+    },
+    "MARKET_BIAS": {
+      "type": "object",
+      "properties": {
+        "overall": {
+          "type": "string",
+          "enum": ["BULLISH", "BEARISH", "NEUTRAL", "CAUTIOUS", "MIXED"],
+          "description": "Overall market bias"
+        },
+        "key_levels": {
+          "type": "object",
+          "properties": {
+            "SPX": {
+              "type": "array",
+              "items": { "type": "number" }
+            },
+            "QQQ": {
+              "type": "array",
+              "items": { "type": "number" }
+            },
+            "SPY": {
+              "type": "array",
+              "items": { "type": "number" }
+            },
+            "ES": {
+              "type": "array",
+              "items": { "type": "number" }
+            },
+            "VIX": {
+              "type": "array",
+              "items": { "type": "number" }
+            }
+          }
+        },
+        "catalysts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "focus_sectors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "market_regime": {
+          "type": "string",
+          "enum": ["trending", "range_bound", "volatile", "low_volatility"],
+          "description": "Current market regime"
+        },
+        "volume_profile": {
+          "type": "string",
+          "enum": ["above_average", "average", "below_average"],
+          "description": "Current volume profile"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about market context"
+        }
+      }
+    },
+    "COACHING_INSIGHTS": {
+      "type": "object",
+      "properties": {
+        "risk_management": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "timing_advice": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "market_condition_warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "direct_quotes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "management_protocol": {
+          "type": "object",
+          "properties": {
+            "first_target_action": {
+              "type": "string",
+              "description": "What to do at first target level"
+            },
+            "second_target_action": {
+              "type": "string",
+              "description": "What to do at second target level"
+            },
+            "runner_management": {
+              "type": "string",
+              "description": "How to handle remaining position"
+            },
+            "trailing_stop_methodology": {
+              "type": "string",
+              "description": "How to trail stops"
+            }
           },
-          "timing_advice": {
-            "type": "array",
-            "items": { "type": "string" }
+          "description": "Trade management protocol (Mancini-specific)"
+        },
+        "execution_windows": {
+          "type": "object",
+          "properties": {
+            "primary": {
+              "type": "string",
+              "description": "Optimal trading window"
+            },
+            "secondary": {
+              "type": "string",
+              "description": "Other viable windows"
+            },
+            "avoid": {
+              "type": "string",
+              "description": "Times to avoid trading"
+            }
           },
-          "market_condition_warnings": {
-            "type": "array",
-            "items": { "type": "string" }
-          },
-          "direct_quotes": {
-            "type": "array",
-            "items": { "type": "string" }
+          "description": "Execution timing windows (Mancini-specific)"
+        }
+      }
+    },
+    "TECHNICAL_DATA": {
+      "type": "object",
+      "description": "Technical analysis data (Mancini-specific)",
+      "properties": {
+        "market_structure": {
+          "type": "object",
+          "properties": {
+            "regime": {
+              "type": "string",
+              "description": "Current market regime"
+            },
+            "current_pattern": {
+              "type": "string",
+              "description": "Active technical structure"
+            },
+            "day_streak": {
+              "type": "string",
+              "description": "Consecutive up/down days"
+            },
+            "key_structures": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Notable chart patterns"
+            }
+          }
+        },
+        "control_lines": {
+          "type": "object",
+          "properties": {
+            "bull_above": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Levels above which bulls control"
+            },
+            "bear_below": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Levels below which bears control"
+            },
+            "decision_point": {
+              "type": "string",
+              "description": "Most critical decision level"
+            }
+          }
+        },
+        "levels": {
+          "type": "object",
+          "properties": {
+            "structure_levels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" },
+                  "origin": { "type": "string" }
+                }
+              }
+            },
+            "historical_levels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" },
+                  "timeframe": { "type": "string" }
+                }
+              }
+            },
+            "magnets": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" }
+                }
+              }
+            },
+            "v_shape_points": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "support_resistance": {
+          "type": "object",
+          "properties": {
+            "macro_resistance": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" }
+                }
+              }
+            },
+            "major_resistance": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" }
+                }
+              }
+            },
+            "minor_resistance": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" }
+                }
+              }
+            },
+            "trading_range": {
+              "type": "object",
+              "properties": {
+                "high": { "type": "string" },
+                "low": { "type": "string" }
+              }
+            },
+            "minor_support": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" }
+                }
+              }
+            },
+            "major_support": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" }
+                }
+              }
+            },
+            "macro_support": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": { "type": "string" },
+                  "context": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "MARKET_ANALYSIS": {
+      "type": "object",
+      "description": "Market analysis data (Mancini-specific)",
+      "properties": {
+        "previous_session": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string",
+              "description": "Brief description of prior day"
+            },
+            "key_developments": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Notable price action events"
+            },
+            "important_levels_tested": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Levels that were challenged or broken"
+            }
+          }
+        },
+        "next_session_outlook": {
+          "type": "object",
+          "properties": {
+            "scenarios": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "condition": { "type": "string" },
+                  "outcome": { "type": "string" },
+                  "probability": { "type": "string" }
+                }
+              }
+            },
+            "focus_points": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Key things to watch"
+            },
+            "cautions": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Specific warnings"
+            }
+          }
+        },
+        "invalidation_signals": {
+          "type": "object",
+          "properties": {
+            "structural": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Breaks that invalidate analysis"
+            },
+            "behavioral": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Price action that suggests failure"
+            },
+            "timing": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Time-based invalidations"
+            }
           }
         }
       }
     }
   }
+}

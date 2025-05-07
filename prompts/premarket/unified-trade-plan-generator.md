@@ -3,8 +3,8 @@ title: Unified Trade Plan Generator
 description: Generate an actionable daily trading plan integrating DP and Mancini insights
 tags: [premarket, plan, execution]
 author: Simon Plant
-last_updated: 2025-05-05
-version: 2.2
+last_updated: 2025-05-07
+version: 2.3
 category: premarket
 usage: Run after analyzing both DP and Mancini sources. Produces a comprehensive trade plan with execution rules. Consumes structured trade data, technical levels, and market bias.
 status: active
@@ -13,6 +13,7 @@ linked_outputs: [copilot.md, generate-daily-trade-log.md]
 input_format: json
 output_format: markdown
 ai_enabled: true
+schema_version: 2.0
 ---
 
 ## UNIFIED TRADE PLAN GENERATOR — PROMPT
@@ -40,13 +41,26 @@ Key parameters used:
 Before processing, validate the incoming JSON data:
 
 ```javascript
-// Check for minimum required data
-if (!input.DP_DATA || !input.DP_DATA.TRADE_DATA || !Array.isArray(input.DP_DATA.TRADE_DATA) || 
-    !input.MANCINI_DATA || !input.MANCINI_DATA.TECHNICAL_DATA || !input.MANCINI_DATA.TRADE_SETUPS) {
+// Schema version compatibility check
+const requiredVersion = "2.0";
+if ((!input.DP_DATA || !input.DP_DATA.metadata || input.DP_DATA.metadata.version !== requiredVersion) ||
+    (!input.MANCINI_DATA || !input.MANCINI_DATA.metadata || input.MANCINI_DATA.metadata.version !== requiredVersion)) {
     
     return {
-        error: "ERROR: Missing required upstream JSON. Check DP and Mancini analyzers.",
-        details: "The unified trade plan generator requires valid TRADE_DATA from DP and TECHNICAL_DATA/TRADE_SETUPS from Mancini."
+        error: "ERROR: Schema version mismatch",
+        details: `The unified trade plan generator requires all inputs to use schema version ${requiredVersion}. Please update your analyzers.`
+    };
+}
+
+// Check for required data structures
+if (!input.DP_DATA || !input.DP_DATA.TRADE_DATA || !Array.isArray(input.DP_DATA.TRADE_DATA) || 
+    !input.DP_DATA.MARKET_BIAS || !input.DP_DATA.COACHING_INSIGHTS ||
+    !input.MANCINI_DATA || !input.MANCINI_DATA.TECHNICAL_DATA || !input.MANCINI_DATA.TRADE_DATA ||
+    !Array.isArray(input.MANCINI_DATA.TRADE_DATA) || !input.MANCINI_DATA.MARKET_BIAS) {
+    
+    return {
+        error: "ERROR: Missing required data structures",
+        details: "The unified trade plan generator requires valid TRADE_DATA, MARKET_BIAS, and other schema components from both DP and Mancini analyzers."
     };
 }
 ```
@@ -55,45 +69,54 @@ if (!input.DP_DATA || !input.DP_DATA.TRADE_DATA || !Array.isArray(input.DP_DATA.
 
 ### DATA INPUTS
 
-1. **DP STRUCTURED DATA**
+The generator accepts data in the standardized schema format (v2.0):
+
+1. **DP Analyzer Output**
 
    ```json
    {
-     "DP_DATA": {
-       "TRADE_DATA": [...],
-       "MARKET_BIAS": {...},
-       "COACHING_INSIGHTS": {...}
-     }
+     "metadata": {
+       "source": "dp",
+       "timestamp": "ISO-timestamp",
+       "version": "2.0"
+     },
+     "TRADE_DATA": [...],
+     "MARKET_BIAS": {...},
+     "COACHING_INSIGHTS": {...}
    }
    ```
 
-2. **MANCINI TECHNICAL DATA**
+2. **Mancini Analyzer Output**
 
    ```json
    {
-     "MANCINI_DATA": {
-       "TECHNICAL_DATA": {...},
-       "TRADE_SETUPS": {...},
-       "MARKET_ANALYSIS": {...}
-     }
+     "metadata": {
+       "source": "mancini",
+       "timestamp": "ISO-timestamp",
+       "version": "2.0",
+       "es_to_spx_conversion": number
+     },
+     "TECHNICAL_DATA": {...},
+     "TRADE_DATA": [...],
+     "MARKET_BIAS": {...},
+     "MARKET_ANALYSIS": {...},
+     "COACHING_INSIGHTS": {...}
    }
    ```
 
-3. **MARKET CONTEXT**
+3. **Market Context (Optional)**
 
    ```json
    {
-     "MARKET_CONTEXT": {
-       "current_levels": {
-         "ES": 0.0,
-         "SPX": 0.0,
-         "QQQ": 0.0,
-         "SPY": 0.0,
-         "VIX": 0.0
-       },
-       "economic_events": [...],
-       "earnings_reports": [...]
-     }
+     "current_levels": {
+       "ES": 0.0,
+       "SPX": 0.0,
+       "QQQ": 0.0,
+       "SPY": 0.0,
+       "VIX": 0.0
+     },
+     "economic_events": [...],
+     "earnings_reports": [...]
    }
    ```
 
@@ -112,7 +135,7 @@ Follow this precise decision tree to determine trade prioritization:
 2. **PRIORITY TIER 2: Strong Single-Source Setups**
 
    * DP BIG_IDEA/HIGH trades without clear technical alignment
-   * Mancini high-confidence setups without corresponding DP ideas
+   * Mancini HIGH confidence setups without corresponding DP ideas
    * Must have clear trigger conditions and risk parameters
 
 3. **PRIORITY TIER 3: Medium-Conviction Opportunities**
@@ -127,6 +150,24 @@ Follow this precise decision tree to determine trade prioritization:
    * Unclear technical structure
    * Setups requiring multiple conditions
    * Ideas without clear risk parameters
+
+---
+
+### TRADE CONSOLIDATION
+
+For trades on the same ticker appearing in both sources:
+
+1. **Directional Agreement**
+   * Use highest conviction level from either source
+   * Take most specific entry/exit parameters
+   * Combine context notes from both sources
+   * Increase position size by one level if both sources agree
+
+2. **Directional Conflict**
+   * Include both setups separately
+   * Add warning note about conflicting analysis
+   * Reduce position size by one level for both
+   * Flag for special attention in risk management section
 
 ---
 
@@ -251,6 +292,27 @@ TRADE MANAGEMENT RULES:
 
 ---
 
+### COACHING INSIGHTS INTEGRATION
+
+Combine coaching insights from both sources:
+
+1. **Risk Management**
+   * Prioritize specific risk parameters over general advice
+   * Include position sizing guidance based on market conditions
+   * Incorporate stop management techniques
+
+2. **Timing Advice**
+   * Extract optimal execution windows
+   * Identify sessions to avoid trading
+   * Include event-driven timing adjustments
+
+3. **Market Condition Warnings**
+   * Highlight invalidation signals from technical analysis
+   * Include volatility warnings from both sources
+   * Add specific cautions about market structure
+
+---
+
 ### ERROR HANDLING
 
 If the script encounters errors, output a specific error message:
@@ -261,66 +323,16 @@ ERROR GENERATING UNIFIED TRADE PLAN
 Missing or invalid input data:
 - [Specific error message]
 
-Required JSON structure:
-{
-  "DP_DATA": {
-    "TRADE_DATA": [...],
-    "MARKET_BIAS": {...},
-    "COACHING_INSIGHTS": {...}
-  },
-  "MANCINI_DATA": {
-    "TECHNICAL_DATA": {...},
-    "TRADE_SETUPS": {...},
-    "MARKET_ANALYSIS": {...}
-  }
-}
+Required schema version: 2.0
 
-Please re-run the DP and Mancini analyzers with the corrected JSON output format.
-```
-
----
-
-### EXAMPLE TRADE INTEGRATION
-
-To illustrate proper integration, here's an example:
-
-**DP Data:**
-
-```json
-{
-  "ticker": "META",
-  "direction": "LONG",
-  "conviction": {"level": "HIGH", "signals": ["specific levels", "fundamental support"]},
-  "duration": "SWING",
-  "sizing": "FULL",
-  "levels": {"entry": ["580-585"], "targets": ["595", "605", "620"], "stops": ["below 575"]},
-  "timing": "ON_PULLBACK",
-  "context": "Strong earnings, DP highlights as 'cheap'",
-  "earnings": {"upcoming": false}
-}
-```
-
-**Mancini Data:**
-
-* No specific META mention
-* General market structure supports sector
-* Key SPX level at 5642 must hold for bullish trades
-
-**Integrated Output:**
-
-```
-DIRECTIONAL TRADES:
-1. META LONG [HIGH/SWING/FULL]
-   SETUP: Buy pullback to 580 (convergence of 50-day/200-day MAs)
-   TRIGGER: Price reclaims 585 after testing 580
-   LEVELS: Entry 585 → Targets 595, 605, 620 → Stop 575
-   NOTES: DP high conviction call, conditional on SPX holding 5642 support
+Please ensure both DP and Mancini analyzers are updated to output the standardized JSON format.
 ```
 
 ---
 
 ### CHANGELOG
 
+* v2.3 (2025-05-07): Updated to use standardized schema v2.0
 * v2.2 (2025-05-05): Added JSON validation check and error handling
-* v2.1 (2025-05-05): Added support for system parameters reference
+* v2.1 (2025-05-01): Added support for system parameters reference
 * v2.0 (2025-05-01): Initial template design

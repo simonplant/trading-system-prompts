@@ -3,8 +3,8 @@ title: Mancini Blueprint Analyzer
 description: Extract structured technical levels, trade setups, and acceptance patterns from Mancini's ES futures blueprint  
 tags: [premarket, analysis, technical, mancini]  
 author: Simon Plant  
-last_updated: 2025-05-05  
-version: 2.3  
+last_updated: 2025-05-07  
+version: 2.4  
 category: premarket  
 usage: Run before market open after Mancini newsletter is available. Produces structured technical data and trade setups for system integration. Consumes ES/SPX levels and Mancini's blueprint notes.  
 status: active  
@@ -13,6 +13,7 @@ linked_outputs: [mancini-blueprint-summary.md, unified-trade-plan-generator.md]
 input_format: markdown  
 output_format: json  
 ai_enabled: true  
+schema_version: 2.0
 ---
 
 ## MANCINI BLUEPRINT ANALYZER — PROMPT
@@ -54,19 +55,19 @@ Key parameters used:
 
 ---
 
-### FINAL OUTPUT — SYSTEM JSON
+### DATA STRUCTURE — JSON SCHEMA
 
-Please output only the following JSON object:
+The analyzer now uses the standardized system schema format (v2.0) with the following structure:
 
 ```json
 {
-  "source": "mancini",
-  "date": "YYYY-MM-DD",
+  "metadata": {
+    "source": "mancini",
+    "timestamp": "ISO-timestamp",
+    "version": "2.0",
+    "es_to_spx_conversion": "current conversion value used"
+  },
   "TECHNICAL_DATA": {
-    "metadata": {
-      "es_to_spx_conversion": "current conversion value used",
-      "version": "2.3"
-    },
     "market_structure": {
       "regime": "BUY_DIPS|SELL_RIPS|RANGE_BOUND|TRENDING",
       "current_pattern": "description of active technical structure",
@@ -102,45 +103,59 @@ Please output only the following JSON object:
       "macro_support": [{"level": "SPX level", "context": "significance"}]
     }
   },
-
-  "TRADE_SETUPS": {
-    "setups": [
-      {
-        "ticker": "SPX",
-        "type": "FAILED_BREAKDOWN|FAILED_BREAKOUT|RANGE_FADE|OTHER",
-        "direction": "LONG|SHORT",
-        "confidence": "HIGH|MEDIUM|LOW",
-        "duration": "SCALP|DAY|SWING",
-        "position_size": "1/4|1/3|1/2|FULL",
-        "trigger_type": "exact|loose-trigger",
-        "levels": {
-          "entry": [number],
-          "target": [number],
-          "stop": number
-        },
-        "timing": "AT_OPEN|BREAKOUT|ON_PULLBACK|etc.",
-        "acceptance": {
-          "type": "BACKTEST|RECLAIM|BOTH",
-          "pattern": "description of ideal pattern",
-          "example": "example if provided"
-        },
-        "context": "setup background and reasoning",
-        "notes": "optional notes"
-      }
-    ],
-    "management_protocol": {
-      "first_target_action": "what to do at first level",
-      "second_target_action": "what to do at second level",
-      "runner_management": "how to handle remaining position",
-      "trailing_stop_methodology": "how to trail stops"
-    },
-    "execution_windows": {
-      "primary": "optimal trading window",
-      "secondary": "other viable windows",
-      "avoid": "times to avoid trading"
+  "TRADE_DATA": [
+    {
+      "ticker": "SPX",
+      "direction": "LONG | SHORT",
+      "confidence": "BIG_IDEA | HIGH | MEDIUM | LOW",
+      "duration": "CASHFLOW | SWING | LONGTERM | LOTTO",
+      "position_size": "FULL_DOUBLE | FULL | HALF | QUARTER | SMALL | TINY",
+      "trigger_type": "exact | loose-trigger",
+      "setup_type": "FAILED_BREAKDOWN | FAILED_BREAKOUT | RANGE_FADE | OTHER",
+      "levels": {
+        "entry": [number],
+        "target": [number],
+        "stop": number
+      },
+      "timing": "AT_OPEN | BREAKOUT | ON_PULLBACK | etc.",
+      "context": "setup background and reasoning",
+      "acceptance": {
+        "type": "BACKTEST | RECLAIM | BOTH",
+        "pattern": "description of ideal pattern",
+        "example": "example if provided"
+      },
+      "risk_reward": {
+        "ratio": number,
+        "calculation": "string"
+      },
+      "execution_priority": {
+        "rank": number,
+        "reason": "string"
+      },
+      "order_suggestion": {
+        "type": "market | limit | stop | stop limit | trailing stop",
+        "price": number | null,
+        "stop_trigger": number | null,
+        "notes": "string"
+      },
+      "timing_details": {
+        "optimal_entry_window": "string",
+        "setup_duration": "string",
+        "expiration": "string"
+      },
+      "notes": "optional notes"
     }
+  ],
+  "MARKET_BIAS": {
+    "overall": "BULLISH | BEARISH | NEUTRAL | CAUTIOUS | MIXED",
+    "key_levels": {
+      "SPX": [number],
+      "ES": [number]
+    },
+    "market_regime": "trending | range_bound | volatile | low_volatility",
+    "volume_profile": "above_average | average | below_average",
+    "notes": "string"
   },
-
   "MARKET_ANALYSIS": {
     "previous_session": {
       "summary": "brief description of prior day",
@@ -163,5 +178,81 @@ Please output only the following JSON object:
       "behavioral": ["price action that suggests failure"],
       "timing": ["time-based invalidations"]
     }
+  },
+  "COACHING_INSIGHTS": {
+    "management_protocol": {
+      "first_target_action": "what to do at first level",
+      "second_target_action": "what to do at second level",
+      "runner_management": "how to handle remaining position",
+      "trailing_stop_methodology": "how to trail stops"
+    },
+    "execution_windows": {
+      "primary": "optimal trading window",
+      "secondary": "other viable windows",
+      "avoid": "times to avoid trading"
+    },
+    "risk_management": ["string"],
+    "timing_advice": ["string"],
+    "market_condition_warnings": ["string"]
   }
 }
+```
+
+---
+
+### CONFIDENCE MAPPING
+
+For consistent trade prioritization, Mancini setups are mapped to standard confidence levels:
+
+| Mancini Description | Standardized Confidence | Typical Position Size |
+|---------------------|-------------------------|------------------------|
+| "High conviction setup" | BIG_IDEA | FULL |
+| "Strong setup" | HIGH | FULL |
+| "Watching for test at level" | MEDIUM | HALF |
+| "Possible setup if..." | LOW | QUARTER |
+
+---
+
+### TRADE SETUP STANDARDIZATION
+
+For each trade setup identified, the analyzer will:
+
+1. **Map to Standard Schema**
+   - Convert from Mancini's terminology to standardized fields
+   - Calculate appropriate position sizing based on setup quality
+   - Determine confidence based on language and context clues
+
+2. **Enrich with Technical Context**
+   - Add relevant level information from technical analysis
+   - Include historical success rate if mentioned
+   - Associate with current market structure
+
+3. **Add Execution Details**
+   - Calculate risk/reward based on target and stop information
+   - Determine optimal order types and parameters
+   - Extract timing windows and expiration conditions
+
+---
+
+### FINAL INSTRUCTION
+
+Return one and only one JSON block in this structure:
+
+```json
+{
+  "metadata": {
+    "source": "mancini",
+    "timestamp": "2025-05-07T09:30:00Z",
+    "version": "2.0",
+    "es_to_spx_conversion": 10.0
+  },
+  "TECHNICAL_DATA": {...},
+  "TRADE_DATA": [...],
+  "MARKET_BIAS": {...},
+  "MARKET_ANALYSIS": {...},
+  "COACHING_INSIGHTS": {...}
+}
+```
+
+No commentary, notes, or narrative.  
+For human-readable format, run `mancini-blueprint-summary.md` after validating this JSON.

@@ -1,14 +1,14 @@
 ---
 title: Unified Trade Plan Generator
-description: Generate an actionable daily trading plan integrating DP and Mancini insights
+description: Generate daily trading plan with position context and improved classification
 tags: [premarket, plan, execution]
 author: Simon Plant
 last_updated: 2025-05-07
-version: 2.3
+version: 2.4
 category: premarket
-usage: Run after analyzing both DP and Mancini sources. Produces a comprehensive trade plan with execution rules. Consumes structured trade data, technical levels, and market bias.
+usage: Produces comprehensive trade plan with position awareness
 status: active
-requires: [dp-trade-analyzer.md, mancini-trade-analyzer.md, system-parameters.md]
+requires: [dp-trade-analyzer.md, mancini-trade-analyzer.md, system-parameters.json, moderator-position-tracker.md]
 linked_outputs: [copilot.md, generate-daily-trade-log.md]
 input_format: json
 output_format: markdown
@@ -16,323 +16,332 @@ ai_enabled: true
 schema_version: 2.0
 ---
 
-## UNIFIED TRADE PLAN GENERATOR — PROMPT
+# UNIFIED TRADE PLAN GENERATOR
 
-**Purpose:**
-Generate a comprehensive, execution-ready trade plan by integrating structured data from DP's morning call analysis and Mancini's SPX blueprint. Prioritize trade ideas based on conviction, technical alignment, and risk management parameters.
+## Purpose
+Generate a comprehensive, execution-ready trade plan by integrating structured data from DP's morning call analysis, Mancini's SPX blueprint, and current moderator position data.
 
----
+## REVISED INTEGRATION LOGIC WITH POSITION AWARENESS
 
-### SYSTEM PARAMETERS
+Follow this enhanced decision tree to determine trade prioritization:
 
-This generator imports parameters from the central system-parameters.md file.
-Key parameters used:
+### PRIORITY TIER 1: DP Focus & Active Mod Positions
+* Any trade DP mentions as his "focus" for the day
+* CORE_SWING positions held by multiple moderators with add signals
+* Tickers with explicit emphasis phrases ("gonna be my focus", "most definitely")
+* ACTIVE moderator swings with increasing conviction signals
 
-* ES_TO_SPX_CONVERSION: Value used to convert ES futures levels to SPX
-* SPX_TO_SPY_DIVISOR: Value used for SPX to SPY calculations
-* CONFIDENCE_THRESHOLD: Minimum confidence required for trade inclusion
-* MAX_POSITION_SIZE: Maximum position size as percentage of portfolio
-* DAILY_RISK_LIMIT: Maximum daily risk allowed
+### PRIORITY TIER 2: Technical + Conviction Alignment
+* DP HIGH trades that align with Mancini key levels
+* ACTIVE_TRADE positions with today's technical confirmation
+* Must have precise entry, target, and stop levels
+* Technical structure must support directional bias
 
----
+### PRIORITY TIER 3: Single-Source Setups & Catchup Opportunities
+* DP MEDIUM trades without clear technical alignment
+* MONITORING positions with re-entry signals
+* Catchup opportunities in active moderator positions
+* Mancini HIGH confidence setups without corresponding DP ideas
 
-### DATA VALIDATION
+### PRIORITY TIER 4: Watchlist Only
+* DP LOW conviction ideas
+* Unclear technical structure
+* Setups requiring multiple conditions
+* Ideas without clear risk parameters
 
-Before processing, validate the incoming JSON data:
+## PRIORITY TIER CONFLICT RESOLUTION
 
-```javascript
-// Schema version compatibility check
-const requiredVersion = "2.0";
-if ((!input.DP_DATA || !input.DP_DATA.metadata || input.DP_DATA.metadata.version !== requiredVersion) ||
-    (!input.MANCINI_DATA || !input.MANCINI_DATA.metadata || input.MANCINI_DATA.metadata.version !== requiredVersion)) {
-    
-    return {
-        error: "ERROR: Schema version mismatch",
-        details: `The unified trade plan generator requires all inputs to use schema version ${requiredVersion}. Please update your analyzers.`
-    };
-}
+When a trade appears in multiple priority tiers, use these resolution rules:
 
-// Check for required data structures
-if (!input.DP_DATA || !input.DP_DATA.TRADE_DATA || !Array.isArray(input.DP_DATA.TRADE_DATA) || 
-    !input.DP_DATA.MARKET_BIAS || !input.DP_DATA.COACHING_INSIGHTS ||
-    !input.MANCINI_DATA || !input.MANCINI_DATA.TECHNICAL_DATA || !input.MANCINI_DATA.TRADE_DATA ||
-    !Array.isArray(input.MANCINI_DATA.TRADE_DATA) || !input.MANCINI_DATA.MARKET_BIAS) {
-    
-    return {
-        error: "ERROR: Missing required data structures",
-        details: "The unified trade plan generator requires valid TRADE_DATA, MARKET_BIAS, and other schema components from both DP and Mancini analyzers."
-    };
-}
+### Primary Resolution Rule 
+If a trade appears in both Tier 1 and Tier 2 conditions:
+- Classify as Tier 1 if DP mentions explicitly with emphasis language
+- Else rank by composite score = position_significance_score + conviction_score
+
+### Composite Scoring
+```
+conviction_score = 
+  100 if BIG_IDEA
+  75 if HIGH
+  50 if MEDIUM
+  25 if LOW
+
+total_priority_score = position_significance_score + conviction_score
 ```
 
----
+### Tiebreaker Rules
+If total_priority_score is equal:
+- Prioritize trades mentioned first in DP's call
+- Prioritize trades with active moderator adds today
+- Prioritize trades with clearer technical levels
 
-### DATA INPUTS
+## ENHANCED MIRROR STRATEGY GENERATION
+
+For each active moderator position, generate personalized mirror strategies:
+
+### CORE_SWING Positions
+- If moderators adding: "Add alongside moderators at support"
+- If moderators trimming: "Consider reducing exposure into strength"
+- If moderators holding: "Maintain core position, watch for add opportunities"
+
+### ACTIVE_TRADE Positions
+- If not in position: "Initial entry opportunity with smaller size than moderators"
+- If smaller position: "Consider adding to match moderator exposure"
+- If risk concerns: "Smaller position size with tighter stop recommended"
+
+### MONITORING Positions
+- If re-entry signals: "Watch for moderator re-entry signals"
+- If continued exit: "Remain sidelined until confirmation"
+
+### CATCHUP SCENARIOS
+- If mod is trimming, but you're initiating:
+  "Smaller initial size recommended with tighter stop due to mod profit-taking."
+- If mod added aggressively and you missed:
+  "High-risk entry—only if reclaim above key support."
+- If mod has been in long-term:
+  "Consider starter position with intent to add on pullbacks."
+
+## MODERATOR DIVERGENCE DETECTION
+
+When moderators show conflicting behavior on the same position:
+
+### Detection Rules
+- One moderator adding while another trims
+- Conflicting sentiment expressions (bullish vs. bearish)
+- Significantly different implied size signals
+
+### Mirror Strategy Adjustment
+- Flag position with "moderator_divergence": true
+- Add cautionary note: "Moderators currently showing divergent behavior - review context carefully"
+- Default to more conservative stance: smaller size, tighter stops
+
+### Resolution Path
+- Prioritize DP's guidance if explicit
+- Otherwise defer to majority moderator sentiment
+- In extreme divergence, classify as "MONITORING" until reconciliation
+
+## ENHANCED ES/SPX LEVEL INTEGRATION
+
+### Level Conversion Process
+* Use the EXACT ES_TO_SPX_CONVERSION value from system-parameters.json
+* DO NOT use arbitrary conversion values
+* Apply conversion factor consistently to all ES/SPX level mappings
+* Validate that level relationships remain constant after conversion
+
+## IDEA FILTERING LOGS
+
+For each trade idea from source analyzers:
+
+### Inclusion/Exclusion Decisions
+- Log the comparisons against inclusion thresholds
+- Record exact scores that led to tier placement
+- Log conflicts between sources and resolution paths
+
+### Priority Tier Assignment Logs
+- Record composite scores for each tier consideration
+- Log tiebreaker applications
+- Record position context influence on classification
+
+### Source Conflict Resolution
+- When DP and Mancini conflict on direction or conviction
+- When position context overrides source classification
+- When technical alignment fails despite verbal conviction
+
+## DATA STRUCTURE — JSON SCHEMA
 
 The generator accepts data in the standardized schema format (v2.0):
 
-1. **DP Analyzer Output**
+### DP Analyzer Input
+```json
+{
+  "metadata": { 
+    "source": "dp", 
+    "timestamp": "ISO-timestamp", 
+    "version": "2.0" 
+  },
+  "TRADE_DATA": [...],
+  "MARKET_BIAS": {...},
+  "COACHING_INSIGHTS": {...},
+  "DECISION_LOGS": {...}
+}
+```
 
-   ```json
-   {
-     "metadata": {
-       "source": "dp",
-       "timestamp": "ISO-timestamp",
-       "version": "2.0"
-     },
-     "TRADE_DATA": [...],
-     "MARKET_BIAS": {...},
-     "COACHING_INSIGHTS": {...}
-   }
-   ```
+### Mancini Analyzer Input
+```json
+{
+  "metadata": {
+    "source": "mancini",
+    "timestamp": "ISO-timestamp",
+    "version": "2.0",
+    "es_to_spx_conversion": number
+  },
+  "TECHNICAL_DATA": {...},
+  "TRADE_DATA": [...],
+  "MARKET_BIAS": {...},
+  "MARKET_ANALYSIS": {...},
+  "COACHING_INSIGHTS": {...}
+}
+```
 
-2. **Mancini Analyzer Output**
+### Position Tracker Input
+```json
+{
+  "positions": [
+    {
+      "ticker": "string",
+      "direction": "LONG | SHORT",
+      "implied_size": "CORE | FULL | PARTIAL | STARTER | TRAILER", 
+      "moderators": ["string"],
+      "duration": "SWING | CASHFLOW | LONGTERM | LOTTO",
+      "conviction": "HIGH | MEDIUM | LOW",
+      "status": "ACTIVE | MONITORING | CLOSED",
+      "entry_zone_type": "PULLBACK | BREAKOUT | VWAP_RECLAIM | SCALP_BOUNCE",
+      "risk_bias": "LOWER | EQUAL | HIGHER",
+      "moderator_divergence": true | false,
+      "drift_warning": true | false,
+      "activity": [
+        {
+          "action": "ADD | TRIM | ADD_BACK | EXIT",
+          "size_signal": "INCREASING | PARTIAL | CORE | TRAILER",
+          "context": "string",
+          "moderator": "string",
+          "timestamp": "ISO-timestamp"
+        }
+      ],
+      "position_metrics": {
+        "significance_score": number,
+        "moderator_alignment": "HIGH | MEDIUM | LOW",
+        "management_activity": "ACTIVE | PASSIVE | CLOSED",
+        "conviction_trend": "INCREASING | STABLE | DECREASING",
+        "last_seen": "ISO-timestamp"
+      },
+      "position_source": ["string"],
+      "context": "string",
+      "mirror_strategy": "string",
+      "average_cost_range": "string",
+      "current_risk_setup": "string"
+    }
+  ],
+  "last_updated": "ISO-timestamp"
+}
+```
 
-   ```json
-   {
-     "metadata": {
-       "source": "mancini",
-       "timestamp": "ISO-timestamp",
-       "version": "2.0",
-       "es_to_spx_conversion": number
-     },
-     "TECHNICAL_DATA": {...},
-     "TRADE_DATA": [...],
-     "MARKET_BIAS": {...},
-     "MARKET_ANALYSIS": {...},
-     "COACHING_INSIGHTS": {...}
-   }
-   ```
-
-3. **Market Context (Optional)**
-
-   ```json
-   {
-     "current_levels": {
-       "ES": 0.0,
-       "SPX": 0.0,
-       "QQQ": 0.0,
-       "SPY": 0.0,
-       "VIX": 0.0
-     },
-     "economic_events": [...],
-     "earnings_reports": [...]
-   }
-   ```
-
----
-
-### INTEGRATION LOGIC
-
-Follow this precise decision tree to determine trade prioritization:
-
-1. **PRIORITY TIER 1: Technical + Conviction Alignment**
-
-   * DP BIG_IDEA/HIGH trades that align with Mancini key levels
-   * Must have precise entry, target, and stop levels
-   * Technical structure must support directional bias
-
-2. **PRIORITY TIER 2: Strong Single-Source Setups**
-
-   * DP BIG_IDEA/HIGH trades without clear technical alignment
-   * Mancini HIGH confidence setups without corresponding DP ideas
-   * Must have clear trigger conditions and risk parameters
-
-3. **PRIORITY TIER 3: Medium-Conviction Opportunities**
-
-   * DP MEDIUM conviction trades with some technical support
-   * Secondary Mancini setups
-   * Situational opportunities (earnings, event-driven)
-
-4. **PRIORITY TIER 4: Watchlist Only**
-
-   * DP LOW conviction ideas
-   * Unclear technical structure
-   * Setups requiring multiple conditions
-   * Ideas without clear risk parameters
-
----
-
-### TRADE CONSOLIDATION
-
-For trades on the same ticker appearing in both sources:
-
-1. **Directional Agreement**
-   * Use highest conviction level from either source
-   * Take most specific entry/exit parameters
-   * Combine context notes from both sources
-   * Increase position size by one level if both sources agree
-
-2. **Directional Conflict**
-   * Include both setups separately
-   * Add warning note about conflicting analysis
-   * Reduce position size by one level for both
-   * Flag for special attention in risk management section
-
----
-
-### PLAN GENERATION RULES
-
-1. **Market Bias Determination:**
-
-   * If DP and Mancini align on direction: Strong bias
-   * If mixed signals: Cautious bias toward higher-conviction source
-   * If contradictory: Neutral bias with conditional scenarios
-
-2. **Trade Categorization:**
-
-   * **Core Positions**: BIG_IDEA + LONGTERM + technical alignment
-   * **Directional Trades**: HIGH/MEDIUM + SWING + clear structure
-   * **Intraday Setups**: HIGH/MEDIUM + CASHFLOW + specific triggers
-   * **Spec Plays**: Any conviction + LOTTO + tight risk control
-
-3. **Risk Management Rules:**
-
-   * Never exceed 2 tier-1 positions simultaneously
-   * Size all positions according to conviction matrix
-   * Reduce all sizing by 25% during high-volatility or event-driven sessions
-   * Combine similar directional exposures when calculating total risk
-
-4. **Execution Timing:**
-
-   * Respect Mancini's execution windows (7:30–11:00, after 3:00)
-   * Prioritize DP's specific timing instructions (e.g., "at open")
-   * Avoid new positions during 11:00–2:00 chop window
-   * Honor event timing (pre/post FOMC, earnings, economic data)
-
----
-
-### LEVEL INTEGRATION
-
-1. **Technical Level Alignment**
-
-   * Harmonize levels across sources using system ES_TO_SPX_CONVERSION parameter
-   * Convert all ES futures levels to SPX equivalents
-   * Convert SPX levels to SPY using system SPX_TO_SPY_DIVISOR parameter when needed
-   * Ensure consistency in all numerical values
-
-2. **Level Prioritization**
-
-   * Consensus levels (mentioned by both DP and Mancini): Highest priority
-   * Structure levels (identified by Mancini): Secondary priority
-   * Indicator levels (from DP): Tertiary priority
-
-3. **Level Context**
-
-   * Preserve original context from source data
-   * Add cross-reference when level appears in multiple sources
-   * Include confidence rating based on source agreement
-
----
-
-### OUTPUT STRUCTURE
+## OUTPUT STRUCTURE
 
 Generate the unified plan in this exact format:
 
 ```
-UNIFIED TRADE PLAN — [DAY], [DATE]
+# UNIFIED TRADE PLAN — [DAY], [DATE]
 
-MARKET BIAS: [BULLISH/BEARISH/NEUTRAL/CAUTIOUS]
+## MARKET BIAS: [BULLISH/BEARISH/NEUTRAL/CAUTIOUS]
 [2-3 sentences integrating DP's market view and Mancini's technical structure]
 
-5-MINUTE PRIORITY FOCUS:
+## 5-MINUTE PRIORITY FOCUS
 • Critical Level: [Key price point with immediate significance]
 • First Action: [Most time-sensitive trade execution]
 • Event Focus: [Primary macro/catalyst to monitor]
 • Risk Alert: [Key warning or invalidation condition]
 
-TRADE EXECUTION PLAN:
+## TRADE EXECUTION PLAN
 
-CORE POSITIONS:
+### TIER 1: FOCUS TRADES & CORE POSITIONS
 1. [TICKER] [DIRECTION] [CONVICTION/DURATION/SIZE]
-   SETUP: [Entry conditions]
-   TRIGGER: [Precise execution signal]
-   LEVELS: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
-   NOTES: [Integration context, DP/Mancini alignment]
+   **SETUP**: [Entry conditions]
+   **TRIGGER**: [Precise execution signal]
+   **LEVELS**: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
+   **NOTES**: [Integration context, DP/Mancini alignment]
+   **POSITION STATUS**: [Core/Active/New - Moderator context]
 
-DIRECTIONAL TRADES:
+### TIER 2: TECHNICAL ALIGNMENT TRADES
 1. [TICKER] [DIRECTION] [CONVICTION/DURATION/SIZE]
-   SETUP: [Entry conditions]
-   TRIGGER: [Precise execution signal]
-   LEVELS: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
-   NOTES: [Integration context, DP/Mancini alignment]
+   **SETUP**: [Entry conditions]
+   **TRIGGER**: [Precise execution signal]
+   **LEVELS**: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
+   **NOTES**: [Integration context, DP/Mancini alignment]
+   **POSITION STATUS**: [Core/Active/New - Moderator context]
 
-INTRADAY SETUPS:
+### TIER 3: SINGLE-SOURCE & CATCHUP OPPORTUNITIES
 1. [TICKER] [DIRECTION] [CONVICTION/DURATION/SIZE]
-   SETUP: [Entry conditions]
-   TRIGGER: [Precise execution signal]
-   LEVELS: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
-   TIMING: [Specific execution window]
-   NOTES: [Integration context, DP/Mancini alignment]
+   **SETUP**: [Entry conditions]
+   **TRIGGER**: [Precise execution signal]
+   **LEVELS**: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
+   **TIMING**: [Specific execution window]
+   **NOTES**: [Integration context, DP/Mancini alignment]
+   **POSITION STATUS**: [Core/Active/New - Moderator context]
 
-SPEC PLAYS:
+### TIER 4: WATCHLIST
 1. [TICKER] [DIRECTION] [CONVICTION/DURATION/SIZE]
-   SETUP: [Entry conditions]
-   TRIGGER: [Precise execution signal]
-   LEVELS: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
-   NOTES: [Risk warning, max allocation]
+   **SETUP**: [Entry conditions]
+   **TRIGGER**: [Precise execution signal]
+   **LEVELS**: Entry [X] → Targets [Y1, Y2, Y3] → Stop [Z]
+   **NOTES**: [Risk warning, max allocation]
+   **POSITION STATUS**: [Core/Active/New - Moderator context]
 
-RISK MANAGEMENT PROTOCOL:
+## MIRROR STRATEGIES
+• [TICKER]: [Personalized mirror strategy based on position status]
+• [TICKER]: [Personalized mirror strategy based on position status]
+• [TICKER]: [Personalized mirror strategy based on position status]
+
+## RISK MANAGEMENT PROTOCOL
 • [Position sizing rules for the day]
 • [Sector exposure limitations]
 • [Specific warnings from DP or Mancini]
 • [Current portfolio heat constraints]
 
-KEY EVENTS:
+## KEY EVENTS
 • [Time]: [Event] – [Trading implications]
 • Earnings After Close: [Tickers]
 • Tomorrow Pre-Market: [Tickers]
 
-TRADE MANAGEMENT RULES:
+## TRADE MANAGEMENT RULES
 • [DP's specific exit guidance]
 • [Mancini's level-to-level management protocol]
 • [Runner management instructions]
 • [Profit-taking parameters]
+
+## ACTIVE POSITION DIGEST
+[Import and render active position digest]
+
+## ES/SPX KEY LEVELS
+[Table of key levels using consistent conversion]
+
+## DECISION LOGS
+[Structured summary of key classification decisions]
 ```
 
----
+## IMPLEMENTATION NOTES
 
-### COACHING INSIGHTS INTEGRATION
+### Decision Log Integration
+- Import decision logs from DP analyzer
+- Add tier assignment decision logs
+- Create consistent log format for all decisions
+- Highlight key conflicts and resolutions
 
-Combine coaching insights from both sources:
+### Position Context Integration
+- Link each trade to any existing position context
+- Import relevant position metrics
+- Reference latest moderator activity
+- Generate appropriate mirror strategies
 
-1. **Risk Management**
-   * Prioritize specific risk parameters over general advice
-   * Include position sizing guidance based on market conditions
-   * Incorporate stop management techniques
+### Preference Rules
+1. Position awareness takes precedence over raw conviction scores
+2. Focus phrases trump all other priorities
+3. DP + Mancini alignment beats higher conviction without alignment
+4. Active management beats passive monitoring
+5. Risk context should be reflected in position sizing
 
-2. **Timing Advice**
-   * Extract optimal execution windows
-   * Identify sessions to avoid trading
-   * Include event-driven timing adjustments
+## LOGGING CONFIGURATION
 
-3. **Market Condition Warnings**
-   * Highlight invalidation signals from technical analysis
-   * Include volatility warnings from both sources
-   * Add specific cautions about market structure
+The generator will log all decisions asynchronously to minimize impact on generation speed. Logs will be stored in a structured format in the decision-logs directory, with the current date as the filename.
 
----
+Logging levels can be controlled via system-parameters.json:
+- minimal: Basic tier assignment only
+- normal: Standard decision traces with key evidence
+- verbose: Complete decision traces with all evidence and alternatives
 
-### ERROR HANDLING
-
-If the script encounters errors, output a specific error message:
-
-```
-ERROR GENERATING UNIFIED TRADE PLAN
-
-Missing or invalid input data:
-- [Specific error message]
-
-Required schema version: 2.0
-
-Please ensure both DP and Mancini analyzers are updated to output the standardized JSON format.
-```
-
----
-
-### CHANGELOG
-
-* v2.3 (2025-05-07): Updated to use standardized schema v2.0
-* v2.2 (2025-05-05): Added JSON validation check and error handling
-* v2.1 (2025-05-01): Added support for system parameters reference
-* v2.0 (2025-05-01): Initial template design
+## CHANGELOG
+- v2.4 (2025-05-07): Added position awareness, improved tier logic, enhanced mirror strategies
+- v2.3 (2025-05-05): Updated ES/SPX conversion to use system parameters
+- v2.2 (2025-05-01): Added decision logging system
+- v2.1 (2025-04-15): Enhanced conflict resolution logic
+- v2.0 (2025-04-01): Initial implementation of unified plan generation

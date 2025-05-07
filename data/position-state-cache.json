@@ -1,0 +1,240 @@
+{
+  "cache_metadata": {
+    "version": "1.0",
+    "last_updated": "2025-05-07T04:30:00Z",
+    "refresh_frequency": "daily",
+    "schema_version": "1.0",
+    "positions_tracked": 14
+  },
+  "positions": [
+    {
+      "ticker": "TEM",
+      "direction": "LONG",
+      "implied_size": "CORE", 
+      "moderators": ["Kira", "Rick", "DP"],
+      "duration": "SWING",
+      "conviction": "HIGH",
+      "status": "ACTIVE",
+      "entry_zone_type": "PULLBACK",
+      "risk_bias": "LOWER",
+      "moderator_divergence": false,
+      "drift_warning": false,
+      "activity": [
+        {"action": "ADD", "size_signal": "INCREASING", "context": "pullback to support", "moderator": "Kira", "timestamp": "2025-05-06T09:30:00Z"},
+        {"action": "TRIM", "size_signal": "PARTIAL", "context": "into strength", "moderator": "DP", "timestamp": "2025-05-06T14:15:00Z"},
+        {"action": "ADD_BACK", "size_signal": "CORE", "context": "long-term thesis intact", "moderator": "Rick", "timestamp": "2025-05-06T15:30:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 85,
+        "moderator_alignment": "HIGH",
+        "management_activity": "ACTIVE",
+        "conviction_trend": "INCREASING",
+        "last_seen": "2025-05-06T16:30:00Z",
+        "days_since_mention": 1,
+        "decay_applied": 0,
+        "stale_position": false
+      },
+      "position_source": ["DP_transcript", "Moderator_callout_log", "Manual_annotation"],
+      "context": "Earnings beat; first-time raise. Long-term AI healthcare play.",
+      "mirror_strategy": "Add on pullbacks to 49-50 zone; trim into strength above 55",
+      "average_cost_range": "48.50-50.25",
+      "current_risk_setup": "Support zone: 47.50, Stop: 46.75"
+    },
+    {
+      "ticker": "UBER",
+      "direction": "LONG",
+      "implied_size": "CORE", 
+      "moderators": ["DP", "Mitch"],
+      "duration": "SWING",
+      "conviction": "HIGH",
+      "status": "ACTIVE",
+      "entry_zone_type": "BREAKOUT",
+      "risk_bias": "EQUAL",
+      "moderator_divergence": false,
+      "drift_warning": false,
+      "activity": [
+        {"action": "ADD", "size_signal": "FULL", "context": "breakout above resistance", "moderator": "DP", "timestamp": "2025-05-05T10:15:00Z"},
+        {"action": "ADD", "size_signal": "INCREASING", "context": "confirmed move", "moderator": "Mitch", "timestamp": "2025-05-05T11:30:00Z"},
+        {"action": "HOLD", "size_signal": "CORE", "context": "still bullish, focus trade", "moderator": "DP", "timestamp": "2025-05-06T10:00:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 95,
+        "moderator_alignment": "HIGH",
+        "management_activity": "ACTIVE",
+        "conviction_trend": "INCREASING",
+        "last_seen": "2025-05-06T10:00:00Z",
+        "days_since_mention": 1,
+        "decay_applied": 0,
+        "stale_position": false
+      },
+      "position_source": ["DP_transcript", "Moderator_callout_log"],
+      "context": "Transportation leader gaining market share, cost leadership position.",
+      "mirror_strategy": "Core position, add on dips to 75 support zone",
+      "average_cost_range": "74.25-75.50",
+      "current_risk_setup": "Support zone: 73.75, Stop: 72.50"
+    },
+    {
+      "ticker": "NFLX",
+      "direction": "LONG",
+      "implied_size": "PARTIAL", 
+      "moderators": ["Rick", "Kim"],
+      "duration": "SWING",
+      "conviction": "MEDIUM",
+      "status": "ACTIVE",
+      "entry_zone_type": "VWAP_RECLAIM",
+      "risk_bias": "HIGHER",
+      "moderator_divergence": true,
+      "drift_warning": true,
+      "activity": [
+        {"action": "ADD", "size_signal": "FULL", "context": "breakout play", "moderator": "Rick", "timestamp": "2025-05-03T13:45:00Z"},
+        {"action": "TRIM", "size_signal": "PARTIAL", "context": "taking profits at resistance", "moderator": "Rick", "timestamp": "2025-05-04T10:30:00Z"},
+        {"action": "ADD", "size_signal": "FULL", "context": "support test", "moderator": "Kim", "timestamp": "2025-05-04T14:00:00Z"},
+        {"action": "TRIM", "size_signal": "PARTIAL", "context": "reducing risk into earnings", "moderator": "Kim", "timestamp": "2025-05-05T15:45:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 65,
+        "moderator_alignment": "MEDIUM",
+        "management_activity": "ACTIVE",
+        "conviction_trend": "DECREASING",
+        "last_seen": "2025-05-05T15:45:00Z",
+        "days_since_mention": 2,
+        "decay_applied": 5,
+        "stale_position": false
+      },
+      "position_source": ["Moderator_callout_log", "Manual_annotation"],
+      "context": "Earnings volatility play, concerns about subscriber growth.",
+      "mirror_strategy": "Caution: moderator divergence detected. Consider smaller size.",
+      "average_cost_range": "630.25-642.50",
+      "current_risk_setup": "Support zone: 625, Stop: 620"
+    },
+    {
+      "ticker": "SPY",
+      "direction": "SHORT",
+      "implied_size": "STARTER", 
+      "moderators": ["Mancini"],
+      "duration": "CASHFLOW",
+      "conviction": "MEDIUM",
+      "status": "ACTIVE",
+      "entry_zone_type": "RANGE_FADE",
+      "risk_bias": "HIGHER",
+      "moderator_divergence": false,
+      "drift_warning": false,
+      "activity": [
+        {"action": "ADD", "size_signal": "STARTER", "context": "range high fade", "moderator": "Mancini", "timestamp": "2025-05-06T11:30:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 45,
+        "moderator_alignment": "LOW",
+        "management_activity": "ACTIVE",
+        "conviction_trend": "STABLE",
+        "last_seen": "2025-05-06T11:30:00Z",
+        "days_since_mention": 1,
+        "decay_applied": 0,
+        "stale_position": false
+      },
+      "position_source": ["Mancini_blueprint"],
+      "context": "Fade at top of range, looking for retest of VWAP.",
+      "mirror_strategy": "Small position size, tight stop above range high.",
+      "average_cost_range": "520.75-521.25",
+      "current_risk_setup": "Resistance: 522.50, Stop: 523.25"
+    }
+  ],
+  "monitoring": [
+    {
+      "ticker": "AMD",
+      "direction": "LONG",
+      "implied_size": "TRAILER", 
+      "moderators": ["DP", "Kira"],
+      "duration": "SWING",
+      "conviction": "LOW",
+      "status": "MONITORING",
+      "entry_zone_type": "PULLBACK",
+      "risk_bias": "EQUAL",
+      "activity": [
+        {"action": "ADD", "size_signal": "FULL", "context": "breakout above resistance", "moderator": "DP", "timestamp": "2025-05-01T10:30:00Z"},
+        {"action": "TRIM", "size_signal": "PARTIAL", "context": "into strength", "moderator": "DP", "timestamp": "2025-05-02T14:15:00Z"},
+        {"action": "TRIM", "size_signal": "TRAILER", "context": "taking profits", "moderator": "Kira", "timestamp": "2025-05-03T15:30:00Z"},
+        {"action": "EXIT", "size_signal": "FLAT", "context": "full exit at target", "moderator": "DP", "timestamp": "2025-05-04T11:45:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 35,
+        "moderator_alignment": "MEDIUM",
+        "management_activity": "MONITORING",
+        "conviction_trend": "DECREASING",
+        "last_seen": "2025-05-04T11:45:00Z",
+        "days_since_mention": 3,
+        "decay_applied": 10,
+        "stale_position": false
+      },
+      "reentry_condition": "Pullback to 132-134 support zone with volume confirmation",
+      "context": "Semiconductor strength; watching for reentry opportunity.",
+      "price_target": "150+"
+    },
+    {
+      "ticker": "F",
+      "direction": "LONG",
+      "implied_size": "FLAT", 
+      "moderators": ["Mitch"],
+      "duration": "LONGTERM",
+      "conviction": "MEDIUM",
+      "status": "MONITORING",
+      "entry_zone_type": "BREAKOUT",
+      "risk_bias": "LOWER",
+      "activity": [
+        {"action": "ADD", "size_signal": "STARTER", "context": "transition story", "moderator": "Mitch", "timestamp": "2025-04-25T09:45:00Z"},
+        {"action": "ADD", "size_signal": "HALF", "context": "adding on pullback", "moderator": "Mitch", "timestamp": "2025-04-28T13:30:00Z"},
+        {"action": "EXIT", "size_signal": "FLAT", "context": "technical breakdown", "moderator": "Mitch", "timestamp": "2025-05-01T10:15:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 25,
+        "moderator_alignment": "LOW",
+        "management_activity": "MONITORING",
+        "conviction_trend": "STABLE",
+        "last_seen": "2025-05-01T10:15:00Z",
+        "days_since_mention": 6,
+        "decay_applied": 20,
+        "stale_position": true
+      },
+      "reentry_condition": "Reclaim of 12.50 with decent volume",
+      "context": "EV transition story; watching for technical improvement.",
+      "price_target": "15"
+    }
+  ],
+  "archived_positions": [
+    {
+      "ticker": "MSFT",
+      "direction": "LONG",
+      "final_status": "CLOSED_PROFIT",
+      "moderators": ["DP", "Rick", "Kira"],
+      "exit_date": "2025-04-30",
+      "entry_range": "395-405",
+      "exit_range": "420-430",
+      "reason": "Target achieved; technical resistance reached.",
+      "archived_date": "2025-05-03T00:00:00Z"
+    },
+    {
+      "ticker": "WMT",
+      "direction": "LONG",
+      "final_status": "CLOSED_LOSS",
+      "moderators": ["Kim"],
+      "exit_date": "2025-04-28",
+      "entry_range": "60-62",
+      "exit_range": "57-58",
+      "reason": "Stop triggered; technical breakdown.",
+      "archived_date": "2025-05-01T00:00:00Z"
+    }
+  ],
+  "cache_statistics": {
+    "active_positions": 4,
+    "monitoring_positions": 2,
+    "archived_positions": 2,
+    "positions_with_divergence": 1,
+    "positions_with_drift_warning": 1,
+    "stale_positions": 1,
+    "core_positions": 2,
+    "average_significance_score": 72.5,
+    "highest_significance_ticker": "UBER",
+    "lowest_significance_ticker": "F"
+  },
+  "last_cache_refresh": "2025-05-07T04:30:00Z"
+}

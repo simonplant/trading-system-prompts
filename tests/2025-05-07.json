@@ -1,0 +1,188 @@
+{
+  "test_metadata": {
+    "date": "2025-05-07",
+    "purpose": "Test for DP focus detection, position tracking, and decision logging",
+    "version": "1.0",
+    "components_tested": [
+      "dp-trade-analyzer.md",
+      "moderator-position-tracker.md",
+      "unified-trade-plan-generator.md"
+    ]
+  },
+  "dp_transcript_sample": {
+    "uber_focus_text": "UBER is gonna be my focus today. I really like what I'm seeing with the transportation leader; solid earnings, strong guidance. It's breaking out above key resistance at 75. This is a monster story for the long-term.",
+    "tem_update_text": "I'm still in TEM but I did trim some yesterday into strength. It's a core position for me. Still like the AI healthcare angle. Rick also added back to his position when it pulled back to 49 yesterday.",
+    "nflx_mention_text": "NFLX is setting up nicely here technically. Not my favorite in the group, but isn't as bad as feared. Wouldn't be shocked if it retests the highs."
+  },
+  "position_tracker_sample": {
+    "tem_position": {
+      "ticker": "TEM",
+      "direction": "LONG",
+      "implied_size": "CORE", 
+      "moderators": ["Kira", "Rick", "DP"],
+      "duration": "SWING",
+      "conviction": "HIGH",
+      "status": "ACTIVE",
+      "entry_zone_type": "PULLBACK",
+      "risk_bias": "LOWER",
+      "moderator_divergence": false,
+      "drift_warning": false,
+      "activity": [
+        {"action": "ADD", "size_signal": "INCREASING", "context": "pullback to support", "moderator": "Kira", "timestamp": "2025-05-06T09:30:00Z"},
+        {"action": "TRIM", "size_signal": "PARTIAL", "context": "into strength", "moderator": "DP", "timestamp": "2025-05-06T14:15:00Z"},
+        {"action": "ADD_BACK", "size_signal": "CORE", "context": "long-term thesis intact", "moderator": "Rick", "timestamp": "2025-05-06T15:30:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 85,
+        "moderator_alignment": "HIGH",
+        "management_activity": "ACTIVE",
+        "conviction_trend": "INCREASING",
+        "last_seen": "2025-05-06T16:30:00Z"
+      }
+    },
+    "uber_position": {
+      "ticker": "UBER",
+      "direction": "LONG",
+      "implied_size": "FULL", 
+      "moderators": ["DP", "Mitch"],
+      "duration": "SWING",
+      "conviction": "MEDIUM",
+      "status": "ACTIVE",
+      "entry_zone_type": "BREAKOUT",
+      "risk_bias": "EQUAL",
+      "moderator_divergence": false,
+      "drift_warning": false,
+      "activity": [
+        {"action": "ADD", "size_signal": "FULL", "context": "breakout above resistance", "moderator": "DP", "timestamp": "2025-05-05T10:15:00Z"},
+        {"action": "ADD", "size_signal": "INCREASING", "context": "confirmed move", "moderator": "Mitch", "timestamp": "2025-05-05T11:30:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 65,
+        "moderator_alignment": "MEDIUM",
+        "management_activity": "ACTIVE",
+        "conviction_trend": "STABLE",
+        "last_seen": "2025-05-05T11:30:00Z"
+      }
+    },
+    "nflx_position": {
+      "ticker": "NFLX",
+      "direction": "LONG",
+      "implied_size": "PARTIAL", 
+      "moderators": ["Rick", "Kim"],
+      "duration": "SWING",
+      "conviction": "MEDIUM",
+      "status": "ACTIVE",
+      "entry_zone_type": "VWAP_RECLAIM",
+      "risk_bias": "HIGHER",
+      "moderator_divergence": true,
+      "drift_warning": true,
+      "activity": [
+        {"action": "ADD", "size_signal": "FULL", "context": "breakout play", "moderator": "Rick", "timestamp": "2025-05-03T13:45:00Z"},
+        {"action": "TRIM", "size_signal": "PARTIAL", "context": "taking profits at resistance", "moderator": "Rick", "timestamp": "2025-05-04T10:30:00Z"},
+        {"action": "ADD", "size_signal": "FULL", "context": "support test", "moderator": "Kim", "timestamp": "2025-05-04T14:00:00Z"},
+        {"action": "TRIM", "size_signal": "PARTIAL", "context": "reducing risk into earnings", "moderator": "Kim", "timestamp": "2025-05-05T15:45:00Z"}
+      ],
+      "position_metrics": {
+        "significance_score": 55,
+        "moderator_alignment": "MEDIUM",
+        "management_activity": "ACTIVE",
+        "conviction_trend": "DECREASING",
+        "last_seen": "2025-05-05T15:45:00Z"
+      }
+    }
+  },
+  "expected_test_results": {
+    "uber_test": {
+      "expected_classification": "BIG_IDEA",
+      "expected_conviction_level": "BIG_IDEA",
+      "expected_emphasis_pattern": "gonna be my focus today",
+      "expected_tier": 1,
+      "expected_mirror_strategy": "Add alongside DP with full position at 75 breakout. Strong focus idea with moderator alignment.",
+      "expected_position_update": {
+        "ticker": "UBER",
+        "implied_size": "CORE",
+        "conviction": "HIGH",
+        "significance_score": 95
+      }
+    },
+    "tem_test": {
+      "expected_classification": "CORE_POSITION",
+      "expected_conviction_level": "HIGH",
+      "expected_emphasis_pattern": "core position for me",
+      "expected_tier": 1,
+      "expected_mirror_strategy": "Maintain core position with moderators. Add on pullbacks to 49 support zone.",
+      "expected_position_update": {
+        "ticker": "TEM",
+        "implied_size": "CORE",
+        "conviction": "HIGH",
+        "significance_score": 85
+      }
+    },
+    "nflx_test": {
+      "expected_classification": "MEDIUM",
+      "expected_conviction_level": "MEDIUM",
+      "expected_tempering_pattern": "not my favorite",
+      "expected_tier": 3,
+      "expected_mirror_strategy": "Caution: moderator divergence detected. Consider smaller size with tight risk management.",
+      "expected_position_update": {
+        "ticker": "NFLX",
+        "implied_size": "PARTIAL",
+        "conviction": "MEDIUM",
+        "significance_score": 55
+      }
+    }
+  },
+  "test_scenarios": [
+    {
+      "name": "DP Focus Detection Test",
+      "description": "Test that the analyzer correctly identifies 'gonna be my focus today' as a BIG_IDEA classification pattern",
+      "steps": [
+        "Process DP transcript with UBER focus language",
+        "Verify BIG_IDEA classification in dp_analyzer output",
+        "Verify Tier 1 classification in unified plan",
+        "Verify correct emphasis pattern is logged in decision log"
+      ],
+      "validation": "UBER should be classified as BIG_IDEA and given Tier 1 priority with specific emphasis pattern logged"
+    },
+    {
+      "name": "Position Management Context Test",
+      "description": "Test that the position tracker correctly integrates with core position mentions",
+      "steps": [
+        "Start with existing TEM position in tracker",
+        "Process DP transcript with TEM core position language",
+        "Verify position context integration in unified plan",
+        "Confirm correct mirror strategy generation for TEM"
+      ],
+      "validation": "TEM should maintain CORE classification and appropriate mirror strategy should reflect current moderator activity"
+    },
+    {
+      "name": "Divergence Detection Test",
+      "description": "Test that the system correctly identifies and handles moderator divergence",
+      "steps": [
+        "Start with existing NFLX position with divergence flag",
+        "Process DP transcript with tepid NFLX language",
+        "Verify appropriate tier assignment with divergence context",
+        "Confirm mirror strategy reflects the mixed moderator signals"
+      ],
+      "validation": "NFLX mirror strategy should include caution about moderator divergence and appropriate risk management guidance"
+    },
+    {
+      "name": "Decision Logging Test",
+      "description": "Test that all classification decisions are properly logged",
+      "steps": [
+        "Process all three test cases through the pipeline",
+        "Examine decision logs for all three tickers",
+        "Verify pattern matches are properly recorded",
+        "Confirm tier assignments are logged with justification"
+      ],
+      "validation": "Decision logs should contain emphasis pattern matches, classification decisions, and tier assignments with rationale"
+    }
+  ],
+  "system_configuration": {
+    "logging_level": "verbose",
+    "es_to_spx_conversion": -20,
+    "position_tracking_enabled": true,
+    "emphasis_detection_enabled": true,
+    "decision_logging_enabled": true
+  }
+}

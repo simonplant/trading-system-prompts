@@ -48,118 +48,63 @@
   },
   "PATH_TEMPLATES": {
     "TRADE_LOG_PATH_TEMPLATE": "logs/trades/%YYYY%/%YYYY%-%MM%-%DD%.md",
-    "JOURNAL_PATH_TEMPLATE": "logs/journal/%YYYY%-%MM%-%DD%-trading-journal.md",
-    "KB_UPDATE_PATH_TEMPLATE": "logs/kb-updates/%YYYY%-%MM%-%DD%-kb-update-recommendations.md",
-    "BEHAVIOR_LOG_TEMPLATE": "logs/behaviors/%YYYY%-%MM%-%DD%-trading-behaviors.md",
-    "LEVEL_LOG_TEMPLATE": "logs/levels/%YYYY%-%MM%-%DD%-spx-levels.md",
-    "TRADE_PLAN_TEMPLATE": "logs/trade-plans/%YYYY%-%MM%-%DD%-%SOURCE%-trade-plan.md",
-    "PERFORMANCE_LOG_TEMPLATE": "logs/performance/%YYYY%-%MM%-%DD%-daily-performance-debrief.md"
+    "JOURNAL_PATH_TEMPLATE": "logs/journal/%YYYY%/%YYYY%-%MM%-%DD%.md",
+    "KB_UPDATE_PATH_TEMPLATE": "logs/kb-updates/%YYYY%-%MM%-%DD%.md",
+    "DECISION_LOG_TEMPLATE": "logs/decision-logs/%YYYY%-%MM%-%DD%-trade-plan-decisions.md",
+    "POSITION_TRACKER_LOG": "logs/positions/%YYYY%-%MM%-%DD%-position-tracking.json",
+    "ACTIVE_POSITIONS_DIGEST": "logs/positions/%YYYY%-%MM%-%DD%-active-positions-digest.md"
   },
   "SCHEMA_VERSIONS": {
-    "TRADE_DATA_SCHEMA_VERSION": "2.1",
-    "SYSTEM_PARAMETERS_VERSION": "1.3",
+    "TRADE_DATA_SCHEMA_VERSION": "2.0",
+    "SYSTEM_PARAMETERS_VERSION": "1.2",
     "CONTROLLER_VERSION": "3.1",
-    "TRADING_BEHAVIORS_SCHEMA_VERSION": "1.5"
+    "POSITION_TRACKER_VERSION": "1.0",
+    "DECISION_LOG_VERSION": "1.0"
   },
-  "FILE_PATHS": {
-    "ANALYZER_PATHS": {
-      "DP": "prompts/premarket/dp-trade-analyzer.md",
-      "MANCINI": "prompts/premarket/mancini-trade-analyzer.md",
-      "LEVELS": "prompts/premarket/get-premarket-levels.md",
-      "SMA": "prompts/premarket/get-daily-sma-for-tickers.md"
+  "LOGGING_SETTINGS": {
+    "logging_level": "normal",
+    "log_levels": {
+      "minimal": "Basic decisions only",
+      "normal": "Standard decision logs with key details",
+      "verbose": "Complete decision traces with all evidence"
     },
-    "SUMMARY_PATHS": {
-      "DP": "prompts/premarket/dp-trade-summary.md",
-      "MANCINI": "prompts/premarket/mancini-trade-summary.md",
-      "UNIFIED": "prompts/premarket/unified-trade-plan-generator.md"
+    "log_retention": {
+      "active_days": 30,
+      "compression_after_days": 30,
+      "deletion_after_days": 90
     },
-    "SYSTEM_PATHS": {
-      "CONTROLLER": "prompts/main-controller.md",
-      "CONTROLLER_GUIDE": "prompts/main-controller-guide.md",
-      "CHARTER": "system/trading-charter.md",
-      "BEHAVIORS_KB": "system/trading-behaviors-kb.md",
-      "SOP": "system/trading-system-sop.md",
-      "MARKET_REGIMES": "system/market-regimes.md",
-      "CHART_LEGEND": "system/chart-visual-legend.md",
-      "TRADE_SETUPS": "system/trade-setups-kb.md",
-      "TODO_SYSTEM": "system/todo-system-updates.md",
-      "TODO_TRADING": "system/todo-trading-system-updates.md"
-    },
-    "SCHEMA_PATHS": {
-      "TRADE_DATA": "system/trade-data-schema.json",
-      "TRADE_IDEA": "system/trade-idea.schema.json",
-      "TRADING_BEHAVIORS": "system/trading-behaviors-schema.md"
-    },
-    "JS_UTILITY_PATHS": {
-      "PARAMETER_LOADER": "js/parameter-loader.js",
-      "SCHEMA_VALIDATOR": "js/schema-validator.js",
-      "PATH_RESOLVER": "js/path-resolver.js",
-      "TEMPLATE_PROCESSOR": "js/template-processor.js",
-      "PREMARKET_PIPELINE": "js/premarket-pipeline.js",
-      "JSON_VALIDATION": "js/json-validation-utility.js"
-    },
-    "DOCUMENTATION_PATHS": {
-      "ARCHITECTURE_DIAGRAM": "docs/architecture/diagrams/system-integration-diagram.mermaid",
-      "INTEGRATION_GUIDE": "docs/architecture/trading-system-integration-guide.md",
-      "UTILITY_GUIDE": "docs/architecture/utility-integration-guide.md",
-      "CONTROLLER_INTEGRATION": "docs/architecture/controller-integration-example.md",
-      "RECOMMENDATIONS": "docs/architecture/trading-system-recommendations.md"
-    },
-    "TEMPLATE_PATHS": {
-      "UNIFIED_TRADE_PLAN": "system/templates/unified-trade-plan.hbs",
-      "TRADE_LOG": "system/templates/trade-log-template.md",
-      "JOURNAL_ENTRY": "system/templates/journal-entry-template.md",
-      "PERFORMANCE_DEBRIEF": "system/templates/performance-debrief-template.md",
-      "KB_UPDATE": "system/templates/kb-update-template.md"
-    }
+    "async_logging": true,
+    "log_cache_size": 500,
+    "flush_interval_ms": 5000,
+    "include_timestamps": true,
+    "log_format": "markdown"
   },
-  "COMMAND_ROUTING_TABLE": {
-    "PREMARKET_COMMANDS": {
-      "premarket-sequence": "CONTROLLER.premarket_sequence",
-      "analyze-dp": "ANALYZER_PATHS.DP",
-      "dp-summary": "SUMMARY_PATHS.DP",
-      "analyze-mancini": "ANALYZER_PATHS.MANCINI",
-      "mancini-summary": "SUMMARY_PATHS.MANCINI",
-      "get-sma": "ANALYZER_PATHS.SMA",
-      "get-levels": "ANALYZER_PATHS.LEVELS",
-      "generate-trade-plan": "SUMMARY_PATHS.UNIFIED"
+  "POSITION_TRACKING_SETTINGS": {
+    "cache_refresh_frequency_hours": 24,
+    "max_position_age_days": 5,
+    "default_decay_rules": {
+      "1_day": 0,
+      "2_days": 5,
+      "3_days": 10,
+      "4_days": 15,
+      "5+_days": 20
     },
-    "INTRADAY_COMMANDS": {
-      "copilot": "prompts/intraday/copilot.md",
-      "copilot-scout": "prompts/intraday/copilot-scout.md",
-      "copilot-confirm": "prompts/intraday/copilot-confirm.md",
-      "copilot-recenter": "prompts/intraday/copilot-recenter.md",
-      "copilot-debrief": "prompts/intraday/copilot-debrief.md",
-      "copilot-reset": "prompts/intraday/copilot-reset.md",
-      "midday-reset": "prompts/intraday/midday-reset.md"
-    },
-    "POSTMARKET_COMMANDS": {
-      "postmarket-sequence": "CONTROLLER.postmarket_sequence",
-      "generate-trade-log": "prompts/postmarket/generate-daily-trade-log.md",
-      "performance-debrief": "prompts/postmarket/daily-performance-debrief.md",
-      "generate-journal": "prompts/postmarket/generate-daily-journal.md",
-      "update-behaviors": "prompts/postmarket/update-trading-behaviors-kb.md",
-      "generate-kb-update": "prompts/postmarket/generate-kb-update.md",
-      "export-journal": "prompts/postmarket/export-journal-entry.md"
-    },
-    "SYSTEM_COMMANDS": {
-      "system-parameters": "CONTROLLER.show_parameters",
-      "help": "CONTROLLER.show_help",
-      "status": "CONTROLLER.show_status",
-      "system-check": "CONTROLLER.system_check",
-      "security-verification": "CONTROLLER.security_verification",
-      "show-charter": "SYSTEM_PATHS.CHARTER",
-      "show-kb": "SYSTEM_PATHS.BEHAVIORS_KB",
-      "show-sop": "SYSTEM_PATHS.SOP",
-      "show-regime": "SYSTEM_PATHS.MARKET_REGIMES",
-      "show-setup-kb": "SYSTEM_PATHS.TRADE_SETUPS",
-      "show-controller-guide": "SYSTEM_PATHS.CONTROLLER_GUIDE"
-    }
+    "auto_downgrade_threshold_score": 30,
+    "divergence_detection_threshold": "high",
+    "significance_score_file": "position-significance-score.yaml"
+  },
+  "DP_ANALYZER_SETTINGS": {
+    "emphasis_detection": true,
+    "position_context_integration": true,
+    "decision_logging": true,
+    "pattern_match_threshold": 0.75,
+    "emphasis_patterns_file": "dp-emphasis-patterns.json",
+    "language_patterns_file": "dp-language-patterns.json"
   },
   "VALIDATION_PARAMETERS": {
     "MAX_JSON_SIZE": 100000,
     "REQUIRED_SCHEMA_FIELDS": {
-      "DP": ["metadata", "TRADE_DATA", "MARKET_BIAS", "COACHING_INSIGHTS"],
+      "DP": ["metadata", "TRADE_DATA", "MARKET_BIAS", "COACHING_INSIGHTS", "DECISION_LOGS"],
       "MANCINI": ["metadata", "TECHNICAL_DATA", "TRADE_DATA", "MARKET_BIAS", "MARKET_ANALYSIS"],
       "UNIFIED_PLAN": ["date", "market_overview", "trade_ideas", "key_levels", "decision_tree", "execution_checklist"]
     },
@@ -171,24 +116,24 @@
       "CRITICAL_VALIDATION_FIELDS": ["metadata", "TRADE_DATA"]
     }
   },
-  "ANALYTICS_SETTINGS": {
-    "TRACK_SETUP_PERFORMANCE": true,
-    "TRACK_TRADE_ACCURACY": true,
-    "TRACK_LEVEL_PRECISION": true,
-    "PERFORMANCE_METRICS": ["win_rate", "profit_factor", "avg_r", "largest_win", "largest_loss", "drawdown"],
-    "LOG_FREQUENCY": "daily",
-    "VISUALIZATION_ENABLED": true
-  },
-  "BEHAVIORAL_ANALYTICS": {
-    "TRACK_FLAGS": true,
-    "PATTERN_DETECTION": true,
-    "EARLY_WARNING_THRESHOLD": 2,
-    "COOLDOWN_PERIODS": {
-      "hesitation": 60,
-      "chasing": 120,
-      "overconfidence": 240,
-      "revenge": 480,
-      "tilt": 1440
-    }
+  "TEST_FIXTURES": {
+    "baseline_date": "2025-05-07",
+    "test_cases": [
+      {
+        "name": "UBER focus detection",
+        "file": "test-fixtures/2025-05-07-uber-test.json",
+        "expected_outcome": "BIG_IDEA"
+      },
+      {
+        "name": "TEM position context",
+        "file": "test-fixtures/2025-05-07-tem-test.json",
+        "expected_outcome": "CORE_POSITION"
+      },
+      {
+        "name": "NFLX focus detection",
+        "file": "test-fixtures/2025-05-07-nflx-test.json",
+        "expected_outcome": "HIGH"
+      }
+    ]
   }
 }

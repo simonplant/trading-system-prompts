@@ -1,0 +1,249 @@
+# Position Significance Score Configuration
+# This YAML file defines scoring rules for calculating position significance
+
+# Scoring weights for determining position importance and visibility
+score_rules:
+  # Moderator alignment - multiple mods holding same position increases significance
+  mod_alignment:
+    multiple: 30        # Base points for multiple mods holding same position
+    per_mod: 5          # Additional points per moderator beyond the first
+  
+  # Conviction trend - how conviction has evolved over time
+  conviction_trend:
+    increasing: 20      # Points for increasing conviction signals
+    stable: 10          # Points for stable conviction
+    decreasing: -10     # Penalty for decreasing conviction
+  
+  # DP reaffirmation - extra points if DP mentioned recently
+  dp_reaffirmed: 
+    true: 10            # Points if DP specifically mentioned position
+  
+  # Recent activity bonus - active management increases significance
+  trimmed_or_added_in_last_24h: 15  # Points for active position management
+  
+  # Overnight declaration bonus - mentioned in overnight update
+  declared_overnight: 10  # Points for being declared as overnight position
+  
+  # Age penalty - stale positions lose significance over time
+  stale_days_penalty:
+    - days: 1
+      penalty: 0
+    - days: 2
+      penalty: -5
+    - days: 3
+      penalty: -10
+    - days: 4
+      penalty: -15
+    - days: 5+
+      penalty: -20
+  
+  # Flat status - moderator explicitly flat position
+  flat_status: -100      # Severe penalty for closed positions
+
+# Classification thresholds - determine position categorization
+classification_thresholds:
+  core_position: 65      # Minimum score for CORE classification
+  active_position: 45    # Minimum score for ACTIVE classification
+  monitoring: 25         # Minimum score for MONITORING classification
+  watchlist: 0           # Minimum score for WATCHLIST classification
+  
+# Size classification - determine relative size classification based on verbal cues
+size_classification:
+  # Words that indicate CORE size
+  core_indicators:
+    - "core"
+    - "full size"
+    - "big position"
+    - "largest position"
+    - "main focus"
+    - "primary position"
+  
+  # Words that indicate FULL size
+  full_indicators:
+    - "full"
+    - "normal size"
+    - "regular position"
+    - "standard size"
+    - "went in"
+  
+  # Words that indicate PARTIAL size
+  partial_indicators:
+    - "partial"
+    - "trimmed"
+    - "reduced"
+    - "took some off"
+    - "half size"
+    - "scaled back"
+  
+  # Words that indicate STARTER size
+  starter_indicators:
+    - "starter"
+    - "small position"
+    - "toe in"
+    - "dipping toes"
+    - "tiny"
+    - "initial position"
+  
+  # Words that indicate TRAILER size
+  trailer_indicators:
+    - "trailer"
+    - "leftover"
+    - "mostly out"
+    - "small piece left"
+    - "playing with house money"
+    - "runners only"
+
+# Size change signals - determine activity trajectory
+size_change_classification:
+  # Words that indicate INCREASING size
+  increasing_indicators:
+    - "adding"
+    - "building"
+    - "increasing"
+    - "scaling in"
+    - "averaging in"
+    - "getting bigger"
+  
+  # Words that indicate HOLDING size
+  holding_indicators:
+    - "holding"
+    - "maintaining"
+    - "sitting tight"
+    - "keeping position"
+    - "still in"
+    - "staying with"
+  
+  # Words that indicate REDUCING size
+  reducing_indicators:
+    - "trimming"
+    - "reducing"
+    - "scaling out"
+    - "taking profits"
+    - "cutting back"
+    - "lightening up"
+  
+  # Words that indicate TRAILING size
+  trailing_indicators:
+    - "trailing"
+    - "runners"
+    - "letting winners run"
+    - "house money"
+    - "mostly out"
+    - "small piece"
+
+# Entry zone classifications - types of entries
+entry_zone_classification:
+  # Entry on pullbacks to support
+  pullback_indicators:
+    - "pullback"
+    - "dip"
+    - "retracement"
+    - "buying weakness"
+    - "support test"
+    - "buying lower"
+  
+  # Entry on breakouts
+  breakout_indicators:
+    - "breakout"
+    - "break higher"
+    - "breaking out"
+    - "new high"
+    - "breaking resistance"
+    - "momentum entry"
+  
+  # Entry on VWAP reclaims
+  vwap_reclaim_indicators:
+    - "vwap reclaim"
+    - "back above vwap"
+    - "vwap support"
+    - "holding vwap"
+    - "vwap bounce"
+    - "reclaimed"
+  
+  # Entry on short-term bounces
+  scalp_bounce_indicators:
+    - "scalp"
+    - "bounce"
+    - "oversold"
+    - "quick trade"
+    - "short-term"
+    - "intraday move"
+
+# Risk bias classifications - assess relative risk of entry points
+risk_bias_classification:
+  # Lower risk entries (close to support, confirmed setups)
+  lower_risk_indicators:
+    - "defined risk"
+    - "clean setup"
+    - "tight stop"
+    - "at support"
+    - "clear level"
+    - "low risk"
+  
+  # Equal risk entries (balanced risk/reward)
+  equal_risk_indicators:
+    - "good risk/reward"
+    - "reasonable"
+    - "standard setup"
+    - "typical entry"
+    - "normal position"
+    - "standard risk"
+  
+  # Higher risk entries (extended, unconfirmed)
+  higher_risk_indicators:
+    - "speculative"
+    - "extended"
+    - "chasing"
+    - "risky"
+    - "lottery"
+    - "wide stop"
+
+# Decay rules - how position significance decays over time
+decay_rules:
+  # After 1 day without mention
+  day_1:
+    significance_reduction: 0%
+    status_change: none
+  
+  # After 2 days without mention
+  day_2:
+    significance_reduction: 5%
+    status_change: none
+  
+  # After 3 days without mention
+  day_3:
+    significance_reduction: 15%
+    status_change: consider_downgrade
+  
+  # After 4 days without mention
+  day_4:
+    significance_reduction: 25%
+    status_change: downgrade_one_level
+  
+  # After 5+ days without mention
+  day_5_plus:
+    significance_reduction: 40%
+    status_change: move_to_monitoring
+
+# Divergence detection - rules for identifying moderator divergence
+divergence_rules:
+  # When mods have conflicting directions
+  direction_conflict:
+    severity: high
+    action: flag_for_review
+  
+  # When mods have conflicting size signals
+  size_conflict:
+    minimum_gap: 2  # Number of size levels difference to trigger
+    severity: medium
+    action: note_in_mirror_strategy
+  
+  # When mods have conflicting activity signals
+  activity_conflict:
+    severity: high  # e.g., one adding while another trimming
+    action: reduce_position_significance
+  
+  # When conviction statements conflict
+  conviction_conflict:
+    severity: medium
+    action: default_to_dp

@@ -1,82 +1,111 @@
 ---
 title: DP Morning Call Analyzer  
-description: Extract structured trade ideas, conviction signals, and coaching insights from DP's morning calls with enhanced validation and accuracy  
+description: Extract structured trade ideas with enhanced emphasis detection and position context
 tags: [premarket, analysis, dp]  
 author: Simon Plant  
-last_updated: 2025-05-10  
-version: 3.0  
+last_updated: 2025-05-07  
+version: 3.1  
 category: premarket  
-usage: Run after the Inner Circle morning call. Produces structured trade data and coaching insights for system integration. Now includes enhanced pattern recognition and validation.
+usage: Run after the Inner Circle morning call with improved focus detection and position awareness
 status: active  
 input_format: markdown  
 output_format: json  
 ai_enabled: true  
 linked_outputs: [dp-trade-summary.md, unified-trade-plan-generator.md]  
 schema_version: 2.0  
-requires: [system-parameters.json, trade-data-schema.json, trading-behaviors-kb.md]
+requires: [system-parameters.json, trade-data-schema.json, trading-behaviors-kb.md, moderator-position-tracker.md]
 ---
 
-## DP MORNING CALL ANALYZER — PROMPT
+# DP MORNING CALL ANALYZER
 
-**Purpose:**  
-Extract structured trade data, conviction signals, and coaching insights from DP's morning call with enhanced accuracy, validation, and behavioral awareness. Focus on actionable trade ideas while filtering out noise like analyst upgrades and background commentary.
+## Purpose
+Extract structured trade ideas, conviction signals, and coaching insights from DP's morning calls with enhanced emphasis detection and position awareness.
 
----
+## ENHANCED EMPHASIS & FOCUS DETECTION
 
-### EXTRACTION PRIORITIES
+This analyzer prioritizes detecting DP's specific emphasis patterns that signal high-conviction trade ideas:
 
-1. **TRADE IDEAS**  
-   - Focus on clear directional calls with precise levels
-   - Include directional biases without specific entries if actionable (tag as `trigger_type: loose-trigger`)
-   - Exclude all analyst upgrades unless explicitly endorsed by DP
-   - Only extract from the "second half" trade ideas section
-   - Match levels to current market structure for validation
+### Primary Emphasis Signals (Automatic BIG_IDEA Classification)
+- "gonna be my focus today" / "my focus today"
+- "most definitely" (especially when answering a direct question about what to focus on)
+- "I'm a big fan" combined with long-term outlook
+- "gaga" / "oh my god" (positive emotional response)
+- "monster" / "monstrous" (describing potential or performance)
+- "beautiful story" (especially with "long-term")
 
-2. **CONVICTION SIGNALS**  
-   - Emotional language, repetition, personal position ("I'm in this")
-   - Specific price levels vs. vague commentary
-   - Check for behavioral flags against `trading-behaviors-kb.md`
-   - Verify against recent trade outcomes and patterns
+### Secondary Emphasis Signals (HIGH Conviction)
+- "buy on dips" / "buyer on dips"
+- "crushing" / "crushed" (when describing performance)
+- "viable" / "not going anywhere" 
 
-3. **COACHING INSIGHTS**  
-   - Risk management guidance
-   - Market condition warnings
-   - Timing advice ("take profits at open")
-   - Cross-reference with behavioral patterns
+### Tempering Signals (Lower Conviction)
+- "am I excited about it? No" (explicit low conviction)
+- "not as bad as feared" (damning with faint praise)
+- "wouldn't be shocked" (mild expectation)
+- "doubt" (uncertainty marker)
 
----
+## POSITION CONTEXT INTEGRATION
 
-### ENHANCED PATTERN RECOGNITION
+### Position Context Indicators
+- "I trimmed some at X and added back at Y" = ACTIVE_SWING with trading around core
+- "I'm still in this" = ACTIVE_SWING, elevate confidence
+- "I'm adding more today" = ACTIVE_POSITION with INCREASING size
+- "I'm out of all today's adds" = Managing around CORE_POSITION
 
-This updated analyzer now uses advanced pattern recognition to:
+### Position Management Language
+- "Added back to" = BULLISH_PULLBACK add to existing
+- "Trimmed into strength" = MANAGING_POSITION, not decreasing conviction
+- "I'm flat" = CLOSED_POSITION
+- "Down to a trailer" = REDUCED_SIZE but still ACTIVE
 
-1. **Extract Numerical Values**: Identify price levels with precision including:
-   - Exact entry levels vs. ranges
-   - Multiple target levels in sequence
-   - Stop parameters with reasoning
-   - Volatility-based adjustments
+### Context Detection
+When DP discusses a ticker where moderators have active positions:
+1. Classify as "POSITION_MANAGEMENT" if discussing adds/trims
+2. Tag as "CATCHUP_OPPORTUNITY" if suggesting entry zone
+3. Add "MOD_ALIGNMENT" tag if multiple moderators hold position
 
-2. **Match Ticker Patterns**: Accurately identify tickers and symbols with format validation:
-   - Standard equity tickers (AAPL, MSFT)
-   - Index references (SPX, NDX)
-   - Futures contracts (ES, NQ)
-   - Option specifications
+## DP-SPECIFIC LANGUAGE PARSER
 
-3. **Detect Conviction Signals**: Parse language patterns for:
-   - Conviction level markers ("This is my favorite setup")
-   - Time horizon indicators ("This is for a quick scalp")
-   - Risk assessment indicators ("Risk is defined")
-   - Position sizing clues ("This is a full size trade for me")
+DP uses distinctive language patterns that signal conviction and trade duration:
 
-4. **Structure Recognition**: Identify technical patterns mentioned:
-   - Support/resistance levels
-   - Chart patterns (flags, pennants, etc.)
-   - Moving average relationships
-   - Volume significance
+### Long-Term/Swing Indicators
+- "beautiful story long-term"
+- "viable company for the long term"
+- "monster capex play for years"
+- "leader and is not going anywhere"
 
----
+### Intraday/Cashflow Indicators
+- "simple day after trade"
+- "probably just a"
+- "just a reminder"
+- "isn't as bad as feared"
 
-### DATA STRUCTURE — JSON SCHEMA
+### Directional Strength Indicators
+- For strong bullish: "gaga", "crushed", "monster", "big fan"
+- For strong bearish: "ugly", "pretty ugly", "more bearish than bullish", "would look to short"
+- For neutral/uncertain: "Am I excited? No", "I wouldn't be shocked"
+
+## DECISION LOGGING
+
+For each trade idea identified or rejected, log the decision process:
+
+### Pattern Detection Logs
+- Log emphasis phrases detected ("focus", "most definitely", etc.)
+- Log conviction signals and their scores
+- Log pattern matches and their weights in classification
+
+### Classification Decision Logs
+- Log the final classification decision (BIG_IDEA, HIGH, etc.)
+- Record evidence text that supported the classification
+- Log alternative classifications considered
+- Record exact rule patterns that matched
+
+### Exclusion Logs
+- When analyst upgrades or mentions are filtered out
+- When tickers are recognized but lack actionable context
+- When conflicting signals cause classification uncertainty
+
+## DATA STRUCTURE — JSON SCHEMA
 
 The analyzer uses the standardized system schema format (v2.0) with the following structure:
 
@@ -130,6 +159,13 @@ The analyzer uses the standardized system schema format (v2.0) with the followin
         "potential_flags": ["string"],
         "historical_patterns": ["string"],
         "mitigation_suggestions": ["string"]
+      },
+      "position_context": {
+        "status": "NEW_IDEA | ACTIVE_POSITION | CORE_SWING | MONITORING",
+        "moderators": ["string"],
+        "activity": "INCREASING | HOLDING | REDUCING | TRAILING",
+        "management_type": "POSITION_MANAGEMENT | CATCHUP_OPPORTUNITY | MOD_ALIGNMENT",
+        "last_action": {"moderator": "string", "action": "string", "time": "timestamp"}
       }
     }
   ],
@@ -152,145 +188,80 @@ The analyzer uses the standardized system schema format (v2.0) with the followin
     "timing_advice": ["string"],
     "market_condition_warnings": ["string"],
     "direct_quotes": ["string"]
+  },
+  "DECISION_LOGS": {
+    "pattern_matches": [
+      {
+        "ticker": "string",
+        "pattern_type": "PRIMARY_EMPHASIS | SECONDARY_EMPHASIS | TEMPERING | DURATION",
+        "matched_text": "string",
+        "score_impact": number,
+        "timestamp": "ISO-timestamp"
+      }
+    ],
+    "classification_decisions": [
+      {
+        "ticker": "string",
+        "final_classification": "BIG_IDEA | HIGH | MEDIUM | LOW",
+        "evidence": "string",
+        "alternatives_considered": ["string"],
+        "deciding_factors": ["string"],
+        "timestamp": "ISO-timestamp"
+      }
+    ],
+    "exclusions": [
+      {
+        "ticker": "string",
+        "reason": "ANALYST_MENTION | NO_ACTIONABLE_CONTEXT | CONFLICTING_SIGNALS | OTHER",
+        "details": "string",
+        "timestamp": "ISO-timestamp"
+      }
+    ]
   }
 }
 ```
 
----
+## LOGIC RULES
 
-### LOGIC RULES
+### Conviction Classification
 
-#### Conviction
+| Level     | Description | Criteria |
+|-----------|-------------|----------|
+| BIG_IDEA  | Absolute highest conviction | Primary emphasis phrase + strong emotion or multiple mentions |
+| HIGH      | Strong conviction but not focus | Secondary emphasis phrase or clearly positive language |
+| MEDIUM    | Moderate conviction with qualifiers | Mixed signals or if/then language |
+| LOW       | Minimal conviction, uncertain | Tempering signals or vague, soft language |
 
-| Level     | Description |
-|-----------|-------------|
-| BIG_IDEA  | Strong emotion + multiple mentions + catalyst |
-| HIGH      | Specific levels + clear language |
-| MEDIUM    | Qualifiers or if/then language |
-| LOW       | Vague, soft language |
+### Duration Classification
 
-#### Duration
+| Type       | Description           | Identifying Patterns |
+|------------|-----------------------|----------------------|
+| CASHFLOW   | Intraday only         | "day trade", "today", "few hours" |
+| SWING      | 1–5 day hold          | "swing", "few days", "this week" |
+| LONGTERM   | Position trade        | "long-term", "story", "thesis", "years" |
+| LOTTO      | Speculative short-term| "lotto", "speculative", "high risk", "fun trade" |
 
-| Type       | Description           |
-|------------|-----------------------|
-| CASHFLOW   | Intraday only         |
-| SWING      | 1–5 day hold          |
-| LONGTERM   | Position trade        |
-| LOTTO      | Speculative short-term|
-
-#### Position Size
+### Position Size Mapping
 
 | Confidence | CASHFLOW    | SWING        | LONGTERM     | LOTTO  |
 |------------|-------------|--------------|--------------|--------|
 | BIG_IDEA   | FULL_DOUBLE | FULL_DOUBLE  | FULL         | SMALL  |
 | HIGH       | FULL        | FULL         | FULL         | SMALL  |
-| MEDIUM     | HALF        | HALF         | —            | SMALL  |
-| LOW        | QUARTER     | QUARTER      | —            | TINY   |
+| MEDIUM     | HALF        | HALF         | QUARTER      | SMALL  |
+| LOW        | QUARTER     | QUARTER      | QUARTER      | TINY   |
 
-#### Trigger Type
+## EXECUTION INSTRUCTIONS
 
-- `exact`: Numerical level or range given  
-- `loose-trigger`: Idea expressed with soft entry
+1. Parse DP's morning call transcript
+2. Extract all trade ideas with pattern matching
+3. Classify each idea using the conviction and duration rules
+4. Integrate with position tracker data
+5. Generate detailed decision logs
+6. Format output as JSON according to schema
+7. Validate output for completeness
 
----
-
-### TRADE IDEA AUGMENTATION
-
-The analyzer will automatically augment trade ideas with the following calculations:
-
-1. **Risk/Reward Calculation**
-   - Calculate ratio based on primary target vs stop distance
-   - Include notes on calculation methodology
-   - Verify mathematical accuracy of calculations
-   - Handle asymmetric risk profiles appropriately
-
-2. **Execution Priority**
-   - Rank based on conviction, clarity, and catalyst presence
-   - Include reasoning for the priority assignment
-   - Consider market structure when assigning priority
-   - Account for inner circle alignment
-
-3. **Order Suggestion**
-   - Recommend appropriate order type based on setup description
-   - Include any needed price/trigger parameters
-   - Add execution notes for ThinkorSwim platform
-   - Verify price accuracy with current market data
-
-4. **Timing Details**
-   - Extract optimal entry window information if available
-   - Estimate setup duration based on context
-   - Add expiration guidance if applicable
-   - Align with behavioral window preferences
-
-5. **Behavioral Flag Detection**
-   - Check for potential behavioral flags from trading-behaviors-kb.md
-   - Identify historical patterns that may be repeating
-   - Suggest mitigation approaches for flagged behaviors
-   - Map to reset protocols when appropriate
-
----
-
-### VALIDATION CHECKS
-
-The analyzer now performs these additional validation checks:
-
-1. **Level Consistency**: Verify that:
-   - Entry < Target for LONG trades, Entry > Target for SHORT trades
-   - Stops are appropriately placed (below entry for LONG, above for SHORT)
-   - Multiple targets are in logical sequence
-   - Levels align with known technical levels when possible
-
-2. **Market Context Alignment**: Check that:
-   - Trade direction aligns with stated market bias
-   - Levels correspond to known support/resistance zones
-   - Time horizon matches current market regime
-   - Catalysts are relevant to the specific ticker
-
-3. **Behavioral Pattern Check**: Scan for:
-   - Setups that match previously flagged behavioral patterns
-   - Tickers with historical attachment or overtrading flags
-   - Sizing that might trigger overconfidence flags
-   - Time-of-day patterns that have led to issues
-
-4. **Data Integrity**: Ensure:
-   - All required fields are present and properly formatted
-   - Numerical values are within realistic ranges
-   - Enumerations match allowed values
-   - Contextual information is relevant and specific
-
----
-
-### FINAL INSTRUCTION
-
-Return one and only one JSON block in this structure:
-
-```json
-{
-  "metadata": {
-    "source": "dp",
-    "timestamp": "2025-05-10T09:30:00Z",
-    "version": "2.0"
-  },
-  "TRADE_DATA": [...],
-  "MARKET_BIAS": {...},
-  "COACHING_INSIGHTS": {...}
-}
-```
-
-This JSON must be:
-- Strictly schema-compliant
-- Mathematically consistent 
-- Contextually accurate
-- Validated against behavioral patterns
-
-No commentary, notes, or narrative.  
-For human-readable format, run `dp-trade-summary.md` after validating this JSON.
-
----
-
-### CHANGELOG
-- v3.0 (2025-05-10): Added enhanced pattern recognition, validation checks, behavioral flag detection
-- v2.4 (2025-05-07): Updated to reflect JSON-based data flow architecture
-- v2.3 (2025-05-01): Added trade idea augmentation logic
-- v2.2 (2025-04-15): Integrated with trading behaviors knowledge base
-- v2.0 (2025-04-01): Initial implementation with basic extraction
+## CHANGELOG
+- v3.1 (2025-05-07): Added enhanced emphasis detection, position context integration, and decision logging
+- v3.0 (2025-05-01): Updated to schema version 2.0, added position management detection
+- v2.5 (2025-04-15): Added behavioral flag detection and enhanced validation
+- v2.0 (2025-04-01): Initial implementation with basic pattern matching

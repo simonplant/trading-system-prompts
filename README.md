@@ -4,7 +4,7 @@ description: Master index and usage guide for Simon Plant's AI-assisted trading 
 tags: [readme, index, overview]
 author: Simon Plant
 last_updated: 2025-05-07
-version: 1.6
+version: 1.7
 category: root
 usage: Start here when opening the repo. Describes architecture, file roles, workflows, and LLM routing.
 status: stable
@@ -90,6 +90,17 @@ The system uses a controller-based architecture where all interactions must go t
   - Journal Generator - Creates trading journal entries
 
 ## Command Reference
+
+#### Utility and Log Commands
+
+- `/show-trade-plan` – View the current day’s unified trade plan
+- `/show-dp-ideas` – Show analyzed trade ideas from DP
+- `/show-mancini` – Display SPX/ES structure and Mancini blueprint
+- `/load-plan YYYY-MM-DD` – Load a prior plan for review or replay
+- `/log-trade` – Log a manual trade entry for performance review
+- `/log-kb` – Log a behavioral pattern or insight
+- `/replay-day` – Run a system playback for past trading days
+- `/debug-system` – Diagnostic trace of system components and status
 
 All commands follow the standardized format:
 ```

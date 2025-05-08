@@ -31,3 +31,17 @@ usage: Do not invoke prompts directly; route through here.
 /help: prompts/system/help.md
 /status: prompts/system/system-status.md
 /show-charter: system/trading-charter.md
+
+
+---
+
+#### 📦 Additional Commands (Newly Documented)
+
+- `/show-trade-plan` – View the unified trade plan for today or a given date
+- `/show-dp-ideas` – Show DP trade ideas parsed from transcript
+- `/show-mancini` – Show current SPX/ES levels and failed breakdown zones
+- `/load-plan YYYY-MM-DD` – Load and display a prior date’s trade plan
+- `/log-trade` – Manually log a trade for journal inclusion
+- `/log-kb` – Manually submit a behavior insight or pattern
+- `/replay-day` – Run system playback for a given trade day
+- `/debug-system` – Full trace diagnostics for all system components

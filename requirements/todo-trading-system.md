@@ -4,7 +4,7 @@ description: Prioritized list of trading system improvements
 tags: [system, backlog, architecture, refactor]  
 author: Simon Plant  
 last_updated: 2025-05-07  
-version: 1.20  
+version: 1.21  
 category: system  
 usage: Edit during system development or prompt refactor planning.  
 status: active  
@@ -47,6 +47,13 @@ ai_enabled: false
   - Do not implement now — see "Planned Changes" below
 
 ## P1 – Tactical Execution Enhancements
+
+- **Fix broken system routes in `main-controller.md`**
+  - Create missing prompt files:
+    - `prompts/system/help.md` – explain controller routing, command syntax, and entry phases
+    - `prompts/system/system-status.md` – call or alias `/debug-system` report
+  - Validate all routed file paths exist on init
+  - Prevent broken routes via precheck or fallback
 
 - Create `trade-intent-validator.md`
   - Sanity check for emotional trades or off-plan entries

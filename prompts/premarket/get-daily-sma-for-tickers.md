@@ -1,114 +1,218 @@
 ---
-title: Get Daily SMA for Tickers  
-description: Extract and filter key moving averages (8d–200d) on the daily chart for selected tickers  
-tags: [premarket, analysis, macro]  
-author: Simon Plant  
-last_updated: 2025-05-05  
-version: 1.0  
-category: premarket  
-usage: Run before market open to extract and filter key SMAs on the daily chart. Produces a list of actionable moving averages likely to act as support or resistance. Consumes ticker list and timeframe context.
-status: active  
-requires: []  
-linked_outputs: []  
-input_format: markdown  
-output_format: table  
-ai_enabled: true  
+title: Daily SMA Extractor for Key Tickers
+description: Extracts and formats Simple Moving Averages for specified tickers
+tags: [premarket, technical, SMA, levels]
+author: Simon Plant
+last_updated: 2025-05-08
+version: 1.1
+category: premarket
+usage: Extracts SMA values for key tickers with filtering for potential support/resistance levels.
+status: active
+requires: [market-regimes.md, system-parameters.md]
+linked_outputs: []
+input_format: markdown
+output_format: json+markdown
+ai_enabled: true
 ---
-# Get Daily SMA for Tickers
+
+# Daily SMA Extractor for Key Tickers
 
 ## Purpose
-This prompt analyzes and reports the current position of key tickers relative to their important daily simple moving averages (SMAs). This analysis provides a quick technical overview of market strength/weakness and helps identify potential support/resistance levels before market open.
 
-## Instructions
-- Run this prompt during premarket preparation
-- The system will retrieve the latest daily closing prices and calculate/retrieve current SMA values
-- Results will be organized by ticker with clear indications of price relative to each moving average
+This component extracts Simple Moving Averages (SMAs) for a predefined list of key tickers, with a focus on identifying those that are likely to act as support or resistance in the next 1-2 trading sessions.
 
-## Key Moving Averages
-- 8-day SMA (short-term trend)
-- 21-day SMA (intermediate-term trend)
-- 50-day SMA (medium-term trend)
-- 100-day SMA (longer-term trend) 
-- 200-day SMA (major long-term trend)
+## Input Format
 
-## Tickers to Track
-1. **Indices/Futures**
-   - QQQ (Nasdaq 100 ETF)
-   - SPX (S&P 500 Index)
-   - ES (S&P 500 E-mini Futures)
+```
+/get-sma [date=YYYY-MM-DD] [tickers=comma-separated-list] [periods=comma-separated-list]
+```
 
-2. **Major Tech**
-   - AAPL (Apple)
-   - AMZN (Amazon)
-   - MSFT (Microsoft)
-   - META (Meta Platforms)
-   - NFLX (Netflix)
-   - NVDA (NVIDIA)
-   - TSLA (Tesla)
+### Default Parameters
+- **Tickers**: ES, SPX, TSLA, MSFT, NFLX, RDDT, META, AAPL, AMZN
+- **SMA Periods**: 8, 21, 34, 50, 100, 200
+- **Date**: Current trading day
 
-3. **Focus Stocks**
-   - CRWD (CrowdStrike)
-   - VKTX (Viking Therapeutics)
-   - IMNM (Immunome)
+## Example Usage
+
+```
+/get-sma
+```
+
+or with explicit parameters:
+
+```
+/get-sma date=2025-05-08 tickers=SPX,ES,AAPL,TSLA periods=8,21,50,200
+```
+
+## Overview
+
+This component:
+1. Accepts a list of tickers and SMA periods
+2. Calculates the SMAs for each ticker/period combination
+3. Identifies which SMAs are likely to act as support or resistance
+4. Outputs both structured JSON and human-readable markdown
+
+## Processing Steps
+
+1. Parse input parameters (date, tickers, periods)
+2. For each ticker:
+   a. Retrieve daily price data for the specified period
+   b. Calculate each SMA using the formula: sum(closing_prices) / period_length
+   c. Determine the current price relative to each SMA
+   d. Calculate the percentage distance from current price to each SMA
+   e. Analyze recent interactions (crossovers, tests, bounces)
+   f. Assess historical significance as support/resistance
+3. Filter SMAs based on proximity and significance
+4. Format results as JSON and markdown
+
+## Filtering Logic
+
+The system applies the following filters to identify potentially significant SMAs:
+
+### 1. Proximity Filter
+- Primary: SMAs within 2% of current price
+- Secondary: SMAs within 3-5% if historically significant
+
+### 2. Recent Interaction Filter
+- Crossovers: Price crossed SMA within last 5 sessions
+- Tests: Price approached within 0.5% but didn't cross
+- Bounces: Price reversed direction after touching SMA
+
+### 3. Historical Significance Filter
+- High: Acted as S/R in 3+ instances in past 3 months
+- Medium: Acted as S/R in 1-2 instances in past 3 months
+- Low: Limited historical significance
+
+### 4. Market Regime Adjustment
+Significance weights are adjusted based on current market regime:
+- Trending Up: Emphasize 8d, 21d as support
+- Trending Down: Emphasize 8d, 21d as resistance
+- Range-Bound: Emphasize 50d, 100d, 200d
+- Volatile: Consider all SMAs equally
 
 ## Output Format
 
+### JSON Structure
+
+```json
+{
+  "SMA_DATA": {
+    "metadata": {
+      "date": "YYYY-MM-DD",
+      "generated_at": "timestamp",
+      "tickers_requested": ["TICK1", "TICK2"],
+      "periods_requested": [8, 21, 50, 100, 200],
+      "market_regime": "TRENDING_UP|TRENDING_DOWN|RANGE_BOUND|VOLATILE",
+      "version": "1.1"
+    },
+    "tickers": [
+      {
+        "ticker": "TICKER_SYMBOL",
+        "current_price": 123.45,
+        "sma_values": [
+          {
+            "period": 8,
+            "value": 123.78,
+            "distance_pct": 0.27,
+            "distance_points": 0.33,
+            "crossed_recently": true,
+            "last_cross_date": "YYYY-MM-DD",
+            "cross_direction": "ABOVE_TO_BELOW|BELOW_TO_ABOVE",
+            "historical_significance": "HIGH|MEDIUM|LOW",
+            "historical_function": "SUPPORT|RESISTANCE|BOTH",
+            "recent_interactions": [
+              {
+                "date": "YYYY-MM-DD",
+                "type": "CROSS|TEST|BOUNCE",
+                "result": "RESPECTED|VIOLATED"
+              }
+            ],
+            "likely_function": "RESISTANCE|SUPPORT",
+            "significance_score": 85,
+            "nearest_price_point": true
+          },
+          // Additional periods...
+        ],
+        "sma_clusters": [
+          {
+            "zone_start": 122.50,
+            "zone_end": 123.00,
+            "smas_in_zone": ["8d", "21d"],
+            "significance": "HIGH|MEDIUM|LOW"
+          }
+        ]
+      }
+      // Additional tickers...
+    ],
+    "significant_levels": [
+      {
+        "ticker": "TICKER",
+        "level": 123.45,
+        "smas": ["8d", "21d"],
+        "likely_function": "RESISTANCE|SUPPORT",
+        "significance": "HIGH|MEDIUM|LOW"
+      }
+    ]
+  }
+}
 ```
-# DAILY MOVING AVERAGES REPORT - [DATE]
 
-## MARKET OVERVIEW
-[Brief 1-2 sentence interpretation of the overall technical picture]
+### Markdown Format
 
-## INDICES/FUTURES
+```markdown
+# SMA Support/Resistance Analysis for YYYY-MM-DD
+Market Regime: [Current Market Regime]
 
-### QQQ - [PRICE] - [TREND DESCRIPTION]
-- Above/Below 8 SMA: [VALUE] ([PERCENTAGE] from price)
-- Above/Below 21 SMA: [VALUE] ([PERCENTAGE] from price)
-- Above/Below 34 SMA: [VALUE] ([PERCENTAGE] from price)
-- Above/Below 50 SMA: [VALUE] ([PERCENTAGE] from price)
-- Above/Below 100 SMA: [VALUE] ([PERCENTAGE] from price)
-- Above/Below 200 SMA: [VALUE] ([PERCENTAGE] from price)
+## Key SMA Levels by Ticker
 
-### SPX - [PRICE] - [TREND DESCRIPTION]
-[Same format as above]
+### [TICKER] (Current: [Current Price])
+- [Period]d SMA: [Value] ([Distance]% [above/below]) - [Function] [Significance Stars]
+- [Period]d SMA: [Value] ([Distance]% [above/below]) - [Function] [Significance Stars]
+...
 
-### ES - [PRICE] - [TREND DESCRIPTION]
-[Same format as above]
+### SMA Clusters (Multiple SMAs in Same Area)
+- [Price Range]: [List of SMAs] - [Significance]
 
-## MAJOR TECH
+## Most Significant SMA Levels for Today
+1. [Ticker] [Period]d SMA at [Value] - [Function] [Significance Stars]
+2. [Ticker] [Period]d SMA at [Value] - [Function] [Significance Stars]
+...
 
-### AAPL - [PRICE] - [TREND DESCRIPTION]
-[Same format as above]
+## SMA Interactions to Watch
+- [Ticker] approaching [Period]d SMA from [above/below]
+- [Ticker] recently [crossed/tested/bounced off] [Period]d SMA
 
-[Continue with remaining tech stocks in same format]
-
-## FOCUS STOCKS
-
-### CRWD - [PRICE] - [TREND DESCRIPTION]
-[Same format as above]
-
-[Continue with remaining focus stocks in same format]
-
-## KEY OBSERVATIONS
-- [Observation about strongest/weakest tickers]
-- [Observation about potential support/resistance at key MAs]
-- [Observation about clusters of MA convergence/divergence]
-- [Any notable MA crossovers occurring or imminent]
+## Significance Key
+⭐⭐⭐ - Critical level (high historical significance)
+⭐⭐ - Important level (medium historical significance)
+⭐ - Notable level (low historical significance)
 ```
 
-## Technical Analysis Interpretations
-- **Strong Uptrend**: Price above all major MAs, with MAs aligned in ascending order (8 > 21 > 34 > 50 > 100 > 200)
-- **Moderate Uptrend**: Price above 50/100/200 SMAs but below shorter-term MAs
-- **Weak/Transitioning**: Price between key MAs with mixed alignment
-- **Moderate Downtrend**: Price below 50/100/200 SMAs but above shorter-term MAs
-- **Strong Downtrend**: Price below all major MAs, with MAs aligned in descending order
+## Integration with Trade Plan
 
-## Integration Notes
-- This prompt should be run before the main trading plan generation
-- The MA data can be used to validate trade ideas and identify key inflection points
-- All tickers showing alignment with the broader market trend should be highlighted
-- Special attention should be given to tickers approaching key MAs (within 1%) as potential entries/exits
+The output of this component is designed to integrate with the unified trade plan in several ways:
 
-## Data Sourcing
-The system should retrieve real-time premarket data and most recent daily closes from reliable financial data sources. If unable to access current data, the system should note this limitation and use the most recent available data with a clear timestamp.
-```
+1. **Market Context**: Key SMA levels provide additional support/resistance zones
+2. **Trade Idea Enhancement**: Each trade can reference relevant SMA levels
+3. **Decision Points**: SMA interactions can serve as entry/exit triggers
+4. **Risk Management**: SMA levels can inform stop placement
+
+## Notes
+
+- Historical data is retrieved from the configured data provider
+- Current market regime is determined from `market-regimes.md`
+- Default parameters can be overridden in `system-parameters.md`
+- Significance scoring uses the algorithm defined in `position-significance-score.yaml`
+
+## Error Handling
+
+If data for a specific ticker or date is unavailable, the system will:
+1. Log a warning
+2. Skip the problematic ticker
+3. Continue processing remaining tickers
+4. Note the missing data in the output
+
+## Changelog
+
+- v1.1 (2025-05-08): Added SMA cluster detection and improved integration with unified plan
+- v1.0 (2025-04-30): Initial implementation of SMA extractor

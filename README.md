@@ -1,13 +1,13 @@
 ---
 title: Trading System Prompt Library
 description: Master index and usage guide for Simon Plant's AI-assisted trading framework
-tags: [readme, index, overview]
+tags: [readme, index, overview, unified]
 author: Simon Plant
-last_updated: 2025-05-07
-version: 1.7
+last_updated: 2025-05-12
+version: 3.0
 category: root
-usage: Start here when opening the repo. Describes architecture, file roles, workflows, and LLM routing.
-status: stable
+usage: Start here when opening the repo. Describes architecture, file roles, and unified trading approach.
+status: active
 requires: []
 linked_outputs: []
 input_format: markdown
@@ -15,7 +15,7 @@ output_format: markdown
 ai_enabled: false
 ---
 
-# Trading System Prompts — Unified Execution Framework
+# Trading System Prompts — Unified Execution Framework v3.0
 
 ## 1. System Bootstrap Instructions
 
@@ -35,7 +35,6 @@ ai_enabled: false
    ```
    https://github.com/simonplant/trading-system-prompts
    ```
-   Alternative (if needed): `https://github.com/simonplant/trading-system-prompts/tree/main`
 
 2. Enter this exact command (hover over code block and click the copy button that appears):
    ```
@@ -57,6 +56,12 @@ ai_enabled: false
    /premarket-sequence
    Transcript:
    [paste DP transcript here]
+   
+   Mancini:
+   [paste Mancini content here]
+   
+   Levels:
+   ES: 5600, 5625, 5650
    ```
 
 **CRITICAL: ALL interactions MUST go through the main-controller.md**
@@ -65,107 +70,150 @@ ai_enabled: false
 
 ## System Overview
 
-This is a modular AI-assisted trading framework designed by Simon Plant to support high-conviction, structure-driven options trading. It integrates David Prince's Inner Circle trade ideas, Adam Mancini's SPX blueprint, and Simon's personal SOPs, conviction sizing, and behavioral filters.
+This is a unified trading framework designed to optimize trade idea identification and execution across multiple sources. The system integrates DP's Inner Circle trade ideas, Mancini's SPX methodology, and proprietary trading structures into a single coherent workflow.
+
+### Core Design Philosophy
+
+1. **Source Integration Not Separation**: All trade ideas are evaluated on the same conviction scale regardless of source
+2. **Classification Without Filtering**: Setups are classified for tracking without rejecting valid opportunities
+3. **Position Tracking Centralization**: Consistent tracking across sessions for proper risk management
+4. **Validation Without Rejection**: Issues are highlighted without blocking workflow
+5. **Controller-Based Architecture**: All interactions route through a central controller for consistency
 
 ### System Architecture
 
-The system uses a controller-based architecture where all interactions must go through the main controller:
+The system uses a controller-based architecture with three main phases:
 
-- **Main Controller** - Central command router and EXCLUSIVE entry point
-  
 - **Premarket Phase**
-  - DP Morning Call Analyzer - Processes transcripts into trade data
-  - Mancini Blueprint Analyzer - Extracts levels and setups
-  - Level Processor - Processes market levels
-  - Unified Trade Plan Generator - Creates the daily plan
+  - DP Analysis: Extract structured trade ideas from DP
+  - Mancini Analysis: Extract structured setups from Mancini
+  - Market Context: Establish regime and technical levels
+  - Unified Plan: Integrate all sources into one prioritized plan
 
 - **Intraday Phase**
-  - Trade Validation - GO/WAIT/NO GO decisions
-  - Copilot - Real-time assistance
-  - Risk Management - Position sizing and limits
+  - Trade Validation: Confirm trades align with plan
+  - Position Management: Track and manage open positions
+  - Plan Adherence: Ensure execution matches intentions
+  - Midday Reset: Re-evaluate as conditions change
 
 - **Postmarket Phase**
-  - Performance Debrief - Analyzes the day's trades
-  - KB Updates - Updates behavior knowledge base
-  - Journal Generator - Creates trading journal entries
+  - Performance Analysis: Track results by setup type
+  - Behavioral Insights: Identify pattern recognition
+  - System Optimization: Refine based on actual results
+  - Knowledge Base Updates: Continuously improve
 
 ## Command Reference
 
-#### Utility and Log Commands
-
-- `/show-trade-plan` – View the current day’s unified trade plan
-- `/show-dp-ideas` – Show analyzed trade ideas from DP
-- `/show-mancini` – Display SPX/ES structure and Mancini blueprint
-- `/load-plan YYYY-MM-DD` – Load a prior plan for review or replay
-- `/log-trade` – Log a manual trade entry for performance review
-- `/log-kb` – Log a behavioral pattern or insight
-- `/replay-day` – Run a system playback for past trading days
-- `/debug-system` – Diagnostic trace of system components and status
-
-All commands follow the standardized format:
+All commands follow this standardized format:
 ```
 /command-name [required-parameter] [optional-parameter]
 ```
 
-### Available Commands by Phase
+### Core Commands
 
-#### Premarket Workflow
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `/premarket-sequence` | Run complete premarket workflow | Daily first action |
+| `/copilot-confirm` | Validate potential trade | Before each trade entry |
+| `/copilot-debrief` | Log completed trade | After each trade exit |
+| `/midday-reset` | Re-evaluate plan mid-session | If conditions change |
+| `/postmarket-sequence` | Run complete postmarket workflow | End of trading day |
 
-- `/premarket-sequence` - Run the complete premarket workflow in the proper sequence
-- `/analyze-dp` - Run DP Morning Call Analyzer (outputs JSON)
-- `/dp-summary` - Generate human-readable summary from DP analysis JSON
-- `/analyze-mancini` - Run Mancini Blueprint Analyzer (outputs JSON)
-- `/mancini-summary` - Generate human-readable summary from Mancini analysis JSON
-- `/get-sma` - Get daily SMA data for key tickers
-- `/get-levels` - Extract premarket levels for indices
-- `/generate-trade-plan` - Generate unified trade plan from all sources
+### Premarket Commands
 
-#### Intraday Workflow
+| Command | Description | Parameters | 
+|---------|-------------|------------|
+| `/analyze-dp` | Process DP transcript | Transcript | 
+| `/analyze-mancini` | Process Mancini content | Content | 
+| `/get-sma` | Get SMA data | Tickers | 
+| `/get-levels` | Extract market levels | Indices | 
+| `/classify-regime` | Classify market regime | Market data |
+| `/generate-trade-plan` | Create unified plan | Source refs | 
 
-- `/copilot` - Activate the intraday trading copilot
-- `/copilot-scout` - Scan for setups matching your criteria
-- `/copilot-confirm` - Validate a potential trade against your plan
-- `/copilot-recenter` - Reset focus during the trading day
-- `/copilot-debrief` - Quick review of a completed trade
-- `/midday-reset` - Mid-session review and plan adjustment
+### Intraday Commands
 
-#### Postmarket Workflow
+| Command | Description | Parameters | 
+|---------|-------------|------------|
+| `/copilot` | Activate trading copilot | None | 
+| `/copilot-scout` | Scan for setups | Setup, Tag, Bias | 
+| `/copilot-confirm` | Validate potential trade | Trade details | 
+| `/copilot-debrief` | Log completed trade | Trade results | 
+| `/midday-reset` | Reassess plan | Trading context | 
+| `/copilot-recenter` | Reset focus | Current state | 
 
-#### Postmarket Workflow
+### Postmarket Commands
 
-- `/postmarket-sequence` – Run the complete postmarket workflow
-- `/generate-trade-log` – Create a structured log of today's trades
-- `/performance-debrief` – Analyze today's trading performance
-- `/generate-journal` – Create a trading journal entry
-- `/update-behaviors` – Update your trading behaviors knowledge base
-- `/generate-kb-update` – Generate knowledge base update recommendations
-- `/performance-vs-mancini` – Compare your trade plan and actual execution against Mancini’s published setups and DP’s intent. Identify missed setups, execution errors, and PnL impact to improve next-day readiness.
+| Command | Description | Parameters | 
+|---------|-------------|------------|
+| `/generate-trade-log` | Create trade log | Trades, Notes | 
+| `/performance-debrief` | Analyze performance | Analysis dimensions | 
+| `/performance-vs-plan` | Compare execution vs plan | Trade log | 
+| `/generate-journal` | Create journal entry | Journal metadata | 
+| `/update-behaviors` | Update knowledge base | Update details | 
 
-#### System Management
+## Unified Setup Classification
 
-- `/system-parameters` - View or update system parameters
-- `/help` - Show available commands and documentation
-- `/status` - Show current system status and active processes
+All trade opportunities use a standardized classification system:
 
-## MANDATORY CONTROLLER ENFORCEMENT POLICY
+### Setup Type Tags
+- FB: Failed Breakdown/Breakout (Mancini primary, DP "shakeout and go")
+- RR: Range/Level Reclaim (Mancini secondary, DP "reclaim")
+- TC: Trend Continuation (DP primary, Mancini "dip buy")
+- BS: Breakdown Short (Mancini tier 2, DP "failure fade")
+- ORB: Opening Range Breakout (both sources)
 
-ALL system interactions MUST be routed through main-controller.md without exception.
+### Direction-Duration Tags
+- L-CF: Long Cashflow (intraday)
+- S-CF: Short Cashflow (intraday)
+- L-SW: Long Swing (1-5 days)
+- S-SW: Short Swing (1-5 days)
+- L-0D: Long 0DTE (same day)
+- S-0D: Short 0DTE (same day)
 
-Enforcement Mechanisms:
-- Component validation checks
-- Phase-appropriate access control
-- Input validation and sanitization
-- Execution logging and auditing
+### Conviction Tags
+- BI: Big Idea (highest)
+- HC: High Conviction
+- MC: Medium Conviction
+- LC: Low Conviction
 
-WARNING: Bypassing the controller will trigger security measures including session termination.
+### Complete Tag Example
+`FB-L-CF-HC` = Failed Breakdown Long Cashflow High Conviction
+
+This unified tagging system enables:
+- Consistent classification across sources
+- Setup-specific performance tracking
+- Pattern recognition across different sources
+- Clear communication about trade ideas
+
+## Unified Conviction Scoring System
+
+All trade ideas across all sources are evaluated on a unified conviction scale:
+
+| DP Conviction | Mancini Equivalent | Combined Score |
+|---------------|---------------------|---------------|
+| BIG_IDEA | Primary Failed Breakdown | 10/10 |
+| HIGH | Strong Failed Breakdown/Level Reclaim | 8/10 |
+| MEDIUM | Standard/Good Setup | 6/10 |
+| LOW | Possible/Lower Probability | 4/10 |
+| MONITORING | Watching/Potential Setup | 2/10 |
+
+This unified scale ensures the best trades rise to the top regardless of source.
+
+## Position Tracking System
+
+The system maintains centralized position tracking across sessions:
+
+1. **Active Positions** - Current open positions with entry prices and sizes
+2. **Daily P&L Status** - Current profit/loss for the day
+3. **Risk Utilization** - Percentage of daily risk already deployed
+4. **Position Correlation Check** - Identifies correlations with potential new trades
+
+This tracking ensures consistent risk management and avoids overexposure.
 
 ## Workflow Examples
 
 ### Premarket Workflow
 
-Command: `/premarket-sequence`
-
-Example:
 ```
 /premarket-sequence
 Transcript:
@@ -180,48 +228,45 @@ ES: 5600, 5625, 5650
 
 This workflow:
 1. Analyzes DP transcript for trade ideas
-2. Processes Mancini blueprint for technical levels
-3. Integrates market levels and structures
-4. Generates a unified trade plan with:
-   - Market bias and key levels
-   - 5-minute focus stack
-   - SPX decision tree
-   - Execution checklist
+2. Processes Mancini content for SPX setups
+3. Establishes current market regime
+4. Integrates technical levels and structures
+5. Generates a unified trade plan with:
+   - Trades organized by true conviction (not source)
+   - Standardized setup classification tags
+   - Complete trade management guidelines
+   - Current position context and risk status
 
 ### Intraday Workflow
 
-Command: `/copilot-confirm` (or `/trade-validate`)
-
-Example:
 ```
 /copilot-confirm
 Ticker: AAPL
 Direction: Long
-Entry: Above 170 reclaim
-Type: Cashflow
+Entry: Above 184.50 reclaim
+Setup: Range Reclaim
+Tag: RR-L-CF-MC
 Context: SPX reclaiming 5606, sector strength in tech
 ```
 
 This workflow:
-1. Validates trade idea against your plan
-2. Checks against setup library and regime compatibility
-3. Applies risk parameters from charter
-4. Runs blindspot detection for potential biases
+1. Validates trade against the unified plan
+2. Checks setup classification and compatibility
+3. Evaluates position in context of existing trades
+4. Applies appropriate risk parameters
 5. Produces GO/WAIT/NO GO decision with:
-   - Conviction and sizing recommendation
-   - Charter rule references
-   - Potential blindspots or cautions
+   - Position size recommendation
+   - Entry trigger confirmation
+   - Stop placement guidance
+   - Target structure recommendation
 
 ### Postmarket Workflow
 
-Command: `/postmarket-sequence`
-
-Example:
 ```
 /postmarket-sequence
 Trades:
-1. AAPL Long 170.50 -> 173.25, Profit: $275
-2. QQQ Put 420 Strike, -30% loss, stopped out
+1. AAPL Long 184.50->186.75, +1.2%, Tag: RR-L-CF-MC, Adherence: 8/10
+2. QQQ Put 434 Strike, -30% loss, Tag: FB-S-0D-LC, Adherence: 5/10
 
 Notes:
 Got shaken out of QQQ puts during the fake breakdown.
@@ -229,53 +274,35 @@ AAPL entry was good but took profits too early.
 ```
 
 This workflow:
-1. Logs trades into structured format
-2. Analyzes performance metrics
-3. Identifies behavioral patterns
-4. Updates knowledge base with new observations
-5. Generates structured journal entry with:
-   - Performance analysis
-   - Pattern identification
-   - Learning points
-   - Next-day focus areas
-
-## Prompt Routing Rules (Strictly Enforced)
-
-All prompt flows must be routed through the controller:
-- DP transcript → prompts/premarket/dp-trade-analyzer.md
-- Mancini newsletter → prompts/premarket/mancini-trade-analyzer.md
-- Levels data → prompts/premarket/get-daily-sma-for-tickers.md + prompts/premarket/get-premarket-levels.md
-- Final unification → prompts/premarket/unified-trade-plan-generator.md
-- Intraday validation → prompts/intraday/copilot-confirm.md
-- Postmarket debrief → prompts/postmarket/daily-performance-debrief.md
-
-If any source fails (e.g., malformed input, missing level logic), the controller will flag it and skip that integration without hallucinating fallback content.
+1. Logs trades with standardized tags
+2. Analyzes performance by setup type
+3. Tracks adherence to trade plan
+4. Identifies behavioral patterns
+5. Updates setup performance metrics
+6. Generates structured journal entry
+7. Provides system optimization suggestions
 
 ## Troubleshooting
 
-### Status Codes
+If you encounter issues with the system:
 
-| Code | Meaning | Action |
-|------|---------|--------|
-| `READY` | System operational | Proceed with commands |
-| `INITIALIZING` | Bootstrap in progress | Wait for completion |
-| `ERROR` | System error | See error details |
-| `SECURITY-ALERT` | Security violation | Restart session |
-
-### Common Issues
-
-| Issue | Code | Resolution |
-|-------|------|------------|
-| Files not found | `FILE-404` | Re-upload ZIP or use alternate URL |
-| Invalid command | `CMD-400` | Check command syntax reference |
-| Unauthorized access | `SEC-403` | Route through controller only |
-| Phase mismatch | `PHASE-409` | Verify current trading phase |
-| Missing parameters | `PARAM-422` | Include all required parameters |
-| JSON parsing error | `JSON-500` | Check input format |
-
-For all security alerts, restart the session with proper initialization.
+1. Ensure all commands route through main-controller.md
+2. Check that files are properly loaded
+3. Verify premarket data is properly formatted
+4. If a command fails, use `/system-status` to check system state
+5. For trade validation issues, verify the setup tag format is correct
 
 ## System Components
+
+### Core Components
+
+| Component | Purpose | Access Method |
+|-----------|---------|--------------|
+| `prompts/main-controller.md` | Central command router | Direct - primary entry point |
+| `prompts/premarket/unified-trade-plan-generator.md` | Integrates all trade sources | Via commands only |
+| `system/trade-setups-kb.md` | Unified setup taxonomy | Via `/show-kb setups` |
+| `system/trading-system-sop.md` | Operating procedures | Via `/show-sop` |
+| `system/market-regimes.md` | Market condition classifier | Via `/show-regime` |
 
 ### File Structure
 
@@ -306,6 +333,7 @@ trading-system-prompts/
 ├── system/                        # System configuration
 │   ├── trading-charter.md         # Trading rules
 │   ├── trading-behaviors-kb.md    # Behavior knowledge
+│   ├── trade-setups-kb.md         # Setup taxonomy
 │   ├── trading-system-sop.md      # Standard procedures
 │   ├── market-regimes.md          # Market classifier
 │   └── chart-visual-legend.md     # Chart legend
@@ -314,37 +342,23 @@ trading-system-prompts/
     └── journal/                   # Journal entries
 ```
 
-### Core Components
-
-| Component | Purpose | Access Method |
-|-----------|---------|--------------|
-| `prompts/main-controller.md` | Central command router | Direct - primary entry point |
-| `system/trading-charter.md` | Trading rules and principles | Via `/show-charter` |
-| `system/trading-system-sop.md` | Standard operating procedures | Via `/show-sop` |
-| `system/trading-behaviors-kb.md` | Behavior knowledge base | Via `/show-kb` |
-| `system/market-regimes.md` | Market condition classifier | Via `/show-regime` |
-
 ## Changelog
 
-### 1.6 — May 7, 2025
-- Reorganized README to prioritize immediate usage instructions
-- Removed duplication between Quick Start and Bootstrap sections
-- Updated bootstrap instructions with precise Claude command format
-- Added hover-over copy button instructions
-- Corrected all file paths for consistency
-- Balanced user-friendliness with comprehensive documentation
-- Added detailed workflow examples
-- Restored complete command reference from controller
+### 3.0 — May 12, 2025
+- Complete system optimization with unified setup classification and conviction scoring
+- Implemented position tracking centralization
+- Created source-agnostic trade prioritization
+- Enhanced workflow with validation without rejection
+- Improved documentation clarity and organization
 
-### 1.5 — May 7, 2025
+### 2.0 — May 7, 2025
 - Implemented standardized command structure
+- Enhanced controller enforcement policy
 - Added tabular format for commands and parameters
 - Created visual system architecture diagram
+- Reinforced exclusive routing requirements
 
-### 1.4 — May 7, 2025
-- Added controller enforcement policy
-- Strengthened exclusive routing requirements
-- Enhanced troubleshooting section
-
-### 1.3 and earlier
-- Various improvements to documentation and structure
+### 1.0 — April 1, 2025
+- Initial system implementation
+- Basic command routing
+- Simple workflow design

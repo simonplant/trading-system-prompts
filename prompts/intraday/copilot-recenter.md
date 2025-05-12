@@ -12,7 +12,10 @@ requires: [midday-reset.md, trading-behaviors-schema.md, trading-charter.md]
 linked_outputs: [generate-daily-trade-log.md, copilot-debrief.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # Copilot — Recenter Mode

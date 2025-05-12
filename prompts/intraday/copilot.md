@@ -12,7 +12,10 @@ requires: [copilot-scout.md, copilot-confirm.md, copilot-recenter.md, copilot-de
 linked_outputs: [generate-daily-trade-log.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: false  
+ai_enabled: false
+style:
+  use_emojis: false
+  text_decoration: false 
 ---
 
 # Trading Copilot — Modular Intraday Interface

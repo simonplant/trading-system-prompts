@@ -12,7 +12,10 @@ requires: [trading-charter.md, trading-capital-profile.md, trading-behaviors-sch
 linked_outputs: [copilot-confirm.md, generate-daily-trade-log.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # Copilot — Scout Mode

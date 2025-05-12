@@ -12,7 +12,10 @@ requires: [trading-behaviors-kb.md, trading-behaviors-schema.md]
 linked_outputs: [generate-kb-update.md, update-trading-behaviors-kb.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # Daily Trading Journal — Reflection and Reset

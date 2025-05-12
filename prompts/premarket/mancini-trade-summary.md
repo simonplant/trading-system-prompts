@@ -14,6 +14,9 @@ input_format: json
 output_format: markdown  
 ai_enabled: true  
 schema_version: 3.0
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 ## MANCINI BLUEPRINT SUMMARY GENERATOR — PROMPT

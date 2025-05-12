@@ -12,7 +12,10 @@ requires: [generate-daily-trade-log.md, trading-behaviors-kb.md]
 linked_outputs: [generate-kb-update.md, generate-daily-journal.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 ## DAILY PERFORMANCE DEBRIEF — PROMPT

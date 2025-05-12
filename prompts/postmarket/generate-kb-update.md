@@ -12,7 +12,10 @@ requires: [daily-performance-debrief.md, trading-behaviors-kb.md]
 linked_outputs: [trading-behaviors-kb.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 ## KNOWLEDGE BASE UPDATE — PROMPT

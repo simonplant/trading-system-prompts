@@ -12,7 +12,10 @@ requires: [generate-daily-journal.md]
 linked_outputs: []  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 ## DAILY JOURNAL EXPORT — TEMPLATE

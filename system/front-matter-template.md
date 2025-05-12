@@ -12,7 +12,10 @@ requires: []
 linked_outputs: []  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: false  
+ai_enabled: false
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 title: [Descriptive Title of the File]  
 description: [1–2 line summary of what the file does or contains]  

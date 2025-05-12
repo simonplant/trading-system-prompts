@@ -12,7 +12,10 @@ requires: [trading-charter.md, trading-behaviors-kb.md]
 linked_outputs: [daily-performance-debrief.md, generate-kb-update.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true 
+style:
+  use_emojis: false
+  text_decoration: false 
 ---
 
 ## TRADE LOG EXPORTER — PROMPT

@@ -14,6 +14,9 @@ ai_enabled: true
 linked_outputs: [dp-trade-summary.md, unified-trade-plan-generator.md]  
 schema_version: 2.0  
 requires: [system-parameters.json, trade-data-schema.json, trading-behaviors-kb.md, moderator-position-tracker.md]
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # DP MORNING CALL ANALYZER

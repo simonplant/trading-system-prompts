@@ -12,7 +12,10 @@ requires: [trading-behaviors-schema.md, generate-daily-trade-log.md]
 linked_outputs: [generate-kb-update.md, update-trading-behaviors-kb.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # Copilot — Debrief Mode

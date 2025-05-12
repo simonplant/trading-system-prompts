@@ -12,7 +12,10 @@ requires: [trading-charter, trading-behaviors-kb, market-regimes]
 linked_outputs: [copilot, update-trading-behaviors-kb, export-journal-entry]  
 input_format: prompt  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true 
+style:
+  use_emojis: false
+  text_decoration: false 
 ---
 
 ## MIDDAY RESET — PROMPT

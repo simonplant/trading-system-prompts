@@ -11,7 +11,10 @@ requires: [unified trade plan, trade log, optional: DP recap, Mancini recap]
 linked_outputs: [/logs/reconciliation/YYYY-MM-DD-analysis.md]  
 input_format: markdown  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # ANALYZE TRADE PLAN VS. EXECUTION

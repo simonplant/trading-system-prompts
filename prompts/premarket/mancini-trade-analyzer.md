@@ -14,6 +14,9 @@ input_format: text
 output_format: json  
 ai_enabled: true  
 schema_version: 3.0
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # Enhanced Mancini Newsletter Analyzer Prompt

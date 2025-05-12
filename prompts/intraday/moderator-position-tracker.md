@@ -13,6 +13,9 @@ linked_outputs: [unified-trade-plan.md, execution-validator.md]
 input_format: chat messages
 output_format: structured position data
 ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # Moderator Position Tracker

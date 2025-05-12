@@ -12,7 +12,10 @@ requires: [dp-trade-analyzer.md]
 linked_outputs: [unified-trade-plan-generator.md]  
 input_format: json  
 output_format: markdown  
-ai_enabled: true  
+ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 ## DP TRADE SUMMARY GENERATOR — PROMPT

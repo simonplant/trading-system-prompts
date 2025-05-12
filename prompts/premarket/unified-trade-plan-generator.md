@@ -1,184 +1,217 @@
-# Enhanced Unified Trade Plan Generator
+---
+title: Optimized Unified Trade Plan Generator
+description: Comprehensive process for generating a unified trade plan integrating DP's trade ideas and Mancini's methodology with balanced prioritization
+tags: [intraday, setup, trading, Mancini, DP, integration, trade-plan, SPX, ES]
+author: Simon Plant
+last_updated: 2025-05-12
+version: 3.0
+category: intraday
+usage: Use to generate structured daily trade plans incorporating DP Inner Circle insights and Mancini methodology with true conviction-based prioritization
+status: active
+requires: [
+  dp-trade-analyzer.md,
+  get-daily-sma-for-tickers.md,
+  get-premarket-levels.md,
+  mancini-analysis-framework.md,
+  final-json-schema.json,
+  system-parameters.json,
+  market-regimes.md,
+  trade-setups-kb.md,
+  trading-system-sop.md,
+  trading-behaviors-kb.md
+]
+linked_outputs: [daily-trade-plan, trade-journal, trading-dashboard]
+input_format: markdown
+output_format: markdown
+ai_enabled: true
+schema_version: 3.0
+---
 
-This document outlines the improved process for generating a unified trade plan based on Adam Mancini's methodology, with a specific focus on prioritizing Failed Breakdowns (his core edge) and implementing the level-to-level approach.
+# Optimized Unified Trade Plan Generator
+
+This document outlines the comprehensive process for generating a unified trade plan that properly balances DP's trade ideas and Mancini's methodology, with true conviction-based prioritization across all sources.
+
+## Process for Generating the Plan
+
+1. **Market Regime Classification**:
+   - Process current market data to establish overall context
+   - Identify regime (Trending Up/Down, Choppy, Event-Driven, Squeeze) 
+   - This informs trade evaluation but doesn't filter out valid setups
+   - Apply appropriate position sizing guidelines for the regime
+
+2. **Data Processing**:
+   - Process DP Morning Call through dp-trade-analyzer.md
+   - Process Mancini content through mancini-analysis-framework.md
+   - Extract technical level data (SMA, market levels)
+   - All sources are treated with equal weight - no source has priority
+
+3. **Trade Classification**:
+   - Apply standardized taxonomy from trade-setups-kb.md
+   - Generate standard classification tags for organization
+   - Apply setup scoring for additional insight
+   - Classification informs but doesn't reject valid trade ideas
+
+4. **Trade Prioritization**:
+   - Rate ALL trades on the same unified conviction scale
+   - Consider both DP emphasis signals and Mancini pattern strength
+   - Evaluate setup quality and historical performance
+   - Apply risk/reward considerations
+   - Sources are equally respected - true conviction determines priority
+
+5. **Risk Protocol Application**:
+   - Apply risk protocols based on setup type and market conditions
+   - Implement position sizing based on conviction and regime
+   - Document any behavioral flags related to setups
+   - Provide risk guidance without restricting trade potential
+
+6. **Trade Plan Generation**:
+   - Organize by true conviction (not by source)
+   - Present trades in a unified structure regardless of origin
+   - Include all required data for execution
+   - Ensure consistent formatting and organization
 
 ## Trade Plan Structure
 
-The unified trade plan should follow this structure:
+The unified trade plan follows this structure, organizing ALL trades by true conviction:
 
 ```
-# SPX/ES UNIFIED TRADE PLAN - [DATE]
+# UNIFIED TRADE PLAN - [DATE]
 
 ## MARKET CONTEXT
-- Current Regime: [Buy-Dips/Sell-Rips/Range-Bound]
-- Mode Expectation: [Mode 1 (Trend)/Mode 2 (Range)]
-- Volatility Context: [High/Medium/Low]
-- Technical Structure: [Flag/Range/Breakout/Breakdown]
-  - Range Boundaries: [Lower] to [Upper]
-  - Structure Status: [Mature/Developing/Breaking]
+- Current Regime: [Trending Up/Down/Choppy/Event-Driven/Squeeze]
+- Key Characteristics: [Relevant indicators and conditions]
+- SPX/ES Current: [Level] ([+/-] [Change])
+- QQQ Current: [Level] ([+/-] [Change])
+- VIX: [Level] ([+/-] [Change]) - [Context]
+- Overnight Range: [Low] to [High]
+- Gap Context: [Open gap analysis]
+- Key Catalysts: [Major news/events]
 
-## KEY LEVELS
-### Major Supports
-- [Level 1] - [Brief context]
-- [Level 2] - [Brief context]
+## PRIMARY WATCHLIST (HIGHEST CONVICTION)
+[Combined best opportunities regardless of source, ranked by true conviction]
 
-### Major Resistances
-- [Level 1] - [Brief context]
-- [Level 2] - [Brief context]
-
-## PRIMARY SETUPS (TIER 0)
-### Failed Breakdown Opportunities
-1. **[Level] Failed Breakdown**
-   - Significant Low: [Level]
-   - Flush Target: [Level]
-   - Recovery Trigger: [Level]
-   - Acceptance Required: [Yes/No]
-   - Entry: [Level] after acceptance
+1. **[Ticker/SPX Level] - [Setup Type] - [Direction] - [Tag]**
+   - Source: [DP/Mancini]
+   - Conviction: [BIG_IDEA/HIGH/FAILED BREAKDOWN]
+   - Setup Score: [Points/10]
+   - Regime Alignment: [Strong/Moderate/Limited]
+   - Entry Trigger: [Precise entry condition]
+   - Entry Zone: [Price level or range]
+   - Position Size: [Based on conviction/regime matrix]
    - Targets: 
-     - 75% off at [Level 1]
-     - More off at [Level 2], leave 10% runner
-   - Stop: [Level]
-   - Notes: [Critical context]
+     - T1: [Level] - [Exit size]
+     - T2: [Level] - [Exit size]
+     - T3: [Level] - [Exit size if applicable]
+   - Stop: [Exact level] ([Risk amount/percentage])
+   - Rationale: "[Direct quote or technical reasoning]"
+   - Confirmation Required: [Specific confirmation pattern]
+   - Time Window: [Optimal execution window]
+   - Notes: [Critical context or management instructions]
 
-## SECONDARY SETUPS (TIER 1)
-### Level Reclaim Opportunities
-1. **[Level] Reclaim**
-   - Significance: [Context]
-   - Entry: [Level] after acceptance
-   - Targets: 
-     - 75% off at [Level 1]
-     - More off at [Level 2], leave 10% runner
-   - Stop: [Level]
-   - Notes: [Critical context]
+2. **[Next highest priority trade...]**
 
-## ADVANCED SETUPS (TIER 2)
-### Breakdown Short Opportunities
-1. **[Level] Breakdown Short**
-   - Bounce Level: [Level]
-   - Failed Breakdown Setup: [Level to Level]
-   - Short Trigger: [Level]
-   - Targets:
-     - 75% off at [Level 1]
-     - More off at [Level 2], leave 10% runner
-   - Stop: [Level]
-   - Notes: [Critical context]
+3. **[Next highest priority trade...]**
 
-## TRADE MANAGEMENT PROTOCOL
-- First Target: Lock in 75% profits at first level
-- Second Target: Lock in more at second level, leave 10% runner
-- Stop Management: Never let entire trade go red after first target hit
-- Profit Protection: After first green trade, additional trades only if runner stops and new setup emerges
+## SECONDARY WATCHLIST (MEDIUM CONVICTION)
+[Next tier of opportunities, still actionable but lower priority]
+
+1. **[Ticker/SPX Level] - [Setup Type] - [Direction] - [Tag]**
+   - Source: [DP/Mancini]
+   - Conviction: [MEDIUM/LEVEL RECLAIM]
+   - Setup Score: [Points/10]
+   - [Same structure as primary watchlist...]
+
+2. **[Next secondary priority trade...]**
+
+## MONITORING OPPORTUNITIES (SPECULATIVE/CONDITIONAL)
+[Lower conviction trades that require significant confirmation]
+
+1. **[Ticker/SPX Level] - [Setup Type] - [Direction] - [Tag]**
+   - Source: [DP/Mancini]
+   - Conviction: [LOW/BREAKDOWN SHORT]
+   - Setup Score: [Points/10]
+   - Trigger Condition: [Specific condition required]
+   - [Abbreviated details...]
+
+## KEY TECHNICAL LEVELS
+[Integrated from all sources]
+
+### SPX/ES Levels
+- Major Resistance: [Levels with context]
+- Minor Resistance: [Levels with context]
+- Major Support: [Levels with context]
+- Minor Support: [Levels with context]
+- SMA Clusters: [Areas with multiple SMAs]
+
+### Decision Points
+- Bullish Above: [Level] - [What it confirms]
+- Bearish Below: [Level] - [What it confirms]
+- Key Inflection: [Level] - [What to watch for]
+
+## RISK MANAGEMENT PROTOCOLS
+
+### Confirmation Requirements
+- Rejection candle off resistance for short setups
+- Failed breakout patterns for reversals
+- Moderator confirmation for high-risk entries
+- Tiered entries for higher-risk positions
+
+### Current Position Context
+- Active Positions: [Any open positions]
+- Daily P&L Status: [Current P&L]
+- Risk Utilization: [% of daily risk used]
+- Position Correlation Check: [Any closely correlated setups]
+
+## TRADE MANAGEMENT GUIDELINES
+- Scaling Rules: [Based on setup types]
+- Stop Management: [Specific to today's setups]
+- Runner Management: [When and how to let winners run]
+- Multiple Setup Rules: [How to manage when setups trigger simultaneously]
 
 ## DECISION TREE
+- Current SPX Price: [Level]
 - IF [condition], THEN [action] targeting [target]
 - IF [condition], THEN [action] targeting [target]
+- Focus Points: [Key things to watch]
 
 ## OPTIMAL TRADING WINDOWS
 - Primary: [Before 11am, After 3pm]
 - Avoid: [11am-2pm]
-
-## INVALIDATION SIGNALS
-- [What would negate primary setups]
-- [When to stand aside]
-
-## GOLDEN RULE REMINDER
-90% of intraday moves do not follow through to produce a smooth trend day. This requires:
-1. Always manage trades level-to-level
-2. Don't overtrade (1-2 trades max)
-3. Don't predict price paths
-4. Leave runners to catch trend legs
+- Setup-Specific Windows: [Based on setup types]
 ```
 
-## Priority Tiers
+## Position Tracking Integration
 
-The trade plan must clearly prioritize setups in these tiers:
+The unified trade plan now incorporates current position context:
 
-1. **TIER 0 (Highest Priority)**: Failed Breakdown setups
-   - Require all three components (significant low, flush, recovery) with acceptance
-   - Always list these first and with the most detail
+1. **Active Positions** - Current open positions with entry prices and sizes
+2. **Daily P&L Status** - Current profit/loss for the day
+3. **Risk Utilization** - Percentage of daily risk already deployed
+4. **Position Correlation Check** - Identifies correlations with potential new trades
 
-2. **TIER 1 (Secondary Priority)**: Level Reclaim setups
-   - Recovery of significant support/resistance shelves
-   - Require acceptance and momentum
+This tracking ensures consistency across multiple trading sessions.
 
-3. **TIER 2 (Advanced/Difficult)**: Breakdown Short setups
-   - Only for experienced traders
-   - Lower probability (approx. 40% success rate)
-   - Require Failed Breakdown attempt first
+## True Conviction Scoring System
 
-## Market Context Section
+All trades are evaluated on the same unified conviction scale:
 
-The Market Context section must clearly identify:
+1. **DP BIG_IDEA** = Mancini FAILED BREAKDOWN (primary setup with clear confidence)
+2. **DP HIGH** = Mancini LEVEL RECLAIM (high confidence but secondary)
+3. **DP MEDIUM** = Mancini "good potential" setup (moderate confidence)
+4. **DP LOW** = Mancini BREAKDOWN SHORT (more speculative, lower probability)
 
-1. **Current Regime**: 
-   - Buy-dips (Failed Breakdowns prioritized)
-   - Sell-rips (Breakdown Shorts prioritized)
-   - Range-bound (both at extremes)
+This unified scale ensures the best trades rise to the top regardless of source.
 
-2. **Mode Expectation**:
-   - Mode 1: Rare (10%) open-to-close trend days
-   - Mode 2: Common (90%) days with multiple moves and traps
+## Behavioral Flag Integration
 
-3. **Volatility Context**:
-   - High: Clean setups, minimal acceptance needed
-   - Low: Choppy setups, extended acceptance required
+Each setup receives a behavioral flag check that:
+1. Identifies potential behavioral risks without rejecting the trade
+2. Notes historical triggers or patterns with this setup type
+3. Provides mitigation suggestions when appropriate
+4. Creates awareness without limiting potential
 
-4. **Technical Structure**:
-   - Current pattern (flag, range, etc.)
-   - Range boundaries
-   - Structure status
+## Changelog
 
-## Trade Management Protocol
-
-This section must standardize the level-to-level approach:
-
-1. **First Target**: Lock in 75% profits at first level up
-2. **Second Target**: Lock in more at second level, leave 10% runner
-3. **Stop Management**: Never let entire trade go red after first target hit
-4. **Profit Protection Mode**: After first green trade, only additional trades if runner stops and new setup emerges
-
-## Acceptance Patterns
-
-For each Failed Breakdown and Level Reclaim, specify the required acceptance pattern:
-
-1. **Type 1 Acceptance**: Price back-tests the level, sells off, then returns
-2. **Type 2 Acceptance**: Price recovers the level, rips, sells off to back-test, then rallies
-3. **Time Requirements**: Longer acceptance needed in low volatility
-
-## Optimal Trading Windows
-
-Highlight Mancini's preferred trading windows:
-
-- **Primary Windows**: Before 11am, after 3pm
-- **Avoid**: 11am-2pm (typically choppy)
-- **Overnight**: More trappy, generally avoided
-
-## Invalidation Signals
-
-Clearly state what would negate each setup:
-
-1. **Failed Breakdown Invalidation**: Loss of the lowest low
-2. **Level Reclaim Invalidation**: Failure back below the level
-3. **Breakdown Short Invalidation**: Recovery above the entry level
-
-## Golden Rule Implementation
-
-Remind of the Golden Rule's practical implementation:
-
-1. Always manage trades level-to-level
-2. Don't overtrade (1-2 trades max)
-3. Don't predict price paths
-4. Leave runners to catch trend legs
-
-## Process for Generating the Plan
-
-1. Extract structured data using the Mancini Newsletter Analyzer
-2. Sort setups into appropriate priority tiers
-3. Start with the Market Context section
-4. List Key Levels (only major ones for clarity)
-5. Detail all TIER 0 setups with acceptance patterns
-6. Include TIER 1 and TIER 2 setups with appropriate cautions
-7. Standardize the Trade Management Protocol section
-8. Include the Decision Tree from extracted conditions
-9. Add Optimal Trading Windows and Invalidation Signals
-10. Conclude with the Golden Rule Reminder
+- v3.0 (2025-05-12): Complete optimization with unified conviction scoring, position tracking, and behavioral integration
+- v2.0 (2025-05-01): Enhanced balance between DP and Mancini sources
+- v1.0 (2025-04-15): Initial version with separated trade idea sections

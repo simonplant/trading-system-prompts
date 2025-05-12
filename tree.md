@@ -22,23 +22,30 @@
 │   ├── behaviors
 │   │   ├── 2025-05-05-trading-behaviors.md
 │   │   ├── 2025-05-06-trading-behaviors.md
-│   │   └── 2025-05-07-trading-behaviors.md
+│   │   ├── 2025-05-07-trading-behaviors.md
+│   │   └── 2025-05-08-trading-behaviors.md
 │   ├── index.md
 │   ├── journal
 │   │   ├── 2025-05-05-trading-journal.md
 │   │   ├── 2025-05-06-trading-journal.md
-│   │   └── 2025-05-07-trading-journal.md
+│   │   ├── 2025-05-07-trading-journal.md
+│   │   └── 2025-05-08-trading-journal.md
 │   ├── kb-updates
 │   │   ├── 2025-05-05-kb-update-recommendations.md
 │   │   ├── 2025-05-06-kb-update-recommendations.md
-│   │   └── 2025-05-07-kb-update.md
+│   │   ├── 2025-05-07-kb-update.md
+│   │   └── 2025-05-08-kb-update.md
 │   ├── levels
 │   │   ├── 2025-05-05-spx-levels.md
 │   │   └── 2025-05-06-spx-levels.md
 │   ├── performance
 │   │   ├── 2025-05-06-daily-performance-debrief.md
 │   │   ├── 2025-05-07-performance-debrief-mancini.md
-│   │   └── 2025-05-07-performance-debrief.md
+│   │   ├── 2025-05-07-performance-debrief.md
+│   │   └── 2025-05-08-daily-performance-debrief.md
+│   ├── plan-performance
+│   │   ├── 2025-05-08-trade-plan-performance.md
+│   │   └── 2025-05-08-trade-plan-performance2.md
 │   ├── reconciliation
 │   │   └── 2025-05-08-reconciliation.md
 │   ├── trade-plans
@@ -76,8 +83,10 @@
 │   ├── premarket
 │   │   ├── dp-trade-analyzer.md
 │   │   ├── dp-trade-summary.md
+│   │   ├── final-json-schema.json
 │   │   ├── get-daily-sma-for-tickers.md
 │   │   ├── get-premarket-levels.md
+│   │   ├── mancini-analysis-framework.md
 │   │   ├── mancini-trade-analyzer.md
 │   │   ├── mancini-trade-summary.md
 │   │   ├── unified-trade-plan-generator.md
@@ -89,7 +98,8 @@
 │   ├── data-schemas.md
 │   ├── system-design-principles.md
 │   ├── system-routing-spec.md
-│   └── todo-trading-system.md
+│   ├── todo-trading-system.md
+│   └── todo-trading-system2.md
 ├── system
 │   ├── chart-visual-legend.md
 │   ├── config
@@ -99,6 +109,9 @@
 │   ├── market-regimes.md
 │   ├── position-significance-score.yaml
 │   ├── README.md
+│   ├── specs
+│   │   ├── detailed-change-plan.md
+│   │   └── template-spec.md
 │   ├── system-parameters.json
 │   ├── system-parameters.md
 │   ├── templates
@@ -121,4 +134,4 @@
 │   └── 2025-05-07.json
 └── tree.md
 
-28 directories, 94 files
+30 directories, 105 files

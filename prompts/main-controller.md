@@ -13,6 +13,9 @@ linked_outputs: []
 input_format: markdown
 output_format: markdown
 ai_enabled: true
+style:
+  use_emojis: false
+  text_decoration: false
 ---
 
 # TRADING SYSTEM COMMAND ROUTER
